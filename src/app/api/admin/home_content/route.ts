@@ -1,4 +1,6 @@
 // src/app/api/admin/home_content/route.ts
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { getServerSession } from 'next-auth/next';

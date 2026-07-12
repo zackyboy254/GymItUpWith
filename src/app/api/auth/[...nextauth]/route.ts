@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { SupabaseAdapter } from '@auth/supabase-adapter';
@@ -35,7 +37,10 @@ export const authOptions = {
       },
     }),
   ],
-  adapter: SupabaseAdapter({ url: process.env.NEXT_PUBLIC_SUPABASE_URL!, secret: process.env.SUPABASE_SERVICE_ROLE_KEY! }),
+  adapter: SupabaseAdapter({
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+    secret: process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder',
+  }),
   callbacks: {
     async session({ session, token }: { session: any; token: any }) {
       if (token.role) session.user.role = token.role;

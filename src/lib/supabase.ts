@@ -12,15 +12,28 @@ function assertEnv(name: string, value?: string) {
 }
 
 // Client-side vs Server-side client for public queries
-export const supabase = typeof window !== 'undefined'
-  ? createBrowserClient(
-      assertEnv('NEXT_PUBLIC_SUPABASE_URL', supabaseUrl),
-      assertEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', supabaseAnonKey)
-    )
-  : createClient(
-      assertEnv('NEXT_PUBLIC_SUPABASE_URL', supabaseUrl),
-      assertEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', supabaseAnonKey)
-    );
+let supabaseInstance: any = null;
+export const supabase = new Proxy({} as any, {
+  get(target, prop) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !anonKey) {
+      throw new Error(
+        'NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is missing. Please configure them in your env variables.'
+      );
+    }
+    if (!supabaseInstance) {
+      supabaseInstance = typeof window !== 'undefined'
+        ? createBrowserClient(url, anonKey)
+        : createClient(url, anonKey);
+    }
+    const value = Reflect.get(supabaseInstance, prop);
+    if (typeof value === 'function') {
+      return value.bind(supabaseInstance);
+    }
+    return value;
+  },
+});
 
 // Lazy-loaded Admin client to avoid breaking public pages during build/runtime if key is empty
 let supabaseAdminInstance: any = null;
