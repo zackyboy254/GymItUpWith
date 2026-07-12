@@ -101,7 +101,7 @@ export default function HomePage() {
 
         if (error) throw error;
         if (data && data.length > 0) {
-          setCarouselImages(data.map(slide => slide.image_id));
+          setCarouselImages(data.map((slide: any) => slide.image_id));
         }
       } catch (err) {
         console.warn('Failed to fetch carousel_slides, using static fallback:', err);
