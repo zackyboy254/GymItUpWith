@@ -46,19 +46,68 @@ const CAROUSEL_IMAGES = [
   `${BASE}/unnamed.jpg`,
 ];
 
-// Hero side image – pick a vivid gym shot
-const HERO_IMAGE = `${BASE}/unnamed__6_.jpg`;
+// Hero side image – high-energy Unsplash training photo
+const HERO_IMAGE = 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900&q=80';
 
 export default function HomePage() {
   const [quote, setQuote] = useState({ text: "", author: "" });
   const [currentSlide, setCurrentSlide] = useState(0);
   const { openModal } = useJoinModal();
 
+  // Dynamic Landing Page states with initial static fallbacks
+  const [heroTitle, setHeroTitle] = useState('Push Your Limits Shape Your Destiny');
+  const [heroSubtitle, setHeroSubtitle] = useState('Welcome to GymItUpWith Billy. Custom-tailored workouts, results-oriented training plans, and a community dedicated to excellence. 💪');
+  const [ctaText, setCtaText] = useState('Join Program');
+  const [ctaUrl, setCtaUrl] = useState('#join');
+  const [heroImageUrl, setHeroImageUrl] = useState(HERO_IMAGE);
+  const [carouselImages, setCarouselImages] = useState<string[]>(CAROUSEL_IMAGES);
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % CAROUSEL_IMAGES.length);
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
     }, 4000);
     return () => clearInterval(timer);
+  }, [carouselImages]);
+
+  useEffect(() => {
+    async function loadDynamicContent() {
+      // 1. Fetch Home Content
+      try {
+        const { data, error } = await supabase
+          .from('home_content')
+          .select('*')
+          .order('id', { ascending: true })
+          .limit(1)
+          .maybeSingle();
+
+        if (error) throw error;
+        if (data) {
+          setHeroTitle(data.title);
+          setHeroSubtitle(data.subtitle);
+          if (data.cta_text) setCtaText(data.cta_text);
+          if (data.cta_url) setCtaUrl(data.cta_url);
+          if (data.hero_image_url) setHeroImageUrl(data.hero_image_url);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch home_content, using static fallback:', err);
+      }
+
+      // 2. Fetch Carousel Slides
+      try {
+        const { data, error } = await supabase
+          .from('carousel_slides')
+          .select('*')
+          .order('order', { ascending: true });
+
+        if (error) throw error;
+        if (data && data.length > 0) {
+          setCarouselImages(data.map(slide => slide.image_id));
+        }
+      } catch (err) {
+        console.warn('Failed to fetch carousel_slides, using static fallback:', err);
+      }
+    }
+    loadDynamicContent();
   }, []);
 
   useEffect(() => {
@@ -102,12 +151,12 @@ export default function HomePage() {
       {/* ─── Hero Section ─────────────────────────────────────────────── */}
       <section className="relative min-h-[95vh] flex items-center overflow-hidden bg-black">
 
-        {/* Background carousel – now translucent gym images */}
-        {CAROUSEL_IMAGES.map((img, idx) => (
+        {/* Background carousel – gym images, clearly visible */}
+        {carouselImages.map((img, idx) => (
           <div
             key={img}
             className={`absolute inset-0 z-0 select-none pointer-events-none transition-all duration-1000 ${
-              idx === currentSlide ? 'opacity-45 scale-105' : 'opacity-0 scale-100'
+              idx === currentSlide ? 'opacity-70 scale-105' : 'opacity-0 scale-100'
             }`}
             style={{
               backgroundImage: `url('${img}')`,
@@ -117,9 +166,9 @@ export default function HomePage() {
           />
         ))}
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/30 via-transparent to-black/80" />
+        {/* Gradient overlay – light enough to let images show through */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/75 via-black/40 to-black/20" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/20 via-transparent to-black/65" />
 
         {/* Grid pattern */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.012)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
@@ -135,30 +184,32 @@ export default function HomePage() {
                 <span className="font-semibold uppercase tracking-wider text-[10px]">Premium Fitness Coaching ⚡</span>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white uppercase leading-[1.05] select-none">
-                Push Your{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a]">
-                  Limits
-                </span>
-                <br />
-                Shape Your{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077ff] to-[#00e5ff]">
-                  Destiny
-                </span>
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white uppercase leading-[1.05] select-none whitespace-pre-line">
+                {heroTitle}
               </h1>
 
               <p className="text-gray-300 text-lg sm:text-xl max-w-xl leading-relaxed font-light mx-auto lg:mx-0">
-                Welcome to <strong className="text-white font-semibold">GymItUpWith Billy</strong>. Custom-tailored workouts, results-oriented training plans, and a community dedicated to excellence. 💪
+                {heroSubtitle}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <button
-                  onClick={openModal}
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] rounded-xl shadow-lg shadow-orange-500/20 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
-                >
-                  Join Program ⚡
-                  <ChevronRight className="w-5 h-5 ml-1" />
-                </button>
+                {ctaUrl.startsWith('/') || ctaUrl.startsWith('#') ? (
+                  <Link
+                    href={ctaUrl === '#join' ? '/contact' : ctaUrl}
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] rounded-xl shadow-lg shadow-orange-500/20 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+                  >
+                    {ctaText} ⚡
+                    <ChevronRight className="w-5 h-5 ml-1" />
+                  </Link>
+                ) : (
+                  <button
+                    onClick={openModal}
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] rounded-xl shadow-lg shadow-orange-500/20 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+                  >
+                    {ctaText} ⚡
+                    <ChevronRight className="w-5 h-5 ml-1" />
+                  </button>
+                )}
                 <button
                   onClick={openModal}
                   className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer"
@@ -195,18 +246,18 @@ export default function HomePage() {
               <div className="relative w-full max-w-md aspect-[4/5] rounded-3xl overflow-hidden border border-white/15 shadow-2xl shadow-black/60">
                 {/* Main image */}
                 <img
-                  src={HERO_IMAGE}
+                  src={heroImageUrl}
                   alt="Fitness training session"
                   className="absolute inset-0 w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-700"
                 />
                 {/* Subtle gradient on top of image */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
-                {/* Mini carousel strip at bottom of hero image */}
+                {/* Bottom motivational tag + slide indicators */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end gap-2">
                   <div className="flex-1 space-y-1">
-                    <span className="block text-[#ff6b00] text-[10px] font-bold uppercase tracking-widest">Head Trainer</span>
-                    <span className="block text-white font-black text-lg">COACH Billy 🏋️‍♂️</span>
+                    <span className="block text-[#ff6b00] text-[10px] font-bold uppercase tracking-widest">Transform · Elevate · Dominate</span>
+                    <span className="block text-white font-semibold text-sm opacity-90">Your strongest self starts here 🔥</span>
                   </div>
                   {/* Slide indicator pills */}
                   <div className="flex flex-col gap-1.5">
@@ -224,11 +275,6 @@ export default function HomePage() {
                     ))}
                   </div>
                 </div>
-              </div>
-
-              {/* Floating accent badge */}
-              <div className="absolute -top-4 -right-4 px-4 py-2 rounded-2xl bg-[#0077ff] text-white text-xs font-bold shadow-lg shadow-blue-500/30 rotate-3">
-                15+ Certifications 🏅
               </div>
             </div>
           </div>
@@ -258,14 +304,14 @@ export default function HomePage() {
           <ScrollReveal className="relative animate-slide-left">
             <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[#ff6b00] to-[#0077ff] opacity-15 blur-xl" />
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-[#121214] flex flex-col justify-end p-8">
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent z-10" />
               <div
-                className="absolute inset-0 bg-cover bg-center opacity-60 scale-105 hover:scale-100 transition-transform duration-700"
-                style={{ backgroundImage: `url('${BASE}/unnamed__5_.jpg')` }}
+                className="absolute inset-0 bg-cover bg-center scale-105 hover:scale-100 transition-transform duration-700"
+                style={{ backgroundImage: "url('/images/gym6.jpg')" }}
               />
               <div className="relative z-20 space-y-2">
-                <span className="text-[#ff6b00] text-xs font-bold uppercase tracking-widest">Head Trainer</span>
-                <h3 className="text-2xl font-black text-white">COACH Billy 🏋️‍♂️</h3>
+                <span className="text-[#ff6b00] text-xs font-bold uppercase tracking-widest">Certified Fitness Coach</span>
+                <h3 className="text-2xl font-black text-white">Coach Billy 💪</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
                   "Fitness is not a destination; it's a way of living. I'm here to equip you with the mindset, routines, and discipline to transform your life."
                 </p>

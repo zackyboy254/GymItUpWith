@@ -130,7 +130,7 @@ export default function DailyPopup() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/40 to-transparent" />
 
               {/* Logo overlay */}
-              <div className="absolute bottom-4 left-4 flex items-center space-x-2">
+              <div className="absolute bottom-4 left-4 flex flex-col items-start gap-1">
                 <img
                   src="/images/logo.webp"
                   alt="Gym It Up With"

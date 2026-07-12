@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useJoinModal } from '@/context/JoinModalContext';
-import { ThemeContext } from '@/context/ThemeProvider';
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
@@ -20,7 +19,6 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
   const pathname = usePathname();
   const { openModal } = useJoinModal();
 
@@ -87,17 +85,8 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Desktop CTA & Theme Toggle */}
+            {/* Desktop CTA */}
             <div className="hidden lg:flex items-center space-x-4">
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
-                title="Toggle Theme"
-              >
-                {theme === 'dark' ? <Sun className="w-4.5 h-4.5" /> : <Moon className="w-4.5 h-4.5" />}
-              </button>
-
               <button
                 onClick={openModal}
                 className="relative inline-flex items-center justify-center px-5 py-2.5 overflow-hidden font-bold text-white transition duration-300 ease-out rounded-xl shadow-md bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#ff6b00] hover:scale-[1.02] active:scale-[0.98] cursor-pointer group"
@@ -109,15 +98,6 @@ export default function Navbar() {
 
             {/* Mobile Actions */}
             <div className="lg:hidden flex items-center space-x-2">
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
-                title="Toggle Theme"
-              >
-                {theme === 'dark' ? <Sun className="w-4.5 h-4.5" /> : <Moon className="w-4.5 h-4.5" />}
-              </button>
-
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-none"

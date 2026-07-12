@@ -21,11 +21,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gymitupwith Billy | Professional Fitness Coach & Trainer (Kenya) 🏋️‍♂️",
-  description: "Empower your fitness journey with personalized coaching, workout routines, group bootcamps, and healthy lifestyle guidance based in Nairobi, Kenya. Guided by Coach Billy Karanja.",
+  title: "Gymitupwith Billy | Professional Fitness Coach & Trainer 🏋️‍♂️",
+  description: "Empower your fitness journey with personalized coaching, workout routines, group bootcamps, and healthy lifestyle guidance. Guided by Coach Billy.",
   openGraph: {
-    title: "Gymitupwith Billy | Professional Fitness Coach & Trainer (Kenya) 🏋️‍♂️",
-    description: "Empower your fitness journey with personalized coaching, workout routines, group bootcamps, and healthy lifestyle guidance based in Nairobi, Kenya. Guided by Coach Billy Karanja.",
+    title: "Gymitupwith Billy | Professional Fitness Coach & Trainer 🏋️‍♂️",
+    description: "Empower your fitness journey with personalized coaching, workout routines, group bootcamps, and healthy lifestyle guidance. Guided by Coach Billy.",
     url: "https://gymitupwith.co.ke",
     siteName: "Gymitupwith Billy",
     images: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
         alt: "Gymitupwith Billy Fitness Coach",
       },
     ],
-    locale: "en_KE",
+    locale: "en_US",
     type: "website",
   },
   robots: {
