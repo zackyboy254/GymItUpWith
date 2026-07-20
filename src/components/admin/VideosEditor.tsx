@@ -8,11 +8,39 @@ interface VideoItem {
   id: number;
   title: string;
   video_url: string;
-  thumbnail_url?: string;
+  thumbnail_url?: string | null;
   category: 'workout' | 'tutorial' | 'transformation' | 'event';
   is_featured: boolean;
   status: 'active' | 'disabled';
 }
+
+const VIDEO_THUMBNAIL_FALLBACKS = [
+  'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=500&q=80',
+  'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600',
+  'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600',
+  'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600',
+  'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600',
+  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600',
+];
+
+const hashStringToIndex = (value: string) => {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    hash = ((hash << 5) - hash) + value.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash) % VIDEO_THUMBNAIL_FALLBACKS.length;
+};
+
+const getYoutubeThumbnailFromUrl = (url: string) => {
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return match?.[1] ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
+};
+
+const getAdminVideoThumbnail = (video: VideoItem) => {
+  if (video.thumbnail_url) return video.thumbnail_url;
+  return getYoutubeThumbnailFromUrl(video.video_url) || VIDEO_THUMBNAIL_FALLBACKS[hashStringToIndex(video.video_url || String(video.id))];
+};
 
 export default function VideosEditor() {
   const [videos, setVideos] = useState<VideoItem[]>([]);
@@ -86,7 +114,8 @@ export default function VideosEditor() {
     setIsSaving(true);
     setMessage(null);
 
-    const finalThumbnail = thumbnailUrl.trim() || 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=500&q=80';
+    const generatedYoutubeThumbnail = getYoutubeThumbnailFromUrl(videoUrl);
+    const finalThumbnail = thumbnailUrl.trim() || generatedYoutubeThumbnail || VIDEO_THUMBNAIL_FALLBACKS[hashStringToIndex(videoUrl)];
 
     try {
       const { error } = await supabase
@@ -271,10 +300,10 @@ export default function VideosEditor() {
                 <div className="flex items-center space-x-3">
                   <div className="w-16 h-12 bg-black border border-white/10 rounded overflow-hidden shrink-0 relative">
                     <img
-                      src={video.thumbnail_url || 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=200&q=60'}
+                      src={getAdminVideoThumbnail(video)}
                       alt={video.title}
                       className="w-full h-full object-cover"
-                      onError={e => { (e.target as any).src = 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=200&q=60'; }}
+                      onError={e => { (e.target as any).src = VIDEO_THUMBNAIL_FALLBACKS[hashStringToIndex(video.video_url || String(video.id))]; }}
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                       <div className="w-4 h-4 rounded-full bg-white/80 flex items-center justify-center">

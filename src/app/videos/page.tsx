@@ -15,13 +15,33 @@ interface Video {
   created_at: string;
 }
 
+const VIDEO_THUMBNAIL_FALLBACKS = [
+  '/images/gym1.jpg',
+  '/images/gym2.jpg',
+  '/images/gym3.jpg',
+  '/images/gym4.jpg',
+  '/images/gym5.jpg',
+  '/images/gym6.jpg',
+];
+
+const hashStringToIndex = (value: string) => {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    hash = ((hash << 5) - hash) + value.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash) % VIDEO_THUMBNAIL_FALLBACKS.length;
+};
+
 const getVideoThumbnail = (video: Video) => {
   if (video.thumbnail_url) return video.thumbnail_url;
+
   const youtubeIdMatch = video.video_url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
   if (youtubeIdMatch?.[1]) {
     return `https://img.youtube.com/vi/${youtubeIdMatch[1]}/hqdefault.jpg`;
   }
-  return '/images/hero-bg.webp';
+
+  return VIDEO_THUMBNAIL_FALLBACKS[hashStringToIndex(video.video_url || String(video.id))];
 };
 
 const MOCK_VIDEOS: Video[] = [
@@ -218,7 +238,7 @@ export default function VideosPage() {
         {!loading && featuredVideo && !search && selectedCategory === 'all' && (
           <section className="relative rounded-3xl overflow-hidden glass-panel border border-black/10 dark:border-white/10 p-6 lg:p-12 bg-white/40 dark:bg-gradient-to-br dark:from-[#121214] dark:to-[#0a0a0c] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="relative aspect-video rounded-2xl overflow-hidden group border border-black/5 dark:border-white/5 bg-black">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${featuredVideo.thumbnail_url})` }}></div>
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${getVideoThumbnail(featuredVideo)})` }}></div>
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
                 <button
                   onClick={() => handlePlayVideo(featuredVideo.video_url, featuredVideo.title)}
