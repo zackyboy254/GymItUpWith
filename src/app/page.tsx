@@ -53,6 +53,27 @@ export default function HomePage() {
   const [ctaUrl, setCtaUrl] = useState('#join');
   const [heroImageUrl, setHeroImageUrl] = useState(HERO_IMAGE);
   const [carouselImages, setCarouselImages] = useState<string[]>(CAROUSEL_IMAGES);
+  const [metrics, setMetrics] = useState<Record<string, string>>({
+    metric_years: '12+',
+    metric_members: '27K+',
+    metric_weekly_classes: '60+',
+    metric_trainers: '117+',
+    metric_experience: '5+ Years',
+    metric_happy_clients: '200+',
+    metric_success_rate: '98%',
+    metric_certifications: '15+',
+  });
+
+  const METRIC_SETTING_KEYS = [
+    'metric_years',
+    'metric_members',
+    'metric_weekly_classes',
+    'metric_trainers',
+    'metric_experience',
+    'metric_happy_clients',
+    'metric_success_rate',
+    'metric_certifications',
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -141,6 +162,24 @@ export default function HomePage() {
         }
       } catch (err) {
         console.warn('Failed to fetch carousel_slides, using static fallback:', err);
+      }
+
+      // 3. Fetch homepage metrics from settings
+      try {
+        const { data, error } = await supabase
+          .from('settings')
+          .select('key, value')
+          .in('key', METRIC_SETTING_KEYS);
+
+        if (!error && data) {
+          const values: Record<string, string> = {};
+          data.forEach((setting: any) => {
+            values[setting.key] = setting.value;
+          });
+          setMetrics((prev) => ({ ...prev, ...values }));
+        }
+      } catch (err) {
+        console.warn('Failed to fetch metric settings, using static fallbacks:', err);
       }
     }
     loadDynamicContent();
@@ -252,13 +291,13 @@ export default function HomePage() {
 
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 mt-8">
                 {[
-                  { value: '12+', label: 'Years' },
-                  { value: '27K+', label: 'Members' },
-                  { value: '60+', label: 'Weekly Classes' },
-                  { value: '117+', label: 'Trainers' },
+                  { key: 'metric_years', label: 'Years' },
+                  { key: 'metric_members', label: 'Members' },
+                  { key: 'metric_weekly_classes', label: 'Weekly Classes' },
+                  { key: 'metric_trainers', label: 'Trainers' },
                 ].map((stat) => (
-                  <div key={stat.label} className="rounded-[2rem] border border-white/10 bg-white/5 p-5 text-center shadow-xl shadow-black/15 backdrop-blur-sm">
-                    <p className="text-2xl font-black text-white">{stat.value}</p>
+                  <div key={stat.key} className="rounded-[2rem] border border-white/10 bg-white/5 p-5 text-center shadow-xl shadow-black/15 backdrop-blur-sm">
+                    <p className="text-2xl font-black text-white">{metrics[stat.key]}</p>
                     <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-300">{stat.label}</p>
                   </div>
                 ))}
@@ -365,19 +404,19 @@ export default function HomePage() {
             {/* Achievements stats */}
             <div className="grid grid-cols-2 gap-6 pt-4 border-t border-black/10 dark:border-white/5">
               <div className="p-4 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-colors">
-                <span className="block text-3xl font-black text-gray-900 dark:text-white">5+ Years</span>
+                <span className="block text-3xl font-black text-gray-900 dark:text-white">{metrics.metric_experience}</span>
                 <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">Training Experience</span>
               </div>
               <div className="p-4 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-colors">
-                <span className="block text-3xl font-black text-gray-900 dark:text-white">200+</span>
+                <span className="block text-3xl font-black text-gray-900 dark:text-white">{metrics.metric_happy_clients}</span>
                 <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">Happy Clients</span>
               </div>
               <div className="p-4 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:border-[#ff6b00]/30 transition-colors">
-                <span className="block text-3xl font-black text-[#ff6b00]">98%</span>
+                <span className="block text-3xl font-black text-[#ff6b00]">{metrics.metric_success_rate}</span>
                 <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">Success Rate</span>
               </div>
               <div className="p-4 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:border-[#0077ff]/30 transition-colors">
-                <span className="block text-3xl font-black text-[#0077ff]">15+</span>
+                <span className="block text-3xl font-black text-[#0077ff]">{metrics.metric_certifications}</span>
                 <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">Certifications</span>
               </div>
             </div>

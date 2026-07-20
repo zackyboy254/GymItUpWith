@@ -9,8 +9,31 @@ interface SettingItem {
   value: string;
 }
 
+const METRIC_KEYS = [
+  { key: 'metric_years', label: 'Years' },
+  { key: 'metric_members', label: 'Members' },
+  { key: 'metric_weekly_classes', label: 'Weekly Classes' },
+  { key: 'metric_trainers', label: 'Trainers' },
+  { key: 'metric_experience', label: 'Training Experience' },
+  { key: 'metric_happy_clients', label: 'Happy Clients' },
+  { key: 'metric_success_rate', label: 'Success Rate' },
+  { key: 'metric_certifications', label: 'Certifications' },
+];
+
+const DEFAULT_METRIC_VALUES: Record<string, string> = {
+  metric_years: '12+',
+  metric_members: '27K+',
+  metric_weekly_classes: '60+',
+  metric_trainers: '117+',
+  metric_experience: '5+ Years',
+  metric_happy_clients: '200+',
+  metric_success_rate: '98%',
+  metric_certifications: '15+',
+};
+
 export default function SettingsEditor() {
   const [settings, setSettings] = useState<SettingItem[]>([]);
+  const [metricValues, setMetricValues] = useState<Record<string, string>>(DEFAULT_METRIC_VALUES);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -40,6 +63,13 @@ export default function SettingsEditor() {
         throw error;
       }
       setSettings(data || []);
+      const loadedMetrics = { ...DEFAULT_METRIC_VALUES };
+      data?.forEach((setting: SettingItem) => {
+        if (METRIC_KEYS.some((metric) => metric.key === setting.key)) {
+          loadedMetrics[setting.key] = setting.value;
+        }
+      });
+      setMetricValues(loadedMetrics);
     } catch (err) {
       console.warn('Error fetching settings:', err);
     } finally {
@@ -57,10 +87,12 @@ export default function SettingsEditor() {
     try {
       const { error } = await supabase
         .from('settings')
-        .upsert([{
-          key: newKey.trim().toLowerCase(),
-          value: newValue.trim()
-        }]);
+        .upsert([
+          {
+            key: newKey.trim().toLowerCase(),
+            value: newValue.trim(),
+          },
+        ], { onConflict: 'key' });
 
       if (error) throw error;
 
@@ -88,6 +120,30 @@ export default function SettingsEditor() {
       fetchSettings();
     } catch (err) {
       setMessage({ type: 'error', text: 'Failed to delete setting.' });
+    }
+  };
+
+  const handleSaveMetrics = async () => {
+    setIsSaving(true);
+    setMessage(null);
+
+    try {
+      const payload = METRIC_KEYS.map((metric) => ({
+        key: metric.key,
+        value: (metricValues[metric.key] || '').trim(),
+      }));
+
+      const { error } = await supabase
+        .from('settings')
+        .upsert(payload, { onConflict: 'key' });
+
+      if (error) throw error;
+      setMessage({ type: 'success', text: 'Homepage metrics saved successfully!' });
+      fetchSettings();
+    } catch (err: any) {
+      setMessage({ type: 'error', text: err.message || 'Failed to save homepage metrics.' });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -135,6 +191,33 @@ export default function SettingsEditor() {
       )}
 
       {/* Form */}
+      <div className="bg-white/5 p-5 rounded-2xl border border-white/5 space-y-4">
+        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Homepage Metrics</h3>
+        <p className="text-xs text-gray-400">Edit the homepage metric cards here. These values are stored in the <code className="text-white bg-black/20 px-1 rounded">settings</code> table and loaded automatically.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {METRIC_KEYS.map((metric) => (
+            <div key={metric.key} className="space-y-1">
+              <label className="block text-[9px] text-gray-400 font-bold uppercase">{metric.label}</label>
+              <input
+                type="text"
+                value={metricValues[metric.key]}
+                onChange={(e) => setMetricValues((prev) => ({ ...prev, [metric.key]: e.target.value }))}
+                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              />
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={handleSaveMetrics}
+          disabled={isSaving}
+          className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer"
+        >
+          <Save className="w-4 h-4" />
+          <span>Save Homepage Metrics</span>
+        </button>
+      </div>
+
       <form onSubmit={handleSaveSetting} className="bg-white/5 p-5 rounded-2xl border border-white/5 space-y-4">
         <h3 className="text-sm font-bold text-white uppercase tracking-wider">Save Setting (Key-Value)</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ChatWidget from "@/components/ChatWidget";
-import DailyPopup from "@/components/DailyPopup";
-import JoinModal from "@/components/JoinModal";
+import AppShell from "@/components/AppShell";
 import { JoinModalProvider } from "@/context/JoinModalContext";
-import QuickChatButton from "@/components/QuickChatButton";
 import { ThemeProvider } from "@/context/ThemeProvider";
 
 const geistSans = Geist({
@@ -59,13 +54,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col antialiased">
         <JoinModalProvider>
           <ThemeProvider>
-            <Navbar />
-            <main className="flex-grow pt-24">{children}</main>
-            <Footer />
-            <QuickChatButton />
-            <ChatWidget />
-            <DailyPopup />
-            <JoinModal />
+            <AppShell>{children}</AppShell>
           </ThemeProvider>
         </JoinModalProvider>
       </body>

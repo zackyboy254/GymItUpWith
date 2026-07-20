@@ -154,6 +154,17 @@ CREATE TABLE IF NOT EXISTS public.chat_links (
 -- Enable RLS for chat_links
 ALTER TABLE public.chat_links ENABLE ROW LEVEL SECURITY;
 
+-- Create settings table
+CREATE TABLE IF NOT EXISTS public.settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Enable RLS for settings
+ALTER TABLE public.settings ENABLE ROW LEVEL SECURITY;
+
 
 --------------------------------------------------------------------------------
 -- ROW LEVEL SECURITY (RLS) POLICIES

@@ -73,7 +73,7 @@ export default function PopupsEditor() {
   const handleDeletePopup = async (id: number) => {
     if (!confirm('Delete this popup?')) return;
     try {
-      const { error } = await supabase.from('popups').delete().eq('id', id);
+      const { error } = await supabase.from('daily_popups').delete().eq('id', id);
       if (error) throw error;
       setMessage({ type: 'success', text: 'Popup removed.' });
       fetchPopups();
@@ -81,7 +81,7 @@ export default function PopupsEditor() {
   };
 
   const toggleStatus = async (id: number, status: string) => {
-    try { await supabase.from('popups').update({ status: status === 'active' ? 'disabled' : 'active' }).eq('id', id); fetchPopups(); }
+    try { await supabase.from('daily_popups').update({ status: status === 'active' ? 'disabled' : 'active' }).eq('id', id); fetchPopups(); }
     catch (err) { console.error(err); }
   };
 
