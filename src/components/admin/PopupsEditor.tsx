@@ -8,12 +8,14 @@ import { ImageUploadField } from './ImageUploadField';
 interface PopupItem {
   id: number;
   title: string;
-  body_text: string;
+  message: string;
   cta_text?: string;
   cta_link?: string;
   image_url?: string;
+  popup_type?: string;
+  day_of_week?: string | null;
+  scheduled_date?: string | null;
   status: 'active' | 'disabled';
-  delay_seconds: number;
 }
 
 export default function PopupsEditor() {
@@ -28,13 +30,15 @@ export default function PopupsEditor() {
   const [ctaText, setCtaText] = useState('');
   const [ctaLink, setCtaLink] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [delaySeconds, setDelaySeconds] = useState(5);
+  const [popupType, setPopupType] = useState('motivation');
+  const [dayOfWeek, setDayOfWeek] = useState('');
+  const [scheduledDate, setScheduledDate] = useState('');
 
   useEffect(() => { fetchPopups(); }, []);
 
   const fetchPopups = async () => {
     try {
-      const { data, error } = await supabase.from('popups').select('*').order('id', { ascending: false });
+      const { data, error } = await supabase.from('daily_popups').select('*').order('id', { ascending: false });
       if (error) throw error;
       setPopups(data || []);
     } catch (err) { console.error(err); }
@@ -46,12 +50,19 @@ export default function PopupsEditor() {
     setIsSaving(true);
     setMessage(null);
     try {
-      const { error } = await supabase.from('popups').insert([{
-        title, body_text: bodyText, cta_text: ctaText || null, cta_link: ctaLink || null,
-        image_url: imageUrl || null, status: 'active', delay_seconds: delaySeconds,
+      const { error } = await supabase.from('daily_popups').insert([{
+        title,
+        message: bodyText,
+        cta_text: ctaText || null,
+        cta_link: ctaLink || null,
+        image_url: imageUrl || null,
+        popup_type: popupType || 'motivation',
+        day_of_week: dayOfWeek || null,
+        scheduled_date: scheduledDate || null,
+        status: 'active',
       }]);
       if (error) throw error;
-      setTitle(''); setBodyText(''); setCtaText(''); setCtaLink(''); setImageUrl(''); setDelaySeconds(5);
+      setTitle(''); setBodyText(''); setCtaText(''); setCtaLink(''); setImageUrl(''); setPopupType('motivation'); setDayOfWeek(''); setScheduledDate('');
       setMessage({ type: 'success', text: 'Popup configured and saved!' });
       fetchPopups();
     } catch (err: any) {
@@ -100,8 +111,30 @@ export default function PopupsEditor() {
               placeholder="e.g. 🔥 First Session FREE!" />
           </div>
           <div className="space-y-1">
-            <label className="block text-[9px] text-gray-400 font-bold uppercase">Show After (seconds)</label>
-            <input type="number" value={delaySeconds} onChange={e => setDelaySeconds(Number(e.target.value))} min={0}
+            <label className="block text-[9px] text-gray-400 font-bold uppercase">Popup Type</label>
+            <select value={popupType} onChange={e => setPopupType(e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white">
+              <option value="motivation">Motivation</option>
+              <option value="tip">Tip</option>
+              <option value="promo">Promo</option>
+              <option value="event">Event</option>
+            </select>
+          </div>
+          <div className="space-y-1">
+            <label className="block text-[9px] text-gray-400 font-bold uppercase">Day Of Week (optional)</label>
+            <select value={dayOfWeek} onChange={e => setDayOfWeek(e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white">
+              <option value="">Any</option>
+              <option value="Sunday">Sunday</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+            </select>
+          </div>
+          <div className="space-y-1">
+            <label className="block text-[9px] text-gray-400 font-bold uppercase">Scheduled Date (optional)</label>
+            <input type="date" value={scheduledDate} onChange={e => setScheduledDate(e.target.value)}
               className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none" />
           </div>
           <div className="space-y-1 md:col-span-2">
@@ -157,8 +190,8 @@ export default function PopupsEditor() {
                 )}
                 <div className="flex-1 p-3 space-y-1.5">
                   <p className="font-bold text-white text-xs">{popup.title}</p>
-                  <p className="text-[10px] text-gray-400">{popup.body_text}</p>
-                  <p className="text-[10px] text-gray-500">Delay: {popup.delay_seconds}s · CTA: {popup.cta_text || 'None'}</p>
+                  <p className="text-[10px] text-gray-400">{popup.message}</p>
+                  <p className="text-[10px] text-gray-500">Day: {popup.day_of_week || 'Any'} · CTA: {popup.cta_text || 'None'}</p>
                   <div className="flex items-center space-x-2 pt-1">
                     <span className={`text-[9px] font-bold ${popup.status === 'active' ? 'text-emerald-400' : 'text-gray-400'}`}>{popup.status}</span>
                     <button onClick={() => toggleStatus(popup.id, popup.status)} className="px-2 py-0.5 bg-black/40 text-gray-300 hover:text-white rounded border border-white/5 cursor-pointer text-[10px]">Toggle</button>

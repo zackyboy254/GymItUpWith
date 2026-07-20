@@ -64,10 +64,10 @@ body {
 
 /* ===== GLASSMORPHISM ===== */
 .glass-panel {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--card-border);
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-panel-hover {
@@ -268,6 +268,19 @@ body {
 @keyframes popup-backdrop-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Ensure images fit their card containers consistently */
+.glass-panel img,
+.rounded-lg img,
+.rounded-xl img,
+.card img,
+img.object-cover,
+img[class*="object-cover"] {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block;
 }
 
 .popup-card {

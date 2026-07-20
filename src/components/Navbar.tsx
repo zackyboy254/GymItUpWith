@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useJoinModal } from '@/context/JoinModalContext';
@@ -58,15 +59,16 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2 group">
-              <img
+            <Link href="/" className="flex items-center space-x-3 group">
+              <Image
                 src="/images/logo.webp"
                 alt="Gymitupwith Billy Logo"
-                className="w-10 h-10 rounded-xl border border-white/10 object-cover shadow-lg shadow-orange-500/15 group-hover:scale-105 transition-transform duration-300"
+                width={40}
+                height={40}
+                className="rounded-xl border border-white/10 object-cover shadow-lg shadow-orange-500/15 group-hover:scale-105 transition-transform duration-300"
+                priority={true}
               />
-              <span className="font-extrabold text-lg tracking-wider text-black dark:text-white uppercase">
-                GYMITUPWITH <span className="text-[#ff6b00]">Billy</span>
-              </span>
+                <span className="text-[11px] text-gray-500 font-medium mt-0.5">Gymitupwith Billy</span>
             </Link>
 
             {/* Desktop Links */}
@@ -124,9 +126,12 @@ export default function Navbar() {
           }`}
       >
         <div className="flex items-center justify-between mb-8">
-          <span className="font-extrabold text-lg tracking-wider text-black dark:text-white uppercase">
-            GYMITUPWITH <span className="text-[#ff6b00]">Billy</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="font-extrabold text-lg tracking-wider text-black dark:text-white uppercase">
+              GYMITUPWITH <span className="text-[#ff6b00]">Billy</span>
+            </span>
+            <span className="text-[12px] text-gray-500 mt-1">Gymitupwith Billy</span>
+          </div>
           <button
             onClick={() => setIsOpen(false)}
             className="p-2 rounded-xl bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white"

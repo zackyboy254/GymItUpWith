@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS public.home_content (
     subtitle TEXT,
     cta_text TEXT,
     cta_url TEXT,
-    bg_image_id TEXT,
+    hero_image_url TEXT,
+    status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','disabled')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL
 );
 
@@ -16,6 +17,7 @@ CREATE TABLE IF NOT EXISTS public.carousel_slides (
     image_id TEXT NOT NULL,
     caption TEXT,
     "order" INT NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','disabled')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL
 );
 
@@ -32,6 +34,7 @@ CREATE TABLE IF NOT EXISTS public.chat_links (
     type TEXT NOT NULL CHECK (type IN ('chatbot','whatsapp','phone')),
     url TEXT NOT NULL,
     "order" INT NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','disabled')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL
 );
 
@@ -54,15 +57,15 @@ ALTER TABLE public.chat_links ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_audit ENABLE ROW LEVEL SECURITY;
 
 -- Policies: public read where appropriate, admin manage all
-CREATE POLICY "Allow public read home_content" ON public.home_content FOR SELECT TO public USING (true);
+CREATE POLICY "Allow public read active home_content" ON public.home_content FOR SELECT TO public USING (status = 'active');
 CREATE POLICY "Allow admin manage home_content" ON public.home_content FOR ALL TO authenticated USING (public.is_admin());
 
-CREATE POLICY "Allow public read carousel" ON public.carousel_slides FOR SELECT TO public USING (true);
+CREATE POLICY "Allow public read active carousel" ON public.carousel_slides FOR SELECT TO public USING (status = 'active');
 CREATE POLICY "Allow admin manage carousel" ON public.carousel_slides FOR ALL TO authenticated USING (public.is_admin());
 
 CREATE POLICY "Allow admin manage settings" ON public.settings FOR ALL TO authenticated USING (public.is_admin());
 
 CREATE POLICY "Allow admin manage chat_links" ON public.chat_links FOR ALL TO authenticated USING (public.is_admin());
-CREATE POLICY "Allow public read chat_links" ON public.chat_links FOR SELECT TO public USING (true);
+CREATE POLICY "Allow public read active chat_links" ON public.chat_links FOR SELECT TO public USING (status = 'active');
 
 CREATE POLICY "Allow admin manage audit" ON public.admin_audit FOR ALL TO authenticated USING (public.is_admin());

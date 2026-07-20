@@ -31,25 +31,24 @@ export default function ContactPage() {
 
     setStatus('submitting');
     try {
-      const { error } = await supabase.from('contact_requests').insert([
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || null,
-          message: formData.message,
-          status: 'pending',
-        },
-      ]);
-
-      if (error) throw error;
-
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('Contact API error:', data);
+        setStatus('error');
+        setErrorMessage(data?.error || 'Failed to submit message');
+        return;
+      }
       setStatus('success');
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (err: unknown) {
       console.error('Contact submission error:', err);
-      // Fallback: simulate success if database is not fully set up yet so user has working front-end
-      setStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
+      setStatus('error');
+      setErrorMessage('Failed to submit message. Please try again later.');
     }
   };
 
@@ -202,7 +201,7 @@ export default function ContactPage() {
 
                 {/* Call */}
                 <a
-                  href="tel:+254 793 62542"
+                  href="tel:+254793625426"
                   className="flex items-center space-x-4 p-4 rounded-2xl bg-[#ff6b00]/5 border border-[#ff6b00]/10 hover:border-[#ff6b00]/30 text-[#ff6b00] hover:bg-[#ff6b00]/10 transition-all duration-300"
                 >
                   <div className="w-11 h-11 rounded-xl bg-[#ff6b00]/10 flex items-center justify-center shrink-0">
@@ -210,7 +209,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Phone Call</span>
-                    <span className="text-sm font-extrabold">+254 793 62542</span>
+                    <span className="text-sm font-extrabold">+254 793 625426</span>
                   </div>
                 </a>
 

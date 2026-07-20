@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { X, Flame, Zap, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface DailyPopupData {
   id: number;
@@ -131,10 +132,12 @@ export default function DailyPopup() {
 
               {/* Logo overlay */}
               <div className="absolute bottom-4 left-4 flex flex-col items-start gap-1">
-                <img
+                <Image
                   src="/images/logo.webp"
                   alt="Gym It Up With"
-                  className="w-10 h-10 rounded-xl border border-white/20 object-cover"
+                  width={40}
+                  height={40}
+                  className="rounded-xl border border-white/20 object-cover"
                 />
                 <span className="font-extrabold text-sm text-white tracking-wider">
                   GYM IT UP <span className="text-[#ffd700]">WITH</span>

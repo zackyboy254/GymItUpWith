@@ -150,6 +150,35 @@ const SEED_DATA = {
       status: "active"
     }
   ],
+  blogs: [
+    {
+      title: "Top 5 High-Protein Kenyan Foods for Muscle Growth",
+      slug: "kenyan-high-protein-foods",
+      excerpt: "Discover cost-effective, local Kenyan foods packed with high-quality protein to fuel muscle recovery and hypertrophy.",
+      content: "Building muscle in Kenya is affordable and delicious if you select local whole foods such as Ndengu, Kamande, Eggs, Omena, and Kienyeji Chicken.",
+      cover_image: "/images/hero-bg.webp",
+      category: "nutrition",
+      status: "active"
+    },
+    {
+      title: "Mastering the Barbell Deadlift: Step-by-Step",
+      slug: "mastering-barbell-deadlift",
+      excerpt: "Learn the proper technique, setup alignment, and back safety cues for the deadlift to safely build full-body strength.",
+      content: "The deadlift is the king of posterior chain exercises. Proper setup is essential: stand with mid-foot under the bar, flatten your back, and drive through the heels.",
+      cover_image: "/images/about-bg.webp",
+      category: "workout",
+      status: "active"
+    },
+    {
+      title: "Hydration Hacks: Staying Energized During Intense Nairobi Workouts",
+      slug: "hydration-hacks-intense-workouts",
+      excerpt: "Stay hydrated! Practical tips to manage fluid intake for outdoor sessions and bootcamps.",
+      content: "Dehydration by just 2% can decrease muscular power by up to 15%. Drink consistently and consider electrolytes for sessions over one hour.",
+      cover_image: "/images/gallery-bg.webp",
+      category: "wellness",
+      status: "active"
+    }
+  ],
   events: [
     {
       title: "Nairobi Power Bootcamp 2026",
@@ -199,6 +228,12 @@ async function seed() {
     await supabase.from('videos').delete().neq('id', 0);
     const { error: vErr } = await supabase.from('videos').insert(SEED_DATA.videos);
     if (vErr) console.warn('Videos seeding issue:', vErr.message);
+
+    // 5. Seed blogs
+    console.log('Seeding blogs...');
+    await supabase.from('blogs').delete().neq('id', 0);
+    const { error: bErr } = await supabase.from('blogs').insert(SEED_DATA.blogs);
+    if (bErr) console.warn('Blogs seeding issue:', bErr.message);
 
     // 5. Seed events
     console.log('Seeding events...');

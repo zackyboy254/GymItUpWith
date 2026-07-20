@@ -9,6 +9,7 @@ interface ChatLinkItem {
   type: 'chatbot' | 'whatsapp' | 'phone';
   url: string;
   order: number;
+  status: 'active' | 'disabled';
 }
 
 export default function ChatLinksEditor() {
@@ -35,13 +36,37 @@ export default function ChatLinksEditor() {
         .order('order', { ascending: true });
 
       if (error) {
+        const message = (error.message || '').toLowerCase();
+        if (message.includes('column') && message.includes('status') && message.includes('does not exist')) {
+          const fallback = await supabase
+            .from('chat_links')
+            .select('*')
+            .order('order', { ascending: true });
+
+          if (fallback.error) {
+            if (fallback.error.code === 'PGRST205') {
+              setMissingTable(true);
+              return;
+            }
+            throw fallback.error;
+          }
+          setLinks((fallback.data || []).map((link: any) => ({
+            ...link,
+            status: 'active',
+          })));
+          return;
+        }
+
         if (error.code === 'PGRST205') {
           setMissingTable(true);
           return;
         }
         throw error;
       }
-      setLinks(data || []);
+      setLinks((data || []).map((link: any) => ({
+        ...link,
+        status: link.status ?? 'active',
+      })));
     } catch (err) {
       console.warn('Error fetching chat links:', err);
     } finally {
@@ -62,7 +87,8 @@ export default function ChatLinksEditor() {
         .insert([{
           type,
           url,
-          order: nextOrder
+          order: nextOrder,
+          status: 'active',
         }]);
 
       if (error) throw error;
@@ -86,6 +112,21 @@ export default function ChatLinksEditor() {
       fetchLinks();
     } catch (err) {
       setMessage({ type: 'error', text: 'Failed to delete link.' });
+    }
+  };
+
+  const toggleLinkStatus = async (id: number, currentStatus: 'active' | 'disabled') => {
+    const nextStatus = currentStatus === 'active' ? 'disabled' : 'active';
+    try {
+      const { error } = await supabase
+        .from('chat_links')
+        .update({ status: nextStatus })
+        .eq('id', id);
+      if (error) throw error;
+      setMessage({ type: 'success', text: `Link ${nextStatus === 'active' ? 'enabled' : 'hidden'} successfully.` });
+      fetchLinks();
+    } catch (err: any) {
+      setMessage({ type: 'error', text: err.message || 'Failed to update link status.' });
     }
   };
 
@@ -179,18 +220,28 @@ export default function ChatLinksEditor() {
         ) : (
           <div className="grid grid-cols-1 gap-3">
             {links.map(link => (
-              <div key={link.id} className="flex space-x-4 p-3 bg-white/5 border border-white/5 rounded-xl text-xs items-center justify-between">
-                <div>
+              <div key={link.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 p-3 bg-white/5 border border-white/5 rounded-xl text-xs">
+                <div className="min-w-0">
                   <h4 className="font-bold text-white leading-tight capitalize">{link.type} Link</h4>
                   <p className="text-[10px] text-gray-400 mt-1 truncate max-w-md">{link.url}</p>
+                  <span className={`inline-flex px-2 py-0.5 mt-2 rounded-full text-[10px] font-bold ${link.status === 'active' ? 'bg-emerald-500/10 text-emerald-300' : 'bg-amber-500/10 text-amber-300'}`}>
+                    {link.status === 'active' ? 'Visible' : 'Hidden'}
+                  </span>
                 </div>
-
-                <button
-                  onClick={() => handleDeleteLink(link.id)}
-                  className="p-1.5 bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded cursor-pointer"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => toggleLinkStatus(link.id, link.status)}
+                    className={`px-3 py-2 rounded-xl text-[10px] font-semibold uppercase tracking-wider transition-colors ${link.status === 'active' ? 'bg-amber-500/10 text-amber-300 hover:bg-amber-500/15' : 'bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/15'}`}
+                  >
+                    {link.status === 'active' ? 'Hide' : 'Show'}
+                  </button>
+                  <button
+                    onClick={() => handleDeleteLink(link.id)}
+                    className="p-1.5 bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>

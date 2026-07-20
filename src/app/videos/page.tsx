@@ -9,11 +9,20 @@ interface Video {
   id: number;
   title: string;
   video_url: string;
-  thumbnail_url: string;
+  thumbnail_url?: string;
   category: string;
   is_featured: boolean;
   created_at: string;
 }
+
+const getVideoThumbnail = (video: Video) => {
+  if (video.thumbnail_url) return video.thumbnail_url;
+  const youtubeIdMatch = video.video_url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if (youtubeIdMatch?.[1]) {
+    return `https://img.youtube.com/vi/${youtubeIdMatch[1]}/hqdefault.jpg`;
+  }
+  return '/images/hero-bg.webp';
+};
 
 const MOCK_VIDEOS: Video[] = [
   {
@@ -287,7 +296,7 @@ export default function VideosPage() {
               >
                 {/* Thumbnail */}
                 <div className="relative aspect-video bg-black overflow-hidden group">
-                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${video.thumbnail_url})` }}></div>
+                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${getVideoThumbnail(video)})` }}></div>
                   <div className="absolute inset-0 bg-black/35 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
                     <button
                       onClick={() => handlePlayVideo(video.video_url, video.title)}

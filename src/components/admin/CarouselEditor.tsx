@@ -9,6 +9,7 @@ interface CarouselSlide {
   image_id: string;
   caption?: string;
   order: number;
+  status: 'active' | 'disabled';
   created_at?: string;
 }
 
@@ -68,13 +69,37 @@ export default function CarouselEditor() {
         .order('order', { ascending: true });
 
       if (error) {
+        const message = (error.message || '').toLowerCase();
+        if (message.includes('column') && message.includes('status') && message.includes('does not exist')) {
+          const fallback = await supabase
+            .from('carousel_slides')
+            .select('*')
+            .order('order', { ascending: true });
+
+          if (fallback.error) {
+            if (fallback.error.code === 'PGRST205') {
+              setMissingTable(true);
+              return;
+            }
+            throw fallback.error;
+          }
+          setSlides((fallback.data || []).map((slide: any) => ({
+            ...slide,
+            status: 'active',
+          })));
+          return;
+        }
+
         if (error.code === 'PGRST205') {
           setMissingTable(true);
           return;
         }
         throw error;
       }
-      setSlides(data || []);
+      setSlides((data || []).map((slide: any) => ({
+        ...slide,
+        status: slide.status ?? 'active',
+      })));
     } catch (err: any) {
       console.warn('Error fetching slides:', err);
     } finally {
@@ -97,7 +122,8 @@ export default function CarouselEditor() {
         .insert([{
           image_id: newImageId,
           caption: newCaption,
-          order: nextOrder
+          order: nextOrder,
+          status: 'active',
         }]);
 
       if (error) throw error;
@@ -159,6 +185,23 @@ export default function CarouselEditor() {
       fetchSlides();
     } catch (err) {
       console.error('Error swapping slide order:', err);
+    }
+  };
+
+  const toggleSlideStatus = async (id: number, currentStatus: 'active' | 'disabled') => {
+    const nextStatus = currentStatus === 'active' ? 'disabled' : 'active';
+    try {
+      const { error } = await supabase
+        .from('carousel_slides')
+        .update({ status: nextStatus })
+        .eq('id', id);
+
+      if (error) throw error;
+      setMessage({ type: 'success', text: `Slide ${nextStatus === 'active' ? 'enabled' : 'hidden'} successfully.` });
+      fetchSlides();
+    } catch (err: any) {
+      console.error('Error updating slide status:', err);
+      setMessage({ type: 'error', text: err.message || 'Could not update slide status.' });
     }
   };
 
@@ -291,30 +334,42 @@ export default function CarouselEditor() {
                   </p>
                 </div>
                 {/* Order controls & delete button */}
-                <div className="flex items-center space-x-1">
+                <div className="flex flex-col items-end space-y-1">
                   <button
-                    onClick={() => moveSlide(idx, 'up')}
-                    disabled={idx === 0}
-                    className="p-1.5 rounded-lg bg-black/40 text-gray-400 hover:text-white disabled:opacity-30 cursor-pointer"
-                    title="Move Up"
+                    onClick={() => slide.id && toggleSlideStatus(slide.id, slide.status)}
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors ${slide.status === 'active'
+                      ? 'bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/15'
+                      : 'bg-amber-500/10 text-amber-300 hover:bg-amber-500/15'
+                    }`}
+                    title={slide.status === 'active' ? 'Hide slide from frontend' : 'Show slide on frontend'}
                   >
-                    <ArrowUp className="w-3.5 h-3.5" />
+                    {slide.status === 'active' ? 'Visible' : 'Hidden'}
                   </button>
-                  <button
-                    onClick={() => moveSlide(idx, 'down')}
-                    disabled={idx === slides.length - 1}
-                    className="p-1.5 rounded-lg bg-black/40 text-gray-400 hover:text-white disabled:opacity-30 cursor-pointer"
-                    title="Move Down"
-                  >
-                    <ArrowDown className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => slide.id && handleDeleteSlide(slide.id)}
-                    className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white transition-colors cursor-pointer ml-2"
-                    title="Delete Slide"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+                  <div className="flex items-center space-x-1">
+                    <button
+                      onClick={() => moveSlide(idx, 'up')}
+                      disabled={idx === 0}
+                      className="p-1.5 rounded-lg bg-black/40 text-gray-400 hover:text-white disabled:opacity-30 cursor-pointer"
+                      title="Move Up"
+                    >
+                      <ArrowUp className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => moveSlide(idx, 'down')}
+                      disabled={idx === slides.length - 1}
+                      className="p-1.5 rounded-lg bg-black/40 text-gray-400 hover:text-white disabled:opacity-30 cursor-pointer"
+                      title="Move Down"
+                    >
+                      <ArrowDown className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => slide.id && handleDeleteSlide(slide.id)}
+                      className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white transition-colors cursor-pointer ml-2"
+                      title="Delete Slide"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

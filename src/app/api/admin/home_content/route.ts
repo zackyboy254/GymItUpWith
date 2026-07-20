@@ -13,8 +13,11 @@ const HomeContentSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(1),
   subtitle: z.string().optional(),
-  hero_image_url: z.string().url().optional(),
   description: z.string().optional(),
+  cta_text: z.string().optional(),
+  cta_url: z.string().optional(),
+  hero_image_url: z.string().url().optional(),
+  status: z.enum(['active', 'disabled']).optional(),
 });
 
 async function isAdmin(session: any) {

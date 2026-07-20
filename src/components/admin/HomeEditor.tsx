@@ -12,6 +12,7 @@ interface HomeContent {
   cta_text: string;
   cta_url: string;
   hero_image_url?: string;
+  status?: 'active' | 'disabled';
 }
 
 export default function HomeEditor() {
@@ -20,6 +21,7 @@ export default function HomeEditor() {
     subtitle: 'Welcome to GymItUpWith Billy. Custom-tailored workouts, results-oriented training plans, and a community dedicated to excellence.',
     cta_text: 'Join Program',
     cta_url: '#join',
+    status: 'active',
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -34,11 +36,39 @@ export default function HomeEditor() {
         const { data, error } = await supabase
           .from('home_content')
           .select('*')
+          .eq('status', 'active')
           .order('id', { ascending: true })
           .limit(1)
           .maybeSingle();
 
         if (error) {
+          const message = (error.message || '').toLowerCase();
+          if (message.includes('column') && message.includes('status') && message.includes('does not exist')) {
+            const fallback = await supabase
+              .from('home_content')
+              .select('*')
+              .order('id', { ascending: true })
+              .limit(1)
+              .maybeSingle();
+
+            if (fallback.error) {
+              if (fallback.error.code === 'PGRST205') {
+                setMissingTable(true);
+                return;
+              }
+              throw fallback.error;
+            }
+
+            if (fallback.data) {
+              setContent({
+                ...fallback.data,
+                status: fallback.data.status ?? 'active',
+                hero_image_url: fallback.data.hero_image_url || fallback.data.bg_image_id || undefined,
+              });
+            }
+            return;
+          }
+
           if (error.code === 'PGRST205') {
             setMissingTable(true);
             return;
@@ -46,7 +76,11 @@ export default function HomeEditor() {
           throw error;
         }
         if (data) {
-          setContent(data);
+          setContent({
+            ...data,
+            status: data.status ?? 'active',
+            hero_image_url: data.hero_image_url || data.bg_image_id || undefined,
+          });
         }
       } catch (err: any) {
         console.warn('Error fetching home content:', err);
@@ -69,6 +103,7 @@ export default function HomeEditor() {
         cta_text: content.cta_text,
         cta_url: content.cta_url,
         hero_image_url: content.hero_image_url || null,
+        status: content.status ?? 'active',
       };
       let error;
       if (content.id) {
@@ -210,6 +245,20 @@ export default function HomeEditor() {
             onSuccess={msg => setMessage({ type: 'success', text: msg })}
             placeholder="https://... or upload from device"
           />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+            Visibility Status
+          </label>
+          <select
+            value={content.status}
+            onChange={e => setContent(prev => ({ ...prev, status: e.target.value as 'active' | 'disabled' }))}
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#ff6b00] transition-colors"
+          >
+            <option value="active">Visible on homepage</option>
+            <option value="disabled">Hidden from homepage</option>
+          </select>
         </div>
 
         <div className="pt-4">
