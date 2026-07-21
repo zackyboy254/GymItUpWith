@@ -44,9 +44,11 @@ CREATE TABLE IF NOT EXISTS public.videos (
     title TEXT NOT NULL,
     video_url TEXT NOT NULL, -- Direct video link or YouTube embed link
     thumbnail_url TEXT,
+    description TEXT,
     category TEXT NOT NULL CHECK (category IN ('workout', 'tutorial', 'transformation', 'event')),
     is_featured BOOLEAN DEFAULT false,
     status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'disabled')),
+    sort_order INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 

@@ -3,6 +3,11 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const authConfig = {
+  persistSession: false,
+  autoRefreshToken: false,
+  detectSessionInUrl: false,
+};
 
 function assertEnv(name: string, value?: string) {
   if (!value) {
@@ -24,8 +29,8 @@ export const supabase = new Proxy({} as any, {
     }
     if (!supabaseInstance) {
       supabaseInstance = typeof window !== 'undefined'
-        ? createBrowserClient(url, anonKey)
-        : createClient(url, anonKey);
+        ? createBrowserClient(url, anonKey, { auth: authConfig as any })
+        : createClient(url, anonKey, { auth: authConfig as any });
     }
     const value = Reflect.get(supabaseInstance, prop);
     if (typeof value === 'function') {

@@ -48,26 +48,55 @@ const TABS = [
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('home');
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
+    let isMounted = true;
+
     async function checkUser() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.replace('/admin/login');
-      } else {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!isMounted) return;
+        if (!user) {
+          router.replace('/admin/login');
+          return;
+        }
         setUserEmail(user.email ?? 'Admin User');
+      } catch {
+        if (isMounted) {
+          router.replace('/admin/login');
+        }
+      } finally {
+        if (isMounted) {
+          setIsCheckingAuth(false);
+        }
       }
     }
+
     checkUser();
+    return () => {
+      isMounted = false;
+    };
   }, [router]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: 'global' });
     router.replace('/admin/login');
   };
 
   const ActiveComponent = TABS.find(tab => tab.id === activeTab)?.component || HomeEditor;
+
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0c] text-white flex items-center justify-center">
+        <div className="text-center space-y-3">
+          <div className="w-10 h-10 rounded-full border-2 border-[#ff6b00]/30 border-t-[#ff6b00] animate-spin mx-auto" />
+          <p className="text-sm text-gray-400">Checking admin access...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0c] text-white flex flex-col lg:flex-row">

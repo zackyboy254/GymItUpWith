@@ -21,15 +21,31 @@ interface VideoItem {
 }
 
 function getYoutubeThumbnail(url: string): string | null {
-  const patterns = [
-    /youtu\.be\/([^?&#]+)/,
-    /youtube\.com\/watch\?v=([^&#]+)/,
-    /youtube\.com\/embed\/([^?&#]+)/,
-    /youtube\.com\/shorts\/([^?&#]+)/,
-  ];
-  for (const p of patterns) {
-    const m = url.match(p);
-    if (m) return `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg`;
+  try {
+    // Normalize the URL
+    const cleanUrl = url.trim().toLowerCase();
+    
+    // youtu.be short links
+    const shortMatch = cleanUrl.match(/youtu\.be\/([a-z0-9_-]+)/i);
+    if (shortMatch) return `https://img.youtube.com/vi/${shortMatch[1]}/hqdefault.jpg`;
+    
+    // youtube.com/watch?v=
+    const watchMatch = cleanUrl.match(/youtube\.com\/watch[?&]v=([a-z0-9_-]+)/i);
+    if (watchMatch) return `https://img.youtube.com/vi/${watchMatch[1]}/hqdefault.jpg`;
+    
+    // youtube.com/embed/
+    const embedMatch = cleanUrl.match(/youtube\.com\/embed\/([a-z0-9_-]+)/i);
+    if (embedMatch) return `https://img.youtube.com/vi/${embedMatch[1]}/hqdefault.jpg`;
+    
+    // youtube.com/shorts/
+    const shortsMatch = cleanUrl.match(/youtube\.com\/shorts\/([a-z0-9_-]+)/i);
+    if (shortsMatch) return `https://img.youtube.com/vi/${shortsMatch[1]}/hqdefault.jpg`;
+    
+    // youtube.com/v/
+    const vMatch = cleanUrl.match(/youtube\.com\/v\/([a-z0-9_-]+)/i);
+    if (vMatch) return `https://img.youtube.com/vi/${vMatch[1]}/hqdefault.jpg`;
+  } catch (e) {
+    console.warn('Error extracting YouTube thumbnail:', e);
   }
   return null;
 }
@@ -44,7 +60,12 @@ function getVideoThumbnail(video: Pick<VideoItem, 'video_url' | 'thumbnail_url'>
   return null;
 }
 
-const CATEGORIES = ['Workout', 'Nutrition', 'Motivation', 'Training Tips', 'Events', 'Other'];
+const CATEGORIES = [
+  { display: 'Workout', value: 'workout' },
+  { display: 'Tutorial', value: 'tutorial' },
+  { display: 'Transformation', value: 'transformation' },
+  { display: 'Event', value: 'event' },
+];
 
 export default function VideosEditor() {
   const [videos, setVideos] = useState<VideoItem[]>([]);
@@ -58,17 +79,19 @@ export default function VideosEditor() {
   const [addMode, setAddMode] = useState<'file' | 'youtube'>('youtube');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Workout');
+  const [category, setCategory] = useState('workout');
   const [youtubeUrl, setYoutubeUrl] = useState('');
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [featured, setFeatured] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
   // Edit modal state
   const [editVideo, setEditVideo] = useState<VideoItem | null>(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
-  const [editCategory, setEditCategory] = useState('');
+  const [editCategory, setEditCategory] = useState('workout');
   const [editFeatured, setEditFeatured] = useState(false);
 
   // Drag state
@@ -85,16 +108,17 @@ export default function VideosEditor() {
   const fetchVideos = async () => {
     setIsLoading(true);
     try {
-      // Simple select without ordering to avoid column errors
-      const { data, error } = await supabase.from('videos').select('*');
+      const { data, error } = await supabase
+        .from('videos')
+        .select('*')
+        .order('sort_order', { ascending: true, nullsFirst: false });
+      
       if (error) {
         console.error('fetchVideos error:', error);
         showMsg('error', `Could not load videos: ${error.message || error.details || 'unknown error'}`);
         setVideos([]);
       } else {
-        // If sort_order exists, sort locally, otherwise keep as is
-        const sorted = (data as VideoItem[])?.sort?.((a: VideoItem, b: VideoItem) => (a.sort_order ?? 0) - (b.sort_order ?? 0)) ?? [];
-        setVideos(sorted);
+        setVideos((data as VideoItem[]) || []);
       }
     } catch (err: any) {
       console.error('fetchVideos exception:', err);
@@ -114,6 +138,7 @@ export default function VideosEditor() {
     setMessage(null);
     try {
       let finalUrl = youtubeUrl.trim();
+      let thumbnailUrl: string | null = null;
 
       if (addMode === 'file' && videoFile) {
         setIsUploading(true);
@@ -128,6 +153,20 @@ export default function VideosEditor() {
         setIsUploading(false);
       }
 
+      // Upload thumbnail if provided
+      if (thumbnailFile) {
+        setIsUploading(true);
+        const thumbExt = thumbnailFile.name.split('.').pop();
+        const thumbFileName = `thumb-${Date.now()}-${Math.random().toString(36).slice(2)}.${thumbExt}`;
+        const { error: thumbUploadError } = await supabase.storage
+          .from('videos')
+          .upload(thumbFileName, thumbnailFile, { upsert: false, contentType: thumbnailFile.type });
+        if (thumbUploadError) throw thumbUploadError;
+        const { data: thumbUrlData } = supabase.storage.from('videos').getPublicUrl(thumbFileName);
+        thumbnailUrl = thumbUrlData.publicUrl;
+        setIsUploading(false);
+      }
+
       const maxOrder = videos.length > 0
         ? Math.max(...videos.map(v => v.sort_order ?? 0))
         : 0;
@@ -135,7 +174,7 @@ export default function VideosEditor() {
       const insertPayload: Record<string, unknown> = {
         title: title.trim(),
         video_url: finalUrl,
-        thumbnail_url: addMode === 'youtube' ? getYoutubeThumbnail(finalUrl) ?? null : null,
+        thumbnail_url: thumbnailUrl || (addMode === 'youtube' ? getYoutubeThumbnail(finalUrl) ?? null : null),
         description: description.trim() || null,
         category: category || null,
         is_featured: featured,
@@ -147,8 +186,9 @@ export default function VideosEditor() {
       const { error } = await supabase.from('videos').insert([insertPayload]);
       if (error) throw error;
 
-      setTitle(''); setDescription(''); setYoutubeUrl(''); setVideoFile(null); setFeatured(false);
+      setTitle(''); setDescription(''); setYoutubeUrl(''); setVideoFile(null); setThumbnailFile(null); setFeatured(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+      if (thumbnailInputRef.current) thumbnailInputRef.current.value = '';
       showMsg('success', 'Video added successfully!');
       fetchVideos();
     } catch (err: any) {
@@ -188,7 +228,7 @@ export default function VideosEditor() {
     setEditVideo(v);
     setEditTitle(v.title);
     setEditDescription(v.description || '');
-    setEditCategory(v.category || 'Workout');
+    setEditCategory(v.category || 'workout');
     setEditFeatured(v.is_featured || false);
   };
   const closeEdit = () => setEditVideo(null);
@@ -259,9 +299,13 @@ export default function VideosEditor() {
       {showMigrationNote && (
         <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 space-y-3">
           <p className="text-xs font-bold">⚠ Database migration needed — run this SQL in Supabase SQL Editor:</p>
-          <pre className="text-[10px] bg-black/40 rounded p-3 overflow-x-auto select-all text-green-300">{`ALTER TABLE videos ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0;
+          <pre className="text-[10px] bg-black/40 rounded p-3 overflow-x-auto select-all text-green-300">{`-- Add sort_order and description columns if they don't exist
+ALTER TABLE videos ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0;
+ALTER TABLE videos ADD COLUMN IF NOT EXISTS description TEXT;
+
+-- Update existing videos with sort_order based on creation order
 UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
-          <button onClick={() => { setShowMigrationNote(false); fetchVideos(); }} className="text-[10px] text-amber-400 underline">Dismiss (run first)</button>
+          <button onClick={() => { setShowMigrationNote(false); fetchVideos(); }} className="text-[10px] text-amber-400 underline">Dismiss (I've run the SQL above)</button>
         </div>
       )}
 
@@ -320,7 +364,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Category</label>
             <select value={category} onChange={e => setCategory(e.target.value)}
               className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] cursor-pointer">
-              {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+              {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.display}</option>)}
             </select>
           </div>
 
@@ -329,6 +373,20 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
             <input type="text" value={description} onChange={e => setDescription(e.target.value)}
               className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
               placeholder="Short description (optional)" />
+          </div>
+
+          <div className="space-y-1 md:col-span-2">
+            <label className="block text-[9px] text-gray-400 font-bold uppercase">Custom Thumbnail (Optional)</label>
+            <input ref={thumbnailInputRef} type="file" accept="image/*" onChange={e => setThumbnailFile(e.target.files?.[0] || null)}
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#ff6b00] file:text-white cursor-pointer" />
+            {thumbnailFile ? (
+              <div className="mt-2 space-y-1">
+                <p className="text-[10px] text-emerald-400">✓ Thumbnail selected: {thumbnailFile.name}</p>
+                <img src={URL.createObjectURL(thumbnailFile)} alt="preview" className="h-20 rounded-lg object-cover border border-emerald-500/30" />
+              </div>
+            ) : (
+              <p className="text-[10px] text-gray-500 mt-1">For YouTube videos, thumbnail is auto-generated. Upload one for custom videos.</p>
+            )}
           </div>
 
           <div className="flex items-center gap-2 md:col-span-2">
@@ -371,7 +429,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
                   } ${dragId === v.id ? 'opacity-40' : 'opacity-100'}`}
                 >
                   {/* Thumbnail */}
-                  <div className="aspect-video bg-black/60 relative">
+                  <div className="aspect-video bg-gradient-to-br from-slate-700 to-slate-900 relative overflow-hidden">
                     {thumb ? (
                       <img
                         src={thumb}
@@ -379,13 +437,27 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
                         loading="lazy"
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
-                          target.src = '/images/default-thumbnail.jpg';
+                          target.style.display = 'none';
+                          if (target.parentElement) {
+                            target.parentElement.innerHTML = `
+                              <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-600/20 to-red-600/20">
+                                <div class="text-white/60">
+                                  <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                </div>
+                              </div>
+                            `;
+                          }
                         }}
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Video className="w-8 h-8 text-gray-600" />
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-600/20 to-red-600/20">
+                        <div className="text-white/60">
+                          <Video className="w-8 h-8" />
+                        </div>
                       </div>
                     )}
                     {/* Status badge */}
@@ -452,7 +524,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Category</label>
                 <select value={editCategory} onChange={e => setEditCategory(e.target.value)}
                   className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] cursor-pointer">
-                  {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.display}</option>)}
                 </select>
               </div>
               <div className="space-y-1">

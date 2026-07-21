@@ -176,7 +176,7 @@ export default function VideosPage() {
           .from('videos')
           .select('*')
           .eq('status', 'active')
-          .order('created_at', { ascending: false });
+          .order('sort_order', { ascending: true, nullsFirst: false });
 
         if (error) throw error;
         if (data && data.length > 0) {

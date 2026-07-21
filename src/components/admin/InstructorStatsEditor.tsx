@@ -120,11 +120,19 @@ export default function InstructorStatsEditor() {
         value: (settings[k] || '').trim(),
       }));
 
-      const { error } = await supabase
-        .from('settings')
-        .upsert(payload, { onConflict: 'key' });
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
+        body: JSON.stringify(payload),
+      });
 
-      if (error) throw error;
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'Failed to save changes.');
+
       showMsg('success', 'Changes saved successfully to database!');
       fetchSettings();
     } catch (err: any) {

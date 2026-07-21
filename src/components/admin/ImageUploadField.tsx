@@ -11,21 +11,24 @@ export async function uploadFileToSupabase(
   bucket: string,
   folder: string
 ): Promise<string> {
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
-  const filePath = `${folder}/${fileName}`;
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('folder', folder);
+  formData.append('bucket', bucket);
 
-  const { error } = await supabase.storage
-    .from(bucket)
-    .upload(filePath, file, { cacheControl: '3600', upsert: true });
+  const { data: { session } } = await supabase.auth.getSession();
+  const response = await fetch('/api/admin/upload', {
+    method: 'POST',
+    headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
+    body: formData,
+  });
 
-  if (error) throw error;
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(result.error || 'Upload failed.');
+  }
 
-  const { data: { publicUrl } } = supabase.storage
-    .from(bucket)
-    .getPublicUrl(filePath);
-
-  return publicUrl;
+  return result.url;
 }
 
 /**

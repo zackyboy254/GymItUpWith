@@ -1,7 +1,7 @@
 // src/components/QuickChatButton.tsx
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MessageSquare, Phone, MessageCircle, X, ChevronUp } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -23,11 +23,25 @@ export default function QuickChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [links, setLinks] = useState<ChatLink[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const closeMenu = () => setIsOpen(false);
 
   const toggleChatbot = () => {
     window.dispatchEvent(new CustomEvent('toggle-gym-chatbot'));
-    setIsOpen(false);
+    closeMenu();
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isOpen && containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
   useEffect(() => {
     async function loadLinks() {
@@ -64,7 +78,7 @@ export default function QuickChatButton() {
   }, []);
 
   return (
-    <div className="fixed bottom-6 right-6 flex flex-col items-end space-y-3.5 z-50">
+    <div ref={containerRef} className="fixed bottom-6 right-6 flex flex-col items-end space-y-3.5 z-50">
       {/* Expanded sub-buttons */}
       <div className={`flex flex-col space-y-3 transition-all duration-300 transform origin-bottom ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-75 pointer-events-none'
         }`}>
@@ -109,6 +123,7 @@ export default function QuickChatButton() {
                 href={href}
                 target={link.type === 'whatsapp' ? '_blank' : '_self'}
                 rel={link.type === 'whatsapp' ? 'noopener noreferrer' : undefined}
+                onClick={closeMenu}
                 className="flex items-center space-x-2 bg-white dark:bg-[#1a1a1f] border border-black/10 dark:border-white/10 px-4 py-2.5 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 text-gray-900 dark:text-gray-100 group cursor-pointer"
                 title={label}
               >

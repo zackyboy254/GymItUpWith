@@ -236,6 +236,8 @@ export default function HomePage() {
     loadQuote();
   }, []);
 
+  const instructorImage = metrics.instructor_image || '/images/gym6.jpg';
+
   return (
     <>
       <PageBackground variant="home" />
@@ -322,7 +324,7 @@ export default function HomePage() {
                   className="h-full w-full object-cover min-h-[420px] sm:min-h-[520px]"
                   onError={(event) => {
                     const target = event.target as HTMLImageElement;
-                    target.src = '/images/gym6.jpg';
+                    target.src = instructorImage;
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
@@ -379,7 +381,8 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent z-10" />
                 <div
                   className="absolute inset-0 overflow-hidden bg-cover bg-center bg-no-repeat scale-105 hover:scale-100 transition-transform duration-700"
-                  style={{ backgroundImage: "url('/images/gym6.jpg')", overflow: 'hidden', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'}}               />
+                  style={{ backgroundImage: `url('${instructorImage}')`, overflow: 'hidden', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}
+                />
                 <div className="relative z-20 space-y-2">
                   <span className="text-[#ff6b00] text-xs font-bold uppercase tracking-widest">Certified Fitness Coach</span>
                   <h3 className="text-2xl font-black text-white">Coach Billy 💪</h3>
@@ -530,10 +533,10 @@ export default function HomePage() {
         <section className="relative py-24 overflow-hidden  w-full">
           <div className="absolute inset-0 bg-cover bg-center opacity-15" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80')" }} />
           {/* Full-width background overlay */}
-          <div className="absolute inset-0 pointer-events-none">
+          {/* <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,107,0,0.08),transparent_50%),radial-gradient(circle_at_70%_70%,rgba(0,119,255,0.06),transparent_50%)]" />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c]/90 via-[#0a0a0c]/80 to-[#0a0a0c]/95" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c]/90 via-[#0a0a0c]/80 to-[#0a0a0c]/95" /> */}
 
           <ScrollReveal className="max-w-4xl mx-auto px-4 text-center relative z-10 animate-scale-in">
             <div className="inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-[#ff6b00]/10 border border-[#ff6b00]/20 text-xs text-[#ff6b00] mb-8">
