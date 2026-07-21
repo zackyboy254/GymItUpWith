@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { 
   Home as HomeIcon, 
-  Image as ImageIcon, 
   Video as VideoIcon, 
   Camera as CameraIcon, 
   Calendar as CalendarIcon, 
@@ -13,14 +12,14 @@ import {
   BookOpen as BookOpenIcon, 
   Inbox as InboxIcon, 
   Bell as BellIcon, 
-  MessageSquare as MessageIcon, 
   Settings as SettingsIcon, 
+  User as UserIcon,
   LogOut, 
   Dumbbell 
 } from 'lucide-react';
 
+
 import HomeEditor from '@/components/admin/HomeEditor';
-import CarouselEditor from '@/components/admin/CarouselEditor';
 import VideosEditor from '@/components/admin/VideosEditor';
 import GalleryEditor from '@/components/admin/GalleryEditor';
 import EventsEditor from '@/components/admin/EventsEditor';
@@ -28,12 +27,11 @@ import AchievementsEditor from '@/components/admin/AchievementsEditor';
 import BlogEditor from '@/components/admin/BlogEditor';
 import ContactEditor from '@/components/admin/ContactEditor';
 import PopupsEditor from '@/components/admin/PopupsEditor';
-import ChatLinksEditor from '@/components/admin/ChatLinksEditor';
 import SettingsEditor from '@/components/admin/SettingsEditor';
+import InstructorStatsEditor from '@/components/admin/InstructorStatsEditor';
 
 const TABS = [
   { id: 'home', label: 'Home Content', icon: HomeIcon, component: HomeEditor },
-  { id: 'carousel', label: 'Hero Carousel', icon: ImageIcon, component: CarouselEditor },
   { id: 'videos', label: 'Videos', icon: VideoIcon, component: VideosEditor },
   { id: 'gallery', label: 'Gallery', icon: CameraIcon, component: GalleryEditor },
   { id: 'events', label: 'Events', icon: CalendarIcon, component: EventsEditor },
@@ -41,9 +39,11 @@ const TABS = [
   { id: 'blog', label: 'Blog Posts', icon: BookOpenIcon, component: BlogEditor },
   { id: 'contact', label: 'Contact Inquiries', icon: InboxIcon, component: ContactEditor },
   { id: 'popups', label: 'Daily Popups', icon: BellIcon, component: PopupsEditor },
-  { id: 'chat', label: 'Chat Links', icon: MessageIcon, component: ChatLinksEditor },
+  { id: 'instructor', label: 'Instructor & Stats', icon: UserIcon, component: InstructorStatsEditor },
   { id: 'settings', label: 'General Settings', icon: SettingsIcon, component: SettingsEditor },
 ];
+
+
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('home');

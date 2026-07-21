@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const smtpPort = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined;
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
-    const receiver = process.env.CONTACT_RECEIVER || process.env.CONTACT_EMAIL || 'info@gymitupwith.co.ke';
+    const receiver = process.env.CONTACT_RECEIVER || process.env.CONTACT_EMAIL || 'chibudangote1561@gmail.com';
 
     if (smtpHost && smtpPort && smtpUser && smtpPass) {
       try {

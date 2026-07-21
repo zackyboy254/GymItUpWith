@@ -2,47 +2,61 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Loader2, Plus, Trash2, Save, AlertCircle } from 'lucide-react';
+import { Loader2, Save, AlertCircle, Copy, ClipboardCheck } from 'lucide-react';
 
 interface SettingItem {
   key: string;
   value: string;
 }
 
-const METRIC_KEYS = [
-  { key: 'metric_years', label: 'Years' },
-  { key: 'metric_members', label: 'Members' },
-  { key: 'metric_weekly_classes', label: 'Weekly Classes' },
-  { key: 'metric_trainers', label: 'Trainers' },
-  { key: 'metric_experience', label: 'Training Experience' },
-  { key: 'metric_happy_clients', label: 'Happy Clients' },
-  { key: 'metric_success_rate', label: 'Success Rate' },
-  { key: 'metric_certifications', label: 'Certifications' },
+const GENERAL_SETTINGS_KEYS = [
+  { key: 'contact_phone', label: 'Contact Phone Number', placeholder: 'e.g. +254 712 345 678' },
+  { key: 'contact_whatsapp', label: 'WhatsApp URL / Number', placeholder: 'e.g. https://wa.me/254712345678' },
+  { key: 'contact_email', label: 'Support Email Address', placeholder: 'e.g. info@gymitup.com' },
+  { key: 'contact_address', label: 'Gym Physical Location / Address', placeholder: 'e.g. 5th Floor, Plaza Mall, Nairobi' },
+  { key: 'social_instagram', label: 'Instagram URL', placeholder: 'e.g. https://instagram.com/gymitup' },
+  { key: 'social_facebook', label: 'Facebook Page URL', placeholder: 'e.g. https://facebook.com/gymitup' },
+  { key: 'social_tiktok', label: 'TikTok Profile URL', placeholder: 'e.g. https://tiktok.com/@gymitup' },
+  { key: 'social_youtube', label: 'YouTube Channel URL', placeholder: 'e.g. https://youtube.com/@gymitup' },
 ];
 
-const DEFAULT_METRIC_VALUES: Record<string, string> = {
-  metric_years: '12+',
-  metric_members: '27K+',
-  metric_weekly_classes: '60+',
-  metric_trainers: '117+',
-  metric_experience: '5+ Years',
-  metric_happy_clients: '200+',
-  metric_success_rate: '98%',
-  metric_certifications: '15+',
+const DEFAULT_SETTINGS_VALUES: Record<string, string> = {
+  contact_phone: '',
+  contact_whatsapp: '',
+  contact_email: '',
+  contact_address: '',
+  social_instagram: '',
+  social_facebook: '',
+  social_tiktok: '',
+  social_youtube: '',
 };
 
+const SQL_MIGRATION = `-- Run this in your Supabase SQL Editor to create the settings table:
+CREATE TABLE IF NOT EXISTS public.settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.settings ENABLE ROW LEVEL SECURITY;
+
+-- Create public read policy
+CREATE POLICY "Allow public read of settings" ON public.settings
+    FOR SELECT TO public USING (true);
+
+-- Create admin modify policy
+CREATE POLICY "Allow admin manage of settings" ON public.settings
+    FOR ALL TO authenticated USING (true);`;
+
 export default function SettingsEditor() {
-  const [settings, setSettings] = useState<SettingItem[]>([]);
-  const [metricValues, setMetricValues] = useState<Record<string, string>>(DEFAULT_METRIC_VALUES);
+  const [settingsValues, setSettingsValues] = useState<Record<string, string>>(DEFAULT_SETTINGS_VALUES);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
-  // Form State
-  const [newKey, setNewKey] = useState('');
-  const [newValue, setNewValue] = useState('');
-
   const [missingTable, setMissingTable] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetchSettings();
@@ -52,24 +66,24 @@ export default function SettingsEditor() {
     try {
       const { data, error } = await supabase
         .from('settings')
-        .select('*')
-        .order('key', { ascending: true });
+        .select('*');
 
       if (error) {
-        if (error.code === 'PGRST205') {
+        if (error.code === 'PGRST205' || error.message?.includes('settings')) {
           setMissingTable(true);
           return;
         }
         throw error;
       }
-      setSettings(data || []);
-      const loadedMetrics = { ...DEFAULT_METRIC_VALUES };
+
+      const loadedSettings = { ...DEFAULT_SETTINGS_VALUES };
       data?.forEach((setting: SettingItem) => {
-        if (METRIC_KEYS.some((metric) => metric.key === setting.key)) {
-          loadedMetrics[setting.key] = setting.value;
+        if (setting.key in loadedSettings) {
+          loadedSettings[setting.key] = setting.value;
         }
       });
-      setMetricValues(loadedMetrics);
+      setSettingsValues(loadedSettings);
+      setMissingTable(false);
     } catch (err) {
       console.warn('Error fetching settings:', err);
     } finally {
@@ -77,60 +91,14 @@ export default function SettingsEditor() {
     }
   };
 
-  const handleSaveSetting = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newKey || !newValue) return;
-
+  const handleSaveSettings = async (keysList: { key: string }[]) => {
     setIsSaving(true);
     setMessage(null);
 
     try {
-      const { error } = await supabase
-        .from('settings')
-        .upsert([
-          {
-            key: newKey.trim().toLowerCase(),
-            value: newValue.trim(),
-          },
-        ], { onConflict: 'key' });
-
-      if (error) throw error;
-
-      setNewKey('');
-      setNewValue('');
-      setMessage({ type: 'success', text: 'Setting saved successfully!' });
-      fetchSettings();
-    } catch (err: any) {
-      setMessage({ type: 'error', text: err.message || 'Failed to save setting.' });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleDeleteSetting = async (key: string) => {
-    if (!confirm(`Are you sure you want to delete the setting: "${key}"?`)) return;
-    try {
-      const { error } = await supabase
-        .from('settings')
-        .delete()
-        .eq('key', key);
-
-      if (error) throw error;
-      setMessage({ type: 'success', text: 'Setting deleted.' });
-      fetchSettings();
-    } catch (err) {
-      setMessage({ type: 'error', text: 'Failed to delete setting.' });
-    }
-  };
-
-  const handleSaveMetrics = async () => {
-    setIsSaving(true);
-    setMessage(null);
-
-    try {
-      const payload = METRIC_KEYS.map((metric) => ({
-        key: metric.key,
-        value: (metricValues[metric.key] || '').trim(),
+      const payload = keysList.map((item) => ({
+        key: item.key,
+        value: (settingsValues[item.key] || '').trim(),
       }));
 
       const { error } = await supabase
@@ -138,13 +106,19 @@ export default function SettingsEditor() {
         .upsert(payload, { onConflict: 'key' });
 
       if (error) throw error;
-      setMessage({ type: 'success', text: 'Homepage metrics saved successfully!' });
+      setMessage({ type: 'success', text: 'Settings updated successfully!' });
       fetchSettings();
     } catch (err: any) {
-      setMessage({ type: 'error', text: err.message || 'Failed to save homepage metrics.' });
+      setMessage({ type: 'error', text: err.message || 'Failed to save settings.' });
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const copySQL = () => {
+    navigator.clipboard.writeText(SQL_MIGRATION);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   if (missingTable) {
@@ -155,14 +129,20 @@ export default function SettingsEditor() {
           <h3 className="text-base font-black uppercase tracking-wider">Database Setup Required</h3>
         </div>
         <p className="text-xs text-gray-300 leading-relaxed">
-          The table <code>settings</code> does not exist in your Supabase database. Please copy the contents of the database schema file and execute it in your Supabase SQL Editor.
+          The table <code>settings</code> does not exist in your Supabase database. Please copy the SQL below and execute it inside the <strong>SQL Editor</strong> on your Supabase dashboard to create the table.
         </p>
-        <div className="bg-black/35 p-3 rounded-xl border border-white/5 space-y-1">
-          <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Migration Script Path</p>
-          <code className="text-xs text-white select-all block break-all">
-            supabase/migrations/20240712_add_content_tables.sql
-          </code>
+        <div className="relative bg-black/40 rounded-xl border border-white/10 p-4">
+          <button onClick={copySQL} className="absolute top-2 right-2 p-1.5 bg-white/5 hover:bg-white/10 text-white rounded transition-colors text-[10px] inline-flex items-center gap-1 cursor-pointer">
+            {copied ? <ClipboardCheck className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? 'Copied!' : 'Copy SQL'}
+          </button>
+          <pre className="text-[10px] text-green-300 overflow-x-auto whitespace-pre font-mono pr-20 select-all">
+            {SQL_MIGRATION}
+          </pre>
         </div>
+        <button onClick={fetchSettings} className="px-4 py-2 bg-[#ff6b00] text-white rounded-lg text-xs font-bold hover:bg-[#e55a00] cursor-pointer transition-colors">
+          Reload Settings Table
+        </button>
       </div>
     );
   }
@@ -179,7 +159,7 @@ export default function SettingsEditor() {
     <div className="space-y-8">
       <div>
         <h2 className="text-xl font-bold text-white uppercase tracking-tight">General Website Settings</h2>
-        <p className="text-xs text-gray-400">Configure global metadata settings, social media handles, support emails, and training metrics.</p>
+        <p className="text-xs text-gray-400">Configure global metadata settings, social media handles, and support emails.</p>
       </div>
 
       {message && (
@@ -190,18 +170,19 @@ export default function SettingsEditor() {
         </div>
       )}
 
-      {/* Form */}
+      {/* Global Contacts & Socials Settings */}
       <div className="bg-white/5 p-5 rounded-2xl border border-white/5 space-y-4">
-        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Homepage Metrics</h3>
-        <p className="text-xs text-gray-400">Edit the homepage metric cards here. These values are stored in the <code className="text-white bg-black/20 px-1 rounded">settings</code> table and loaded automatically.</p>
+        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Contact &amp; Social Information</h3>
+        <p className="text-xs text-gray-400 font-medium">Configure global support details and social page links.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {METRIC_KEYS.map((metric) => (
-            <div key={metric.key} className="space-y-1">
-              <label className="block text-[9px] text-gray-400 font-bold uppercase">{metric.label}</label>
+          {GENERAL_SETTINGS_KEYS.map((item) => (
+            <div key={item.key} className="space-y-1">
+              <label className="block text-[9px] text-gray-400 font-bold uppercase">{item.label}</label>
               <input
                 type="text"
-                value={metricValues[metric.key]}
-                onChange={(e) => setMetricValues((prev) => ({ ...prev, [metric.key]: e.target.value }))}
+                value={settingsValues[item.key] || ''}
+                placeholder={item.placeholder}
+                onChange={(e) => setSettingsValues((prev) => ({ ...prev, [item.key]: e.target.value }))}
                 className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
               />
             </div>
@@ -209,76 +190,13 @@ export default function SettingsEditor() {
         </div>
         <button
           type="button"
-          onClick={handleSaveMetrics}
+          onClick={() => handleSaveSettings(GENERAL_SETTINGS_KEYS)}
           disabled={isSaving}
           className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer"
         >
           <Save className="w-4 h-4" />
-          <span>Save Homepage Metrics</span>
+          <span>Save Contact &amp; Social Info</span>
         </button>
-      </div>
-
-      <form onSubmit={handleSaveSetting} className="bg-white/5 p-5 rounded-2xl border border-white/5 space-y-4">
-        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Save Setting (Key-Value)</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="block text-[9px] text-gray-400 font-bold uppercase">Setting Key (e.g. contact_email)</label>
-            <input
-              type="text"
-              value={newKey}
-              onChange={e => setNewKey(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
-              placeholder="e.g. support_phone"
-              required
-            />
-          </div>
-          <div className="space-y-1">
-            <label className="block text-[9px] text-gray-400 font-bold uppercase">Setting Value</label>
-            <input
-              type="text"
-              value={newValue}
-              onChange={e => setNewValue(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
-              placeholder="e.g. +254 712 345 678"
-              required
-            />
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          disabled={isSaving}
-          className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer"
-        >
-          <Save className="w-4 h-4" />
-          <span>Save Setting</span>
-        </button>
-      </form>
-
-      {/* List settings */}
-      <div className="space-y-3">
-        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Registered Global Constants ({settings.length})</h3>
-        {settings.length === 0 ? (
-          <p className="text-xs text-gray-500 italic">No settings saved.</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-2.5">
-            {settings.map(setting => (
-              <div key={setting.key} className="flex space-x-4 p-3 bg-white/5 border border-white/5 rounded-xl text-xs items-center justify-between">
-                <div className="min-w-0">
-                  <span className="font-bold text-[#ff6b00] uppercase tracking-wider text-[10px] block">{setting.key}</span>
-                  <span className="text-gray-300 font-medium truncate block max-w-lg mt-0.5">{setting.value}</span>
-                </div>
-
-                <button
-                  onClick={() => handleDeleteSetting(setting.key)}
-                  className="p-1.5 bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded cursor-pointer"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

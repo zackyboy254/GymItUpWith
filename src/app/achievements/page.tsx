@@ -7,7 +7,7 @@ import GymLoading from '@/components/GymLoading';
 
 interface Achievement {
   id: number;
-  title: string;
+  title: str
   description: string;
   image_url: string;
   achievement_date: string;
@@ -75,70 +75,70 @@ export default function AchievementsPage() {
 
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-      {/* Fixed Background Image */}
-      <div
-        className="fixed inset-0 z-0 select-none pointer-events-none opacity-5 dark:opacity-10 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/achievements-bg.webp')" }}
-      ></div>
-
-      <div className="relative z-10 space-y-16 pt-10">
-      {/* Page Header */}
-      <div className="text-center space-y-4">
-        <span className="text-[#0077ff] text-sm font-bold uppercase tracking-wider">Credentials</span>
-        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white uppercase">Coach Certifications & Awards</h1>
-        <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm">
-          A certified instructor dedicated to the highest standards of safety, scientific program layouts, and athletic excellence.
-        </p>
+      {/* Full-width background gradient accent */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(0,119,255,0.015)] to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(0,119,255,0.04),transparent_50%),radial-gradient(circle_at_70%_70%,rgba(255,107,0,0.03),transparent_50%)]" />
       </div>
 
-      {/* Grid List */}
-      {loading ? (
-        <GymLoading size="medium" />
-      ) : achievements.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {achievements.map((item) => (
-            <div
-              key={item.id}
-              className="glass-panel rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/50 dark:bg-gradient-to-br dark:from-[#121214] dark:to-[#0a0a0c] hover:border-[#0077ff]/30 transition-all duration-300 flex flex-col sm:flex-row"
-            >
-              {/* Image panel */}
-              <div className="sm:w-2/5 relative aspect-video sm:aspect-auto min-h-[200px] bg-black">
-                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${item.image_url})` }}></div>
-                <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/50 to-transparent"></div>
-                <div className="absolute top-4 left-4 w-9 h-9 rounded-xl bg-[#0077ff]/20 backdrop-blur-md border border-[#0077ff]/40 flex items-center justify-center text-[#0077ff]">
-                  <Award className="w-5 h-5" />
-                </div>
-              </div>
+      <div className="relative z-10 space-y-16 pt-10">
+        {/* Page Header */}
+        <div className="text-center space-y-4">
+          <span className="text-[#0077ff] text-sm font-bold uppercase tracking-wider">Credentials</span>
+          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white uppercase">Coach Certifications & Awards</h1>
+          <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm">
+            A certified instructor dedicated to the highest standards of safety, scientific program layouts, and athletic excellence.
+          </p>
+        </div>
 
-              {/* Info panel */}
-              <div className="sm:w-3/5 p-6 flex flex-col justify-between space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-1.5 text-[10px] text-gray-500 font-bold uppercase tracking-wider">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Verified Credential</span>
+        {/* Grid List */}
+        {loading ? (
+          <GymLoading size="medium" />
+        ) : achievements.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {achievements.map((item) => (
+              <div
+                key={item.id}
+                className="glass-panel rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/50 dark:bg-gradient-to-br dark:from-[#121214] dark:to-[#0a0a0c] hover:border-[#0077ff]/30 transition-all duration-300 flex flex-col sm:flex-row"
+              >
+                {/* Image panel */}
+                <div className="sm:w-2/5 relative aspect-video sm:aspect-auto min-h-[200px] bg-black">
+                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${item.image_url})` }}></div>
+                  <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/50 to-transparent"></div>
+                  <div className="absolute top-4 left-4 w-9 h-9 rounded-xl bg-[#0077ff]/20 backdrop-blur-md border border-[#0077ff]/40 flex items-center justify-center text-[#0077ff]">
+                    <Award className="w-5 h-5" />
                   </div>
-                  <h2 className="font-extrabold text-gray-900 dark:text-white text-base sm:text-lg hover:text-[#0077ff] transition-colors uppercase leading-snug">
-                    {item.title}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed">
-                    {item.description}
-                  </p>
                 </div>
 
-                <div className="flex items-center space-x-2 text-[10px] text-gray-500 pt-3 border-t border-black/10 dark:border-white/5">
-                  <Calendar className="w-3.5 h-3.5 text-[#ff6b00]" />
-                  <span>Obtained: {new Date(item.achievement_date).toLocaleDateString([], { year: 'numeric', month: 'long' })}</span>
+                {/* Info panel */}
+                <div className="sm:w-3/5 p-6 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-1.5 text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Verified Credential</span>
+                    </div>
+                    <h2 className="font-extrabold text-gray-900 dark:text-white text-base sm:text-lg hover:text-[#0077ff] transition-colors uppercase leading-snug">
+                      {item.title}
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center space-x-2 text-[10px] text-gray-500 pt-3 border-t border-black/10 dark:border-white/5">
+                    <Calendar className="w-3.5 h-3.5 text-[#ff6b00]" />
+                    <span>Obtained: {new Date(item.achievement_date).toLocaleDateString([], { year: 'numeric', month: 'long' })}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-20 bg-black/5 dark:bg-white/5 border border-dashed border-black/10 dark:border-white/10 rounded-2xl animate-in fade-in duration-300">
-          <Dumbbell className="w-12 h-12 text-gray-600 mx-auto mb-4 animate-bounce" />
-          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">No certificates or awards registered yet.</p>
-        </div>
-      )}
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-black/5 dark:bg-white/5 border border-dashed border-black/10 dark:border-white/10 rounded-2xl animate-in fade-in duration-300">
+            <Dumbbell className="w-12 h-12 text-gray-600 mx-auto mb-4 animate-bounce" />
+            <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">No certificates or awards registered yet.</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -111,11 +111,11 @@ export default function BlogPage() {
 
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-      {/* Fixed Background Image */}
-      <div
-        className="fixed inset-0 z-0 select-none pointer-events-none opacity-5 dark:opacity-10 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/blog-bg.webp')" }}
-      ></div>
+      {/* Full-width background gradient accent */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(255,107,0,0.015)] to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(255,107,0,0.04),transparent_50%),radial-gradient(circle_at_70%_30%,rgba(0,119,255,0.03),transparent_50%)]" />
+      </div>
 
       <div className="relative z-10 space-y-16 pt-10">
         {/* Page Header */}
@@ -256,10 +256,10 @@ export default function BlogPage() {
                     {post.category}
                   </span>
                 </div>
-                {/* Info */}
+                {/* Info - no click handler on the card, only the Read button triggers modal */}
                 <div className="p-6 flex-grow flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
-                    <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-snug hover:text-[#ff6b00] transition-colors duration-200 line-clamp-2">
+                    <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-snug line-clamp-2">
                       {post.title}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed line-clamp-3">
@@ -268,13 +268,13 @@ export default function BlogPage() {
                   </div>
                   <div className="flex items-center justify-between text-[10px] text-gray-500 pt-3 border-t border-black/10 dark:border-white/5">
                     <span>{new Date(post.created_at).toLocaleDateString()}</span>
-                    <button
+                    <span
                       onClick={() => setSelectedPost(post)}
                       className="inline-flex items-center font-bold text-[#ff6b00] hover:text-[#e05e00] transition-colors cursor-pointer"
                     >
-                      Read
+                      Read Article
                       <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                    </button>
+                    </span>
                   </div>
                 </div>
               </div>

@@ -15,33 +15,13 @@ interface Video {
   created_at: string;
 }
 
-const VIDEO_THUMBNAIL_FALLBACKS = [
-  '/images/gym1.jpg',
-  '/images/gym2.jpg',
-  '/images/gym3.jpg',
-  '/images/gym4.jpg',
-  '/images/gym5.jpg',
-  '/images/gym6.jpg',
-];
-
-const hashStringToIndex = (value: string) => {
-  let hash = 0;
-  for (let i = 0; i < value.length; i += 1) {
-    hash = ((hash << 5) - hash) + value.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash) % VIDEO_THUMBNAIL_FALLBACKS.length;
-};
-
-const getVideoThumbnail = (video: Video) => {
-  if (video.thumbnail_url) return video.thumbnail_url;
-
-  const youtubeIdMatch = video.video_url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-  if (youtubeIdMatch?.[1]) {
-    return `https://img.youtube.com/vi/${youtubeIdMatch[1]}/hqdefault.jpg`;
-  }
-
-  return VIDEO_THUMBNAIL_FALLBACKS[hashStringToIndex(video.video_url || String(video.id))];
+const VideoPreview = ({ thumbnailUrl }: { thumbnailUrl: string }) => {
+  return (
+    <div
+      className="w-full h-full bg-cover bg-center"
+      style={{ backgroundImage: `url(${thumbnailUrl})` }}
+    />
+  );
 };
 
 const MOCK_VIDEOS: Video[] = [
@@ -49,7 +29,7 @@ const MOCK_VIDEOS: Video[] = [
     id: 1,
     title: 'Leg Day Squats Form Tutorial - Avoid Back Pain',
     video_url: 'https://www.youtube.com/embed/gcNh17CklRI',
-    thumbnail_url: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600',
+    thumbnail_url: 'https://img.youtube.com/vi/gcNh17CklRI/hqdefault.jpg',
     category: 'tutorial',
     is_featured: true,
     created_at: '2026-01-10T12:00:00Z',
@@ -58,7 +38,7 @@ const MOCK_VIDEOS: Video[] = [
     id: 2,
     title: 'High Intensity HIIT Workout - Shred Fat Fast',
     video_url: 'https://www.youtube.com/embed/ml6cT4AZdqI',
-    thumbnail_url: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600',
+    thumbnail_url: 'https://img.youtube.com/vi/ml6cT4AZdqI/hqdefault.jpg',
     category: 'workout',
     is_featured: false,
     created_at: '2026-02-15T12:00:00Z',
@@ -67,7 +47,7 @@ const MOCK_VIDEOS: Video[] = [
     id: 3,
     title: 'Client Transformation Story: 3 Months of Consistency',
     video_url: 'https://www.youtube.com/embed/y8y1N-9D09Y',
-    thumbnail_url: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600',
+    thumbnail_url: 'https://img.youtube.com/vi/y8y1N-9D09Y/hqdefault.jpg',
     category: 'transformation',
     is_featured: false,
     created_at: '2026-03-20T12:00:00Z',
@@ -76,7 +56,7 @@ const MOCK_VIDEOS: Video[] = [
     id: 4,
     title: 'Nairobi Outdoor Bootcamp - Join the Team',
     video_url: 'https://www.youtube.com/embed/g2qX771m_bI',
-    thumbnail_url: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600',
+    thumbnail_url: 'https://img.youtube.com/vi/g2qX771m_bI/hqdefault.jpg',
     category: 'event',
     is_featured: false,
     created_at: '2026-04-05T12:00:00Z',
@@ -85,7 +65,7 @@ const MOCK_VIDEOS: Video[] = [
     id: 5,
     title: 'Dumbbell-Only Upper Body Workout (Home & Gym)',
     video_url: 'https://www.youtube.com/embed/gcNh17CklRI',
-    thumbnail_url: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600',
+    thumbnail_url: 'https://img.youtube.com/vi/gcNh17CklRI/hqdefault.jpg',
     category: 'workout',
     is_featured: false,
     created_at: '2026-05-18T12:00:00Z',
@@ -94,7 +74,7 @@ const MOCK_VIDEOS: Video[] = [
     id: 6,
     title: 'Deadlift Setup Masterclass - Full Walkthrough',
     video_url: 'https://www.youtube.com/embed/r4MzxtB1FTo',
-    thumbnail_url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600',
+    thumbnail_url: 'https://img.youtube.com/vi/r4MzxtB1FTo/hqdefault.jpg',
     category: 'tutorial',
     is_featured: false,
     created_at: '2026-06-01T12:00:00Z',
@@ -116,6 +96,27 @@ export default function VideosPage() {
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
   const [activeVideoTitle, setActiveVideoTitle] = useState<string>('');
   const [loading, setLoading] = useState(true);
+
+  const handlePlayVideo = (url: string, title: string) => {
+    // Clear any existing video before opening a new one
+    setActiveVideoUrl(null);
+    setActiveVideoTitle('');
+
+    // Build embed URL with autoplay flag
+    let embedUrl = url;
+    if (url.includes('youtube.com/watch')) {
+      const videoId = new URL(url).searchParams.get('v');
+      embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    } else if (url.includes('youtu.be/')) {
+      const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+      embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    } else if (url.includes('youtube.com/embed/')) {
+      embedUrl = url.includes('?') ? `${url}&autoplay=1` : `${url}?autoplay=1`;
+    }
+
+    setActiveVideoUrl(embedUrl);
+    setActiveVideoTitle(title);
+  };
 
   useEffect(() => {
     async function loadVideos() {
@@ -152,34 +153,14 @@ export default function VideosPage() {
   // Featured video
   const featuredVideo = videos.find((v) => v.is_featured) || videos[0];
 
-  const handlePlayVideo = (url: string, title: string) => {
-    // Convert normal youtube links to embed if needed
-    let embedUrl = url;
-    if (url.includes('youtube.com/watch')) {
-      const videoId = new URL(url).searchParams.get('v');
-      embedUrl = `https://www.youtube.com/embed/${videoId}`;
-    } else if (url.includes('youtu.be/')) {
-      const videoId = url.split('youtu.be/')[1]?.split('?')[0];
-      embedUrl = `https://www.youtube.com/embed/${videoId}`;
-    }
-    setActiveVideoUrl(embedUrl);
-    setActiveVideoTitle(title);
-  };
+
 
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-      {/* Loop Background Video */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-5 dark:opacity-10 min-h-[100vh]">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover fixed inset-0"
-        >
-          <source src="https://bqgcorqknezxigssfdaz.supabase.co/storage/v1/object/public/videos/gymitupwith_1726006159_3454311198011639392_68983693767.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f7f8fa] via-[#f7f8fa]/80 to-[#f7f8fa] dark:from-[#0a0a0c] dark:via-[#0a0a0c]/85 dark:to-[#0a0a0c]"></div>
+      {/* Page-specific background gradient - full width */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-[#0f0f1a] to-[#0a0a0c]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,107,0,0.08),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(0,119,255,0.06),transparent_50%)]" />
       </div>
 
       <div className="relative z-10 space-y-16 pt-10">
@@ -214,7 +195,7 @@ export default function VideosPage() {
               >
                 Close Player
               </button>
-              {activeVideoUrl.endsWith('.mp4') || activeVideoUrl.includes('supabase') ? (
+              {activeVideoUrl.endsWith('.mp4') || activeVideoUrl.includes('supabase') || activeVideoUrl.includes('.mov') ? (
                 <video
                   src={activeVideoUrl}
                   controls
@@ -237,12 +218,14 @@ export default function VideosPage() {
         {/* Featured Video Section */}
         {!loading && featuredVideo && !search && selectedCategory === 'all' && (
           <section className="relative rounded-3xl overflow-hidden glass-panel border border-black/10 dark:border-white/10 p-6 lg:p-12 bg-white/40 dark:bg-gradient-to-br dark:from-[#121214] dark:to-[#0a0a0c] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="relative aspect-video rounded-2xl overflow-hidden group border border-black/5 dark:border-white/5 bg-black">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${getVideoThumbnail(featuredVideo)})` }}></div>
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
+            <div className="relative aspect-video rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 bg-black group">
+              <VideoPreview thumbnailUrl={featuredVideo.thumbnail_url || '/images/default-thumbnail.jpg'} />
+              <div
+                onClick={() => handlePlayVideo(featuredVideo.video_url, featuredVideo.title)}
+                className="absolute inset-0 z-20 cursor-pointer bg-black/20 hover:bg-black/40 transition-colors flex items-center justify-center"
+              >
                 <button
-                  onClick={() => handlePlayVideo(featuredVideo.video_url, featuredVideo.title)}
-                  className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white shadow-xl shadow-orange-500/30 hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
+                  className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white shadow-xl shadow-orange-500/30 hover:scale-110 active:scale-95 transition-all duration-300"
                   aria-label={`Play featured video: ${featuredVideo.title}`}
                 >
                   <Play className="w-8 h-8 fill-white ml-1" />
@@ -314,27 +297,31 @@ export default function VideosPage() {
                 key={video.id}
                 className="glass-panel glass-panel-hover rounded-2xl overflow-hidden flex flex-col border border-black/10 dark:border-white/10 bg-white/40 dark:bg-gradient-to-br dark:from-[#121214] dark:to-[#0a0a0c]"
               >
-                {/* Thumbnail */}
+                {/* Video Preview */}
                 <div className="relative aspect-video bg-black overflow-hidden group">
-                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${getVideoThumbnail(video)})` }}></div>
-                  <div className="absolute inset-0 bg-black/35 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
+                  <VideoPreview thumbnailUrl={video.thumbnail_url || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600'} />
+                  <div
+                    onClick={() => handlePlayVideo(video.video_url, video.title)}
+                    className="absolute inset-0 z-20 cursor-pointer bg-black/10 hover:bg-black/30 transition-colors flex items-center justify-center"
+                  >
                     <button
-                      onClick={() => handlePlayVideo(video.video_url, video.title)}
-                      className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white opacity-90 group-hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
+                      className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg shadow-orange-500/30"
                       aria-label={`Play video: ${video.title}`}
                     >
                       <Play className="w-6 h-6 fill-white ml-0.5" />
                     </button>
                   </div>
-                  <span className="absolute bottom-3 right-3 text-[10px] bg-black/60 backdrop-blur-sm text-gray-300 font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider border border-white/5">
-                    {video.category}
-                  </span>
                 </div>
                 {/* Info */}
                 <div className="p-6 flex-grow flex flex-col justify-between space-y-4">
-                  <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-snug hover:text-[#ff6b00] transition-colors duration-200">
-                    {video.title}
-                  </h3>
+                  <div className="space-y-2">
+                    <span className="inline-block text-[10px] bg-[#ff6b00]/10 border border-[#ff6b00]/20 text-[#ff6b00] font-bold px-2 py-0.5 rounded-lg uppercase tracking-wider">
+                      {video.category}
+                    </span>
+                    <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-snug hover:text-[#ff6b00] transition-colors duration-200">
+                      {video.title}
+                    </h3>
+                  </div>
                   <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-black/10 dark:border-white/5">
                     <span>{new Date(video.created_at).toLocaleDateString()}</span>
                     <span className="flex items-center gap-1 cursor-help" title={`Category: ${video.category}`}>

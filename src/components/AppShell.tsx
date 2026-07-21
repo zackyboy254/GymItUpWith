@@ -7,6 +7,7 @@ import ChatWidget from "@/components/ChatWidget";
 import DailyPopup from "@/components/DailyPopup";
 import JoinModal from "@/components/JoinModal";
 import QuickChatButton from "@/components/QuickChatButton";
+import ScrollToTop from "@/components/ScrollToTop";
 import type React from "react";
 
 interface AppShellProps {
@@ -23,6 +24,7 @@ export default function AppShell({ children }: AppShellProps) {
       <main className={`flex-grow ${isAdminRoute ? '' : 'pt-24'}`}>{children}</main>
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <QuickChatButton />}
+      {!isAdminRoute && <ScrollToTop />}
       {!isAdminRoute && <ChatWidget />}
       {!isAdminRoute && <DailyPopup />}
       <JoinModal />

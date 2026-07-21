@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Loader2, Plus, Trash2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Loader2, Plus, Trash2, CheckCircle, AlertCircle, Pencil, X, Save } from 'lucide-react';
 import { ImageUploadField } from './ImageUploadField';
 
 interface PopupItem {
@@ -25,6 +25,9 @@ export default function PopupsEditor() {
   const [isUploading, setIsUploading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+  // Form State (used for both Adding and Editing)
+  const [editMode, setEditMode] = useState<'add' | 'edit'>('add');
+  const [editId, setEditId] = useState<number | null>(null);
   const [title, setTitle] = useState('');
   const [bodyText, setBodyText] = useState('');
   const [ctaText, setCtaText] = useState('');
@@ -50,24 +53,66 @@ export default function PopupsEditor() {
     setIsSaving(true);
     setMessage(null);
     try {
-      const { error } = await supabase.from('daily_popups').insert([{
-        title,
-        message: bodyText,
-        cta_text: ctaText || null,
-        cta_link: ctaLink || null,
-        image_url: imageUrl || null,
-        popup_type: popupType || 'motivation',
-        day_of_week: dayOfWeek || null,
-        scheduled_date: scheduledDate || null,
-        status: 'active',
-      }]);
-      if (error) throw error;
-      setTitle(''); setBodyText(''); setCtaText(''); setCtaLink(''); setImageUrl(''); setPopupType('motivation'); setDayOfWeek(''); setScheduledDate('');
-      setMessage({ type: 'success', text: 'Popup configured and saved!' });
+      if (editMode === 'edit' && editId !== null) {
+        const { error } = await supabase.from('daily_popups').update({
+          title,
+          message: bodyText,
+          cta_text: ctaText || null,
+          cta_link: ctaLink || null,
+          image_url: imageUrl || null,
+          popup_type: popupType || 'motivation',
+          day_of_week: dayOfWeek || null,
+          scheduled_date: scheduledDate || null,
+        }).eq('id', editId);
+        if (error) throw error;
+        setMessage({ type: 'success', text: 'Popup updated successfully!' });
+      } else {
+        const { error } = await supabase.from('daily_popups').insert([{
+          title,
+          message: bodyText,
+          cta_text: ctaText || null,
+          cta_link: ctaLink || null,
+          image_url: imageUrl || null,
+          popup_type: popupType || 'motivation',
+          day_of_week: dayOfWeek || null,
+          scheduled_date: scheduledDate || null,
+          status: 'active',
+        }]);
+        if (error) throw error;
+        setMessage({ type: 'success', text: 'Popup configured and saved!' });
+      }
+      resetForm();
       fetchPopups();
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message || 'Failed to save.' });
     } finally { setIsSaving(false); }
+  };
+
+  const handleEditClick = (popup: PopupItem) => {
+    setEditMode('edit');
+    setEditId(popup.id);
+    setTitle(popup.title);
+    setBodyText(popup.message);
+    setCtaText(popup.cta_text || '');
+    setCtaLink(popup.cta_link || '');
+    setImageUrl(popup.image_url || '');
+    setPopupType(popup.popup_type || 'motivation');
+    setDayOfWeek(popup.day_of_week || '');
+    setScheduledDate(popup.scheduled_date || '');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const resetForm = () => {
+    setEditMode('add');
+    setEditId(null);
+    setTitle('');
+    setBodyText('');
+    setCtaText('');
+    setCtaLink('');
+    setImageUrl('');
+    setPopupType('motivation');
+    setDayOfWeek('');
+    setScheduledDate('');
   };
 
   const handleDeletePopup = async (id: number) => {
@@ -89,9 +134,11 @@ export default function PopupsEditor() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-xl font-bold text-white uppercase tracking-tight">Site Popups & Promotions</h2>
-        <p className="text-xs text-gray-400">Create offers and announcements that appear on visitor landing.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-white uppercase tracking-tight">Site Popups &amp; Promotions</h2>
+          <p className="text-xs text-gray-400">Create offers and announcements that appear on visitor landing.</p>
+        </div>
       </div>
 
       {message && (
@@ -102,7 +149,16 @@ export default function PopupsEditor() {
       )}
 
       <form onSubmit={handleAddPopup} className="bg-white/5 p-5 rounded-2xl border border-white/5 space-y-4">
-        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Configure New Popup</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider">
+            {editMode === 'edit' ? '✏️ Edit Popup Configuration' : 'Configure New Popup'}
+          </h3>
+          {editMode === 'edit' && (
+            <button type="button" onClick={resetForm} className="flex items-center gap-1 text-[10px] text-gray-400 hover:text-white cursor-pointer">
+              <X className="w-3.5 h-3.5" /> Cancel Edit
+            </button>
+          )}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Popup Headline</label>
@@ -135,12 +191,12 @@ export default function PopupsEditor() {
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Scheduled Date (optional)</label>
             <input type="date" value={scheduledDate} onChange={e => setScheduledDate(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none" />
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none [color-scheme:dark]" />
           </div>
           <div className="space-y-1 md:col-span-2">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Message Body</label>
             <textarea value={bodyText} onChange={e => setBodyText(e.target.value)} rows={2} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white resize-none"
               placeholder="e.g. Sign up before midnight and claim a free personal training session." />
           </div>
           <div className="space-y-1">
@@ -169,9 +225,9 @@ export default function PopupsEditor() {
             />
           </div>
         </div>
-        <button type="submit" disabled={isSaving || isUploading} className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer disabled:opacity-50">
-          <Plus className="w-4 h-4" />
-          <span>{isSaving ? 'Saving...' : 'Save Popup'}</span>
+        <button type="submit" disabled={isSaving || isUploading} className="inline-flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors cursor-pointer disabled:opacity-50">
+          {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : editMode === 'edit' ? <Save className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+          <span>{isSaving ? 'Saving...' : editMode === 'edit' ? 'Update Popup' : 'Save Popup'}</span>
         </button>
       </form>
 
@@ -182,7 +238,7 @@ export default function PopupsEditor() {
         ) : (
           <div className="grid grid-cols-1 gap-3">
             {popups.map(popup => (
-              <div key={popup.id} className="flex bg-white/5 border border-white/5 rounded-xl overflow-hidden">
+              <div key={popup.id} className="flex bg-white/5 border border-white/5 rounded-xl overflow-hidden hover:border-white/10 transition-colors">
                 {popup.image_url && (
                   <div className="w-24 shrink-0">
                     <img src={popup.image_url} alt={popup.title} className="w-full h-full object-cover" onError={e => { (e.target as any).style.display = 'none'; }} />
@@ -191,10 +247,13 @@ export default function PopupsEditor() {
                 <div className="flex-1 p-3 space-y-1.5">
                   <p className="font-bold text-white text-xs">{popup.title}</p>
                   <p className="text-[10px] text-gray-400">{popup.message}</p>
-                  <p className="text-[10px] text-gray-500">Day: {popup.day_of_week || 'Any'} · CTA: {popup.cta_text || 'None'}</p>
+                  <p className="text-[10px] text-gray-500">Day: {popup.day_of_week || 'Any'} · Type: {popup.popup_type || 'motivation'} · CTA: {popup.cta_text || 'None'}</p>
                   <div className="flex items-center space-x-2 pt-1">
                     <span className={`text-[9px] font-bold ${popup.status === 'active' ? 'text-emerald-400' : 'text-gray-400'}`}>{popup.status}</span>
                     <button onClick={() => toggleStatus(popup.id, popup.status)} className="px-2 py-0.5 bg-black/40 text-gray-300 hover:text-white rounded border border-white/5 cursor-pointer text-[10px]">Toggle</button>
+                    <button onClick={() => handleEditClick(popup)} className="px-2 py-0.5 bg-white/5 text-gray-300 hover:text-white rounded border border-white/5 cursor-pointer text-[10px] inline-flex items-center gap-1">
+                      <Pencil className="w-3 h-3" /> Edit
+                    </button>
                     <button onClick={() => handleDeletePopup(popup.id)} className="p-1 bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded cursor-pointer">
                       <Trash2 className="w-3 h-3" />
                     </button>

@@ -122,6 +122,13 @@ export default function QuickChatButton() {
         )}
       </div>
 
+      {/* Let's Connect label - always visible */}
+      <div className="transition-all duration-300">
+        <span className="text-xs font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+          Let's Connect
+        </span>
+      </div>
+
       {/* Main floating action button (FAB) */}
       <button
         onClick={() => setIsOpen(!isOpen)}

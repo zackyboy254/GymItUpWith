@@ -24,7 +24,7 @@ const MOCK_EVENTS: EventItem[] = [
     event_date: '2026-07-18T07:00:00Z',
     location: 'Nairobi Arboretum, Nairobi, Kenya',
     cover_image: '/images/events-bg.webp',
-    registration_link: 'https://wa.me/+254 793 62542?text=I%20want%20to%20register%20for%20the%20Nairobi%20Bootcamp',
+    registration_link: 'https://wa.me/254793625426?text=I%20want%20to%20register%20for%20the%20Nairobi%20Bootcamp',
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ const MOCK_EVENTS: EventItem[] = [
     event_date: '2026-08-01T00:00:00Z',
     location: 'Online / WhatsApp Group (Kenya)',
     cover_image: '/images/hero-bg.webp',
-    registration_link: 'https://wa.me/+254 793 62542?text=I%20want%20to%20join%20the%2030-Day%20Fat%20Burn%20Challenge',
+    registration_link: 'https://wa.me/254793625426?text=I%20want%20to%20join%20the%2030-Day%20Fat%20Burn%20Challenge',
   },
   {
     id: 3,
@@ -42,7 +42,7 @@ const MOCK_EVENTS: EventItem[] = [
     event_date: '2026-09-12T05:00:00Z',
     location: 'Mt. Kenya National Park, Kenya',
     cover_image: '/images/gallery-bg.webp',
-    registration_link: 'https://wa.me/+254 793 62542?text=I%20want%20to%20register%20for%20the%20Mt%20Kenya%20Hiking%20Camp',
+    registration_link: 'https://wa.me/254793625426?text=I%20want%20to%20register%20for%20the%20Mt%20Kenya%20Hiking%20Camp',
   },
 ];
 
@@ -77,11 +77,11 @@ export default function EventsPage() {
 
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-      {/* Fixed Background Image */}
-      <div
-        className="absolute inset-0 z-0 select-none pointer-events-none opacity-5 dark:opacity-10 bg-cover bg-center bg-no-repeat fixed bg-fixed min-h-[100vh]"
-        style={{ backgroundImage: "url('/images/events-bg.webp')" }}
-      ></div>
+      {/* Full-width background gradient accent */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(255,42,42,0.015)] to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,42,42,0.04),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(0,119,255,0.03),transparent_50%)]" />
+      </div>
 
       <div className="relative z-10 space-y-16 pt-10">
         {/* Page Header */}
@@ -155,7 +155,7 @@ export default function EventsPage() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center justify-center px-6 py-3 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] rounded-xl hover:from-[#ff2a2a] hover:to-[#ff6b00] transition-all duration-300 cursor-pointer shadow-lg shadow-orange-500/10 hover:scale-[1.02] active:scale-[0.98]"
                         >
-                          Register Now
+                          WhatsApp Me for Registration 📱
                           <ExternalLink className="w-4 h-4 ml-1.5" />
                         </a>
                       </div>

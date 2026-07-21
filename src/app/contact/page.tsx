@@ -54,11 +54,11 @@ export default function ContactPage() {
 
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-      {/* Fixed Background Image */}
-      <div
-        className="fixed inset-0 z-0 select-none pointer-events-none opacity-5 dark:opacity-10 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/contact-bg.webp')" }}
-      ></div>
+      {/* Full-width background gradient */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0c] via-[#0d0d1a] to-[#0a0a0c]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,107,0,0.05),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(0,119,255,0.05),transparent_35%)]" />
+      </div>
 
       <div className="relative z-10 space-y-16 pt-10">
         {/* Page Header */}
@@ -215,7 +215,7 @@ export default function ContactPage() {
 
                 {/* Email */}
                 <a
-                  href="mailto:info@gymitupwith.co.ke"
+                  href="mailto:chibudangote1561@gmail.com"
                   className="flex items-center space-x-4 p-4 rounded-2xl bg-[#0077ff]/5 border border-[#0077ff]/10 hover:border-[#0077ff]/30 text-[#0077ff] hover:bg-[#0077ff]/10 transition-all duration-300"
                 >
                   <div className="w-11 h-11 rounded-xl bg-[#0077ff]/10 flex items-center justify-center shrink-0">
@@ -223,7 +223,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Email Address</span>
-                    <span className="text-sm font-extrabold break-all">info@gymitupwith.co.ke</span>
+                    <span className="text-sm font-extrabold break-all">chibudangote1561@gmail.com</span>
                   </div>
                 </a>
               </div>
@@ -232,7 +232,7 @@ export default function ContactPage() {
             {/* Embedded Google Map */}
             <div className="glass-panel rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 aspect-video lg:aspect-auto lg:flex-grow relative min-h-[220px]">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.277443588974!2d36.81471135!3d-1.2863889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1172d84d49a7%3A0xf79cb0226311724!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2ske!4v1700000000000!5m2!1sen!2ske"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.9356606780625!2d36.7439285!3d-1.2336737!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f19f6d0e88eef%3A0x7b3b6e0f5b5c5b0f!2sTatucity%20Unity%20Homes!5e0!3m2!1sen!2ske!4v1700000000000!5m2!1sen!2ske"
                 className="absolute inset-0 w-full h-full border-0 opacity-70 hover:opacity-90 transition-opacity duration-300"
                 allowFullScreen={false}
                 loading="lazy"
