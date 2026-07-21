@@ -46,12 +46,16 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      const { error: authError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+      const { data: signInData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (authError) throw authError;
+
+      if (!signInData.session) {
+        throw new Error('Authentication completed but no session was returned.');
+      }
 
       router.replace('/admin/dashboard');
     } catch (err: unknown) {
