@@ -15,13 +15,24 @@ export default function AdminLoginPage() {
 
   // Redirect if already logged in
   useEffect(() => {
+    let isMounted = true;
+
     async function checkSession() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        router.replace('/admin/dashboard');
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!isMounted) return;
+        if (session) {
+          router.replace('/admin/dashboard');
+        }
+      } catch (err) {
+        console.warn('Admin session check failed:', err);
       }
     }
+
     checkSession();
+    return () => {
+      isMounted = false;
+    };
   }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
