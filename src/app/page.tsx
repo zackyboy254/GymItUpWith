@@ -253,11 +253,11 @@ export default function HomePage() {
         {carouselImages.map((img, idx) => (
           <div
             key={`${img}-${idx}`}
-            className={`absolute inset-0 select-none pointer-events-none transition-all duration-1000 ${idx === currentSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'}`}
+            className={`absolute inset-0 h-full w-full select-none pointer-events-none transition-all duration-1000 ${idx === currentSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'}`}
             style={{
               backgroundImage: `url('${img}')`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: 'center center',
               backgroundRepeat: 'no-repeat',
               filter: idx === currentSlide ? 'brightness(0.45) saturate(0.8)' : 'brightness(0.72)',
             }}
@@ -315,13 +315,13 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative">
+            <div className="relative w-full">
               <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-br from-[#ff6b00]/30 via-[#ff2a2a]/15 to-[#0077ff]/15 blur-3xl opacity-90" />
-              <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/80 min-h-[420px] sm:min-h-[520px]">
+              <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/80 h-[420px] sm:h-[520px] lg:h-[620px]">
                 <img
                   src={heroImageUrl}
                   alt="Fitness training session"
-                  className="h-full w-full object-cover min-h-[420px] sm:min-h-[520px]"
+                  className="h-full w-full object-cover object-center"
                   onError={(event) => {
                     const target = event.target as HTMLImageElement;
                     target.src = instructorImage;
