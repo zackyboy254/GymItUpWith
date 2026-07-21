@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
+import PageBackground from '@/components/PageBackground';
 import { useJoinModal } from '@/context/JoinModalContext';
 import Image from 'next/image';
 
@@ -236,7 +237,9 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="space-y-32 pb-20 overflow-hidden">
+    <>
+      <PageBackground variant="home" />
+      <div className="space-y-32 pb-20 overflow-hidden">
       {/* ─── Hero Section ─────────────────────────────────────────────── */}
       <section className="relative min-h-[95vh] overflow-hidden bg-gradient-to-br from-slate-950 via-[#0d0d1a] to-slate-950">
         {/* Full-width background gradient overlay */}
@@ -248,8 +251,7 @@ export default function HomePage() {
         {carouselImages.map((img, idx) => (
           <div
             key={`${img}-${idx}`}
-            className={`absolute inset-0 z-0 select-none pointer-events-none transition-all duration-1000 ${idx === currentSlide ? 'opacity-100 scale-105' : 'opacity-15 scale-100'
-              }`}
+            className={`absolute inset-0 select-none pointer-events-none transition-all duration-1000 ${idx === currentSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'}`}
             style={{
               backgroundImage: `url('${img}')`,
               backgroundSize: 'cover',
@@ -363,7 +365,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── About Section ──────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-[#0d0d1a] to-[#0a0a1a] w-full py-16">
+      <section className="relative overflow-hidden w-full py-16">
         {/* Full-width background overlay */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(0,119,255,0.06),transparent_50%),radial-gradient(circle_at_70%_70%,rgba(255,107,0,0.04),transparent_50%)]" />
@@ -376,9 +378,8 @@ export default function HomePage() {
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-[#121214] flex flex-col justify-end p-8">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent z-10" />
                 <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 hover:scale-100 transition-transform duration-700"
-                  style={{ backgroundImage: "url('/images/gym6.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-                />
+                  className="absolute inset-0 overflow-hidden bg-cover bg-center bg-no-repeat scale-105 hover:scale-100 transition-transform duration-700"
+                  style={{ backgroundImage: "url('/images/gym6.jpg')", overflow: 'hidden', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'}}               />
                 <div className="relative z-20 space-y-2">
                   <span className="text-[#ff6b00] text-xs font-bold uppercase tracking-widest">Certified Fitness Coach</span>
                   <h3 className="text-2xl font-black text-white">Coach Billy 💪</h3>
@@ -432,7 +433,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── Services Section ─────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-[#0d0d1a] to-[#120a0a] w-full py-16">
+      <section className="relative overflow-hidden w-full py-16">
         {/* Full-width background overlay */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(255,107,0,0.05),transparent_50%),radial-gradient(circle_at_80%_50%,rgba(0,119,255,0.04),transparent_50%)]" />
@@ -526,7 +527,7 @@ export default function HomePage() {
 
       {/* ─── Motivational Quote Section ──────────────────────────── */}
       {quote.text && (
-        <section className="relative py-24 overflow-hidden bg-gradient-to-br from-[#0a0a0c] via-[#0d0d1a] to-[#0a0a0c] w-full">
+        <section className="relative py-24 overflow-hidden  w-full">
           <div className="absolute inset-0 bg-cover bg-center opacity-15" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80')" }} />
           {/* Full-width background overlay */}
           <div className="absolute inset-0 pointer-events-none">
@@ -553,7 +554,7 @@ export default function HomePage() {
       )}
 
       {/* ─── CTA Section ─────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a0a0c] via-[#0d0d1a] to-[#0a0a0c] w-full py-16 px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden w-full py-16 px-4 sm:px-6 lg:px-8">
         {/* Full-width background overlay */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,107,0,0.06),transparent_50%),radial-gradient(circle_at_50%_70%,rgba(0,119,255,0.04),transparent_50%)]" />
@@ -585,5 +586,6 @@ export default function HomePage() {
         </div>
       </section>
     </div>
+    </>
   );
 }

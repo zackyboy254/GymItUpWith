@@ -15,8 +15,8 @@ interface ChatLink {
 
 const DEFAULT_CHAT_LINKS: ChatLink[] = [
   { id: 1, type: 'chatbot', url: '', order: 1, status: 'active' },
-  { id: 2, type: 'phone', url: '++254 793 62542', order: 2, status: 'active' },
-  { id: 3, type: 'whatsapp', url: 'https://wa.me/+254 793 62542', order: 3, status: 'active' },
+  { id: 2, type: 'phone', url: '+254793625426', order: 2, status: 'active' },
+  { id: 3, type: 'whatsapp', url: 'https://wa.me/254793625426?text=Hello%20Coach%20Billy%2C%20I%20visited%20your%20website%20and%20want%20to%20learn%20more%20about%20your%20coaching%20programs%21', order: 3, status: 'active' },
 ];
 
 export default function QuickChatButton() {
@@ -122,19 +122,13 @@ export default function QuickChatButton() {
         )}
       </div>
 
-      {/* Let's Connect label - always visible */}
-      <div className="transition-all duration-300">
-        <span className="text-xs font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap">
-          Let's Connect
-        </span>
-      </div>
-
-      {/* Main floating action button (FAB) */}
+      {/* Main floating action button (FAB) with label included */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white shadow-xl shadow-orange-600/30 hover:scale-110 active:scale-95 hover:shadow-orange-600/40 transition-all duration-300 group cursor-pointer"
+        className="inline-flex items-center gap-3 px-4 py-3 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] text-white shadow-xl shadow-orange-600/30 hover:scale-110 active:scale-95 hover:shadow-orange-600/40 transition-all duration-300 group cursor-pointer"
         aria-label="Toggle contact quick actions"
       >
+        <span className="text-xs font-bold whitespace-nowrap">Let&apos;s Connect</span>
         {isOpen ? (
           <X className="w-6 h-6 rotate-90 transition-transform duration-300" />
         ) : (

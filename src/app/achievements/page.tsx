@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Award, Calendar, ShieldCheck, Dumbbell } from 'lucide-react';
 import GymLoading from '@/components/GymLoading';
+import PageBackground from '@/components/PageBackground';
 
 interface Achievement {
   id: number;
-  title: str
+  title: string;
   description: string;
   image_url: string;
   achievement_date: string;
@@ -74,7 +75,9 @@ export default function AchievementsPage() {
   }, []);
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <>
+      <PageBackground variant="achievements" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
       {/* Full-width background gradient accent */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(0,119,255,0.015)] to-transparent" />
@@ -141,5 +144,6 @@ export default function AchievementsPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

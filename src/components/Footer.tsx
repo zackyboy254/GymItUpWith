@@ -5,7 +5,7 @@ import { InstagramIcon, YouTubeIcon, TikTokIcon, XTwitterIcon } from './SocialIc
 
 export default function Footer() {
   return (
-    <footer className="bg-[#070709] border-t border-white/5 py-16 mt-auto">
+    <footer className="bg-[#070709] border-t border-white/5 py-16 mt-auto relative z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand Info */}
@@ -19,7 +19,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
-              Empowering Kenyans to achieve their fitness goals through professional personal training, customized weight loss programs, muscle gain guidance, and supportive gym culture.
+              Empowering individuals to achieve their fitness goals through professional personal training, customized weight loss programs, muscle gain guidance, and supportive gym culture.
             </p>
             <div className="flex space-x-3">
               <a

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Search, Play, Dumbbell, Calendar, Info } from 'lucide-react';
 import GymLoading from '@/components/GymLoading';
+import PageBackground from '@/components/PageBackground';
 
 interface Video {
   id: number;
@@ -15,11 +16,61 @@ interface Video {
   created_at: string;
 }
 
-const VideoPreview = ({ thumbnailUrl }: { thumbnailUrl: string }) => {
+const VideoPreview = ({ videoUrl, thumbnailUrl, title }: { videoUrl?: string; thumbnailUrl?: string; title?: string }) => {
+  // If we have a YouTube URL, render a muted looping iframe preview (acts like a thumbnail)
+  if (videoUrl && (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be'))) {
+    let videoId: string | null = null;
+    try {
+      if (videoUrl.includes('youtube.com/watch')) {
+        videoId = new URL(videoUrl).searchParams.get('v');
+      } else if (videoUrl.includes('youtu.be/')) {
+        videoId = videoUrl.split('youtu.be/')[1]?.split('?')[0];
+      } else if (videoUrl.includes('youtube.com/embed/')) {
+        videoId = videoUrl.split('youtube.com/embed/')[1]?.split('?')[0];
+      }
+    } catch (e) {
+      videoId = null;
+    }
+
+    if (videoId) {
+      const previewSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&rel=0&playsinline=1`;
+      return (
+        <iframe
+          src={previewSrc}
+          title={title || 'Video preview'}
+          className="w-full h-full border-0 pointer-events-none"
+          allow="autoplay; encrypted-media; picture-in-picture"
+        />
+      );
+    }
+  }
+
+  // For direct video files (mp4, mov, supabase links), render a muted looping <video> element
+  if (videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.endsWith('.mov') || videoUrl.includes('supabase'))) {
+    return (
+      <video
+        src={videoUrl}
+        muted
+        loop
+        playsInline
+        autoPlay
+        preload="metadata"
+        className="w-full h-full object-cover bg-black"
+      />
+    );
+  }
+
+  // Fallback to thumbnail image when no video preview is possible
   return (
-    <div
-      className="w-full h-full bg-cover bg-center"
-      style={{ backgroundImage: `url(${thumbnailUrl})` }}
+    <img
+      src={thumbnailUrl || '/images/default-thumbnail.jpg'}
+      alt={title || 'Video thumbnail'}
+      loading="lazy"
+      onError={(e) => {
+        const t = e.target as HTMLImageElement;
+        t.src = '/images/default-thumbnail.jpg';
+      }}
+      className="w-full h-full object-cover"
     />
   );
 };
@@ -156,12 +207,14 @@ export default function VideosPage() {
 
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <>
+      <PageBackground variant="videos" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
       {/* Page-specific background gradient - full width */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+      {/* <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-[#0f0f1a] to-[#0a0a0c]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,107,0,0.08),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(0,119,255,0.06),transparent_50%)]" />
-      </div>
+      </div> */}
 
       <div className="relative z-10 space-y-16 pt-10">
         {/* Page Header */}
@@ -219,7 +272,7 @@ export default function VideosPage() {
         {!loading && featuredVideo && !search && selectedCategory === 'all' && (
           <section className="relative rounded-3xl overflow-hidden glass-panel border border-black/10 dark:border-white/10 p-6 lg:p-12 bg-white/40 dark:bg-gradient-to-br dark:from-[#121214] dark:to-[#0a0a0c] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="relative aspect-video rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 bg-black group">
-              <VideoPreview thumbnailUrl={featuredVideo.thumbnail_url || '/images/default-thumbnail.jpg'} />
+              <VideoPreview videoUrl={featuredVideo.video_url} thumbnailUrl={featuredVideo.thumbnail_url} title={featuredVideo.title} />
               <div
                 onClick={() => handlePlayVideo(featuredVideo.video_url, featuredVideo.title)}
                 className="absolute inset-0 z-20 cursor-pointer bg-black/20 hover:bg-black/40 transition-colors flex items-center justify-center"
@@ -299,13 +352,13 @@ export default function VideosPage() {
               >
                 {/* Video Preview */}
                 <div className="relative aspect-video bg-black overflow-hidden group">
-                  <VideoPreview thumbnailUrl={video.thumbnail_url || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600'} />
+                  <VideoPreview videoUrl={video.video_url} thumbnailUrl={video.thumbnail_url} title={video.title} />
                   <div
                     onClick={() => handlePlayVideo(video.video_url, video.title)}
                     className="absolute inset-0 z-20 cursor-pointer bg-black/10 hover:bg-black/30 transition-colors flex items-center justify-center"
                   >
-                    <button
-                      className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300 shadow-lg shadow-orange-500/30"
+                      <button
+                      className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white opacity-100 md:opacity-0 md:group-hover:opacity-100 scale-100 md:scale-90 md:group-hover:scale-100 transition-all duration-300 shadow-lg shadow-orange-500/30"
                       aria-label={`Play video: ${video.title}`}
                     >
                       <Play className="w-6 h-6 fill-white ml-0.5" />
@@ -341,5 +394,6 @@ export default function VideosPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

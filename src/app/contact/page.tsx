@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Mail, Phone, MessageSquare, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import PageBackground from '@/components/PageBackground';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -53,14 +54,10 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-      {/* Full-width background gradient */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0c] via-[#0d0d1a] to-[#0a0a0c]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,107,0,0.05),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(0,119,255,0.05),transparent_35%)]" />
-      </div>
+    <>
+      <PageBackground variant="contact" />
 
-      <div className="relative z-10 space-y-16 pt-10">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 space-y-16 pt-10">
         {/* Page Header */}
         <div className="text-center space-y-4">
           <span className="text-[#ff6b00] text-sm font-bold uppercase tracking-wider">Get in Touch</span>
@@ -185,7 +182,7 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 gap-4">
                 {/* WhatsApp */}
                 <a
-                  href="https://wa.me/+254793625426?text=Hello%20Coach%20Billy%2C%20I%20visited%20your%20website%20and%20want%20to%20learn%20more%20about%20your%20coaching%20programs!"
+                  href="https://wa.me/254793625426?text=Hello%20Coach%20Billy%2C%20I%20visited%20your%20website%20and%20want%20to%20learn%20more%20about%20your%20coaching%20programs%21"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-4 p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 transition-all duration-300"
@@ -242,6 +239,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

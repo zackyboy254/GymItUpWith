@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Search, BookOpen, Clock, User, ArrowRight, Dumbbell, X } from 'lucide-react';
 import GymLoading from '@/components/GymLoading';
+import PageBackground from '@/components/PageBackground';
 
 interface BlogPost {
   id: number;
@@ -110,7 +111,9 @@ export default function BlogPage() {
   const featuredPost = posts[0] || null;
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <>
+      <PageBackground variant="blog" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
       {/* Full-width background gradient accent */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(255,107,0,0.015)] to-transparent" />
@@ -288,5 +291,6 @@ export default function BlogPage() {
         )}
       </div>
     </div>
+       </>
   );
 }

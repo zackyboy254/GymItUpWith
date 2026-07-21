@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Calendar, MapPin, ExternalLink, Flame, Dumbbell } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
+import PageBackground from '@/components/PageBackground';
 import GymLoading from '@/components/GymLoading';
 
 interface EventItem {
@@ -76,7 +77,9 @@ export default function EventsPage() {
   }, []);
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <>
+      <PageBackground variant="events" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
       {/* Full-width background gradient accent */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(255,42,42,0.015)] to-transparent" />
@@ -150,7 +153,7 @@ export default function EventsPage() {
                       {/* Register CTA */}
                       <div className="pt-4 flex">
                         <a
-                          href={event.registration_link}
+                          href="https://wa.me/254793625426?text=Hello%20Coach%20Billy%2C%20I%20visited%20your%20website%20and%20want%20to%20learn%20more%20about%20your%20coaching%20programs%21"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center justify-center px-6 py-3 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] rounded-xl hover:from-[#ff2a2a] hover:to-[#ff6b00] transition-all duration-300 cursor-pointer shadow-lg shadow-orange-500/10 hover:scale-[1.02] active:scale-[0.98]"
@@ -173,5 +176,6 @@ export default function EventsPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

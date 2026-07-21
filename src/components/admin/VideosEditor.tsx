@@ -38,6 +38,12 @@ function isYoutube(url: string) {
   return /youtu\.?be/.test(url);
 }
 
+function getVideoThumbnail(video: Pick<VideoItem, 'video_url' | 'thumbnail_url'>): string | null {
+  if (video.thumbnail_url) return video.thumbnail_url;
+  if (isYoutube(video.video_url)) return getYoutubeThumbnail(video.video_url);
+  return null;
+}
+
 const CATEGORIES = ['Workout', 'Nutrition', 'Motivation', 'Training Tips', 'Events', 'Other'];
 
 export default function VideosEditor() {
@@ -129,6 +135,7 @@ export default function VideosEditor() {
       const insertPayload: Record<string, unknown> = {
         title: title.trim(),
         video_url: finalUrl,
+        thumbnail_url: addMode === 'youtube' ? getYoutubeThumbnail(finalUrl) ?? null : null,
         description: description.trim() || null,
         category: category || null,
         is_featured: featured,
@@ -349,7 +356,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {videos.map(v => {
-              const thumb = isYoutube(v.video_url) ? getYoutubeThumbnail(v.video_url) : null;
+              const thumb = getVideoThumbnail(v);
               const isDraggingOver = dragOverId === v.id;
               return (
                 <div
@@ -366,7 +373,16 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
                   {/* Thumbnail */}
                   <div className="aspect-video bg-black/60 relative">
                     {thumb ? (
-                      <img src={thumb} alt={v.title} className="w-full h-full object-cover" />
+                      <img
+                        src={thumb}
+                        alt={v.title}
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.currentTarget as HTMLImageElement;
+                          target.src = '/images/default-thumbnail.jpg';
+                        }}
+                        className="w-full h-full object-cover"
+                      />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <Video className="w-8 h-8 text-gray-600" />
