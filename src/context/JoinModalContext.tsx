@@ -4,7 +4,8 @@ import React, { createContext, useContext, useState } from 'react';
 
 interface JoinModalContextType {
   isOpen: boolean;
-  openModal: () => void;
+  selectedProgram: string;
+  openModal: (program?: string | React.MouseEvent<HTMLButtonElement>) => void;
   closeModal: () => void;
 }
 
@@ -12,12 +13,25 @@ const JoinModalContext = createContext<JoinModalContextType | undefined>(undefin
 
 export function JoinModalProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState('');
 
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const openModal = (program: string | React.MouseEvent<HTMLButtonElement> = '') => {
+    if (typeof program === 'string') {
+      setSelectedProgram(program);
+    } else {
+      const cardTitle = program.currentTarget.closest('article')?.querySelector('h3')?.textContent?.trim() || '';
+      const inferredProgram = cardTitle === '90-Day Transformation' ? '90-Day Transformation Challenge' : cardTitle;
+      setSelectedProgram(inferredProgram);
+    }
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+    setSelectedProgram('');
+  };
 
   return (
-    <JoinModalContext.Provider value={{ isOpen, openModal, closeModal }}>
+    <JoinModalContext.Provider value={{ isOpen, selectedProgram, openModal, closeModal }}>
       {children}
     </JoinModalContext.Provider>
   );

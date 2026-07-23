@@ -4,7 +4,7 @@
   --color-brand-black: #000000;
   --color-brand-charcoal: #121214;
   --color-brand-charcoal-light: #1e1e22;
-  --color-brand-orange: #ff6b00;
+  --color-brand-orange: #FC6129;
   --color-brand-red: #ff2a2a;
   --color-brand-blue: #0077ff;
   --color-brand-electric: #00e5ff;
@@ -14,8 +14,8 @@
 :root {
   --background: #f7f8fa;
   --foreground: #1c1c1e;
-  --primary: #ff6b00;
-  --primary-hover: #e05e00;
+  --primary: #FC6129;
+  --primary-hover: #d94d1e;
   --secondary: #0077ff;
   --card-bg: rgba(255, 255, 255, 0.75);
   --card-border: rgba(0, 0, 0, 0.08);
@@ -24,8 +24,8 @@
 .dark {
   --background: #0a0a0c;
   --foreground: #f3f4f6;
-  --primary: #ff6b00;
-  --primary-hover: #e05e00;
+  --primary: #FC6129;
+  --primary-hover: #d94d1e;
   --secondary: #00e5ff;
   --card-bg: rgba(18, 18, 20, 0.65);
   --card-border: rgba(255, 255, 255, 0.08);
@@ -42,6 +42,28 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.eyebrow {
+  color: #d8f36b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.section-title {
+  margin-top: 0.9rem;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.section-title span {
+  color: #d8f36b;
 }
 
 /* Custom Scrollbar */

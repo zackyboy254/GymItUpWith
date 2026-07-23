@@ -2,15 +2,17 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useJoinModal } from '@/context/JoinModalContext';
-import { supabase } from '@/lib/supabase';
 import { X, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { PROGRAM_OPTIONS } from '@/lib/programs';
 
 export default function JoinModal() {
-  const { isOpen, closeModal } = useJoinModal();
+  const { isOpen, selectedProgram, closeModal } = useJoinModal();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
+    program: '',
+    preferredDate: '',
     message: '',
   });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -35,7 +37,15 @@ export default function JoinModal() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, closeModal]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  useEffect(() => {
+    if (isOpen) {
+      setFormData((prev) => ({ ...prev, program: selectedProgram }));
+      setStatus('idle');
+      setErrorMessage('');
+    }
+  }, [isOpen, selectedProgram]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -44,7 +54,7 @@ export default function JoinModal() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name || !formData.email || !formData.program || !formData.message) {
       setStatus('error');
       setErrorMessage('Please fill in all required fields. ⚠️');
       return;
@@ -52,34 +62,25 @@ export default function JoinModal() {
 
     setStatus('submitting');
     try {
-      const { error } = await supabase.from('contact_requests').insert([
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || null,
-          message: formData.message,
-          status: 'pending',
-        },
-      ]);
-
-      if (error) throw error;
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Unable to submit your request.');
 
       setStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
+      setFormData({ name: '', email: '', phone: '', program: '', preferredDate: '', message: '' });
       // Close modal after short success display delay
       setTimeout(() => {
         closeModal();
         setStatus('idle');
       }, 3000);
-    } catch (err: any) {
-      console.error('Modal Contact submission error:', err);
-      // Fallback: simulate success so user always has working front-end
-      setStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-      setTimeout(() => {
-        closeModal();
-        setStatus('idle');
-      }, 3000);
+    } catch (err) {
+      console.error('Modal registration submission error:', err);
+      setStatus('error');
+      setErrorMessage(err instanceof Error ? err.message : 'Unable to submit your request. Please try again.');
     }
   };
 
@@ -109,7 +110,7 @@ export default function JoinModal() {
                 Join Program ⚡
               </h2>
               <p className="text-xs text-gray-400">
-                Kickstart your transformation with Gymitupwith Billy!
+                Choose your next chapter with Grow Fit.
               </p>
             </div>
             <button
@@ -174,6 +175,23 @@ export default function JoinModal() {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#ff6b00]"
                 />
               </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label htmlFor="modal-program" className="block font-bold text-gray-400 uppercase tracking-wider">
+                Program / Activity <span className="text-[#FC6129]">*</span>
+              </label>
+              <select id="modal-program" name="program" value={formData.program} onChange={handleChange} required className="w-full appearance-none bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#FC6129]">
+                <option value="" disabled>Select a program or activity</option>
+                {PROGRAM_OPTIONS.map((program) => <option key={program} value={program} className="bg-[#121214]">{program}</option>)}
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label htmlFor="modal-date" className="block font-bold text-gray-400 uppercase tracking-wider">
+                Preferred Date <span className="text-gray-500 normal-case tracking-normal font-normal">(optional)</span>
+              </label>
+              <input type="date" id="modal-date" name="preferredDate" value={formData.preferredDate} onChange={handleChange} min={new Date().toISOString().split('T')[0]} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#FC6129]" />
             </div>
 
             <div className="space-y-1.5">

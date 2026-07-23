@@ -16,20 +16,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gymitupwith Billy | Professional Fitness Coach & Trainer 🏋️‍♂️",
-  description: "Empower your fitness journey with personalized coaching, workout routines, group bootcamps, and healthy lifestyle guidance. Guided by Coach Billy.",
+  title: "Grow Fit | Grow Strong. Live Better.",
+  description: "Grow Fit is a premium fitness community for body transformation, accountability, healthy living, and meaningful connection.",
   metadataBase: new URL('https://gymitupwith.co.ke'),
   openGraph: {
-    title: "Gymitupwith Billy | Professional Fitness Coach & Trainer 🏋️‍♂️",
-    description: "Empower your fitness journey with personalized coaching, workout routines, group bootcamps, and healthy lifestyle guidance. Guided by Coach Billy.",
+    title: "Grow Fit | Grow Strong. Live Better.",
+    description: "A premium fitness community for body transformation, accountability, healthy living, and meaningful connection.",
     url: "https://gymitupwith.co.ke",
-    siteName: "Gymitupwith Billy",
+    siteName: "Grow Fit",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Gymitupwith Billy Fitness Coach",
+        alt: "Grow Fit fitness community",
       },
     ],
     locale: "en_US",

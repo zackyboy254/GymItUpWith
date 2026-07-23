@@ -198,6 +198,64 @@ const SEED_DATA = {
       achievement_date: "2025-10-15",
       status: "active"
     }
+  ],
+  programs: [
+    {
+      title: "Weight Loss Program",
+      slug: "weight-loss",
+      description: "A practical, coach-led plan for sustainable fat loss, better energy, and confidence that lasts.",
+      duration: "12 weeks",
+      difficulty: "All levels",
+      featured: true,
+      display_order: 1,
+      status: "active"
+    },
+    {
+      title: "90-Day Transformation",
+      slug: "90-day-challenge",
+      description: "A focused reset with training, nutrition, check-ins, and a community that keeps you moving.",
+      duration: "90 days",
+      difficulty: "Intermediate",
+      featured: true,
+      display_order: 2,
+      status: "active"
+    },
+    {
+      title: "Push-Up Challenge",
+      slug: "push-up-challenge",
+      description: "Build pressing strength and a habit of showing up with a progressive daily target.",
+      duration: "30 days",
+      difficulty: "Beginner",
+      display_order: 3,
+      status: "active"
+    },
+    {
+      title: "Pull-Up Challenge",
+      slug: "pull-up-challenge",
+      description: "Develop your back and grip with accessible progressions from first rep to clean sets.",
+      duration: "6 weeks",
+      difficulty: "Intermediate",
+      display_order: 4,
+      status: "active"
+    },
+    {
+      title: "Core & Abs Challenge",
+      slug: "core-abs-challenge",
+      description: "Train a strong, stable center with short sessions designed to fit real life.",
+      duration: "21 days",
+      difficulty: "All levels",
+      display_order: 5,
+      status: "active"
+    },
+    {
+      title: "Squat Challenge",
+      slug: "squat-challenge",
+      description: "Move better, build lower-body strength, and make consistency your superpower.",
+      duration: "30 days",
+      difficulty: "Beginner",
+      display_order: 6,
+      status: "active"
+    }
   ]
 };
 
@@ -246,6 +304,12 @@ async function seed() {
     await supabase.from('achievements').delete().neq('id', 0);
     const { error: aErr } = await supabase.from('achievements').insert(SEED_DATA.achievements);
     if (aErr) console.warn('Achievements seeding issue:', aErr.message);
+
+    // 7. Seed programs
+    console.log('Seeding programs...');
+    await supabase.from('programs').delete().neq('id', 0);
+    const { error: programErr } = await supabase.from('programs').insert(SEED_DATA.programs);
+    if (programErr) console.warn('Programs seeding issue:', programErr.message);
 
     console.log('🎉 Seeding successfully completed!');
   } catch (err) {

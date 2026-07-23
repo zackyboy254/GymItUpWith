@@ -9,6 +9,7 @@ import { useJoinModal } from '@/context/JoinModalContext';
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
+  { name: 'Programs', href: '/programs/weight-loss' },
   { name: 'Videos', href: '/videos' },
   { name: 'Gallery', href: '/gallery' },
   { name: 'Events', href: '/events' },
@@ -62,13 +63,13 @@ export default function Navbar() {
             <Link href="/" className="flex items-center space-x-3 group">
               <Image
                 src="/images/logo.webp"
-                alt="Gymitupwith Billy Logo"
+                alt="Grow Fit logo"
                 width={40}
                 height={40}
                 className="rounded-xl border border-white/10 object-cover shadow-lg shadow-orange-500/15 group-hover:scale-105 transition-transform duration-300"
                 priority={true}
               />
-                <span className="text-[11px] text-gray-500 font-medium mt-0.5">Gymitupwith Billy</span>
+                <span className="text-[11px] text-[#d8f36b] font-medium mt-0.5">Grow strong. Live better.</span>
             </Link>
 
             {/* Desktop Links */}
@@ -94,7 +95,7 @@ export default function Navbar() {
                 className="relative inline-flex items-center justify-center px-5 py-2.5 overflow-hidden font-bold text-white transition duration-300 ease-out rounded-xl shadow-md bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#ff6b00] hover:scale-[1.02] active:scale-[0.98] cursor-pointer group"
               >
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#0077ff] to-[#00e5ff] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                <span className="relative z-10 font-semibold tracking-wide">Join Program ⚡</span>
+                <span className="relative z-10 font-semibold tracking-wide">Join Grow Fit</span>
               </button>
             </div>
 
@@ -128,9 +129,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex flex-col">
             <span className="font-extrabold text-lg tracking-wider text-black dark:text-white uppercase">
-              GYMITUPWITH <span className="text-[#ff6b00]">Billy</span>
+              GROW <span className="text-[#d8f36b]">FIT</span>
             </span>
-            <span className="text-[12px] text-gray-500 mt-1">Gymitupwith Billy</span>
+            <span className="text-[12px] text-gray-500 mt-1">Grow strong. Live better.</span>
           </div>
           <button
             onClick={() => setIsOpen(false)}
@@ -161,7 +162,7 @@ export default function Navbar() {
               }}
               className="w-full inline-flex items-center justify-center px-5 py-3.5 font-bold text-white rounded-xl bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] text-center shadow-lg shadow-orange-500/20 cursor-pointer"
             >
-              Join Program ⚡
+              Join Grow Fit
             </button>
           </div>
         </div>

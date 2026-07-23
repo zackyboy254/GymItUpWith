@@ -15,11 +15,11 @@ export default function Footer() {
                 <Dumbbell className="w-5 h-5 text-white transform -rotate-45" />
               </div>
               <span className="font-extrabold text-lg tracking-wider text-white uppercase">
-                GYMITUPWITH <span className="text-[#ff6b00]">Billy</span>
+                GROW <span className="text-[#d8f36b]">FIT</span>
               </span>
             </Link>
             <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
-              Empowering individuals to achieve their fitness goals through professional personal training, customized weight loss programs, muscle gain guidance, and supportive gym culture.
+              Grow Fit is a premium fitness community for transformation, accountability, healthy living, and the people who make progress stick.
             </p>
             <div className="flex space-x-3">
               <a
@@ -115,7 +115,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-xs">
-            &copy; {new Date().getFullYear()} Gymitupwith Billy. All rights reserved.
+            &copy; {new Date().getFullYear()} Grow Fit. All rights reserved.
           </p>
         </div>
       </div>

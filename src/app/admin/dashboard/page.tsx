@@ -15,7 +15,10 @@ import {
   Settings as SettingsIcon, 
   User as UserIcon,
   LogOut, 
-  Dumbbell 
+  Dumbbell,
+  Activity as ActivityIcon,
+  Trophy,
+  ClipboardList,
 } from 'lucide-react';
 
 
@@ -29,8 +32,14 @@ import ContactEditor from '@/components/admin/ContactEditor';
 import PopupsEditor from '@/components/admin/PopupsEditor';
 import SettingsEditor from '@/components/admin/SettingsEditor';
 import InstructorStatsEditor from '@/components/admin/InstructorStatsEditor';
+import DashboardOverview from '@/components/admin/DashboardOverview';
+import ProgramsEditor from '@/components/admin/ProgramsEditor';
+import RegistrationsEditor from '@/components/admin/RegistrationsEditor';
 
 const TABS = [
+  { id: 'overview', label: 'Overview', icon: ActivityIcon, component: DashboardOverview },
+  { id: 'programs', label: 'Programs & Challenges', icon: Trophy, component: ProgramsEditor },
+  { id: 'registrations', label: 'Registrations', icon: ClipboardList, component: RegistrationsEditor },
   { id: 'home', label: 'Home Content', icon: HomeIcon, component: HomeEditor },
   { id: 'videos', label: 'Videos', icon: VideoIcon, component: VideosEditor },
   { id: 'gallery', label: 'Gallery', icon: CameraIcon, component: GalleryEditor },
@@ -46,7 +55,7 @@ const TABS = [
 
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('overview');
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const router = useRouter();
@@ -161,13 +170,13 @@ export default function AdminDashboard() {
                 {TABS.find(tab => tab.id === activeTab)?.label}
               </h1>
               <p className="text-xs text-gray-400 mt-1">
-                Manage and update your website's content dynamically.
+                Manage and update your website&apos;s content dynamically.
               </p>
             </div>
           </div>
           
           <div className="glass-panel rounded-2xl border border-white/15 bg-gradient-to-br from-[#121214] to-[#0a0a0c] p-6 shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <ActiveComponent />
+            {activeTab === 'overview' ? <DashboardOverview onNavigate={setActiveTab} /> : <ActiveComponent />}
           </div>
         </div>
       </main>
