@@ -153,7 +153,7 @@ export default function ChatLinksEditor() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" />
       </div>
     );
   }
@@ -182,7 +182,7 @@ export default function ChatLinksEditor() {
             <select
               value={type}
               onChange={e => setType(e.target.value as any)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
             >
               <option value="whatsapp">WhatsApp API Link</option>
               <option value="chatbot">AI Chatbot API</option>
@@ -195,7 +195,7 @@ export default function ChatLinksEditor() {
               type="text"
               value={url}
               onChange={e => setUrl(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="e.g. https://wa.me/2547..."
               required
             />
@@ -205,7 +205,7 @@ export default function ChatLinksEditor() {
         <button
           type="submit"
           disabled={isSaving}
-          className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Save Channel</span>

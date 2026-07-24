@@ -92,7 +92,7 @@ export default function QuickChatButton() {
                 ? 'WhatsApp'
                 : 'Call Coach';
             const icon = link.type === 'chatbot' ? (
-              <MessageSquare className="w-4 h-4 text-[#ff6b00] group-hover:rotate-6 transition-transform" />
+              <MessageSquare className="w-4 h-4 text-[#FC6129] group-hover:rotate-6 transition-transform" />
             ) : link.type === 'whatsapp' ? (
               <MessageCircle className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform" />
             ) : (
@@ -104,7 +104,7 @@ export default function QuickChatButton() {
                 <button
                   key={link.id}
                   onClick={toggleChatbot}
-                  className="flex items-center space-x-2 bg-white dark:bg-[#1a1a1f] border border-black/10 dark:border-white/10 px-4 py-2.5 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 text-[#ff6b00] group cursor-pointer"
+                  className="flex items-center space-x-2 bg-white dark:bg-[#1a1a1f] border border-black/10 dark:border-white/10 px-4 py-2.5 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 text-[#FC6129] group cursor-pointer"
                   title="Open Assistant"
                 >
                   {icon}
@@ -140,7 +140,7 @@ export default function QuickChatButton() {
       {/* Main floating action button (FAB) with label included */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center gap-3 px-4 py-3 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] text-white shadow-xl shadow-orange-600/30 hover:scale-110 active:scale-95 hover:shadow-orange-600/40 transition-all duration-300 group cursor-pointer"
+        className="inline-flex items-center gap-3 px-4 py-3 rounded-full bg-gradient-to-tr from-[#FC6129] to-[#ff2a2a] text-white shadow-xl shadow-orange-600/30 hover:scale-110 active:scale-95 hover:shadow-orange-600/40 transition-all duration-300 group cursor-pointer"
         aria-label="Toggle contact quick actions"
       >
         <span className="text-xs font-bold whitespace-nowrap">Let&apos;s Connect</span>

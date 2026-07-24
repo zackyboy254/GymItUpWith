@@ -123,7 +123,7 @@ export default function BlogPage() {
       <div className="relative z-10 space-y-16 pt-10">
         {/* Page Header */}
         <div className="text-center space-y-4">
-          <span className="text-[#ff6b00] text-sm font-bold uppercase tracking-wider">Coach Insights</span>
+          <span className="text-[#FC6129] text-sm font-bold uppercase tracking-wider">Coach Insights</span>
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white uppercase">Fitness & Nutrition Blog</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm">
             Get practical tips, customized nutrition advice, muscle-building guidelines, and lifestyle hacks to accelerate your transformation.
@@ -150,7 +150,7 @@ export default function BlogPage() {
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedPost.cover_image})` }}></div>
               </div>
               <div className="space-y-4">
-                <span className="inline-block text-[10px] text-[#ff6b00] uppercase font-extrabold tracking-widest bg-[#ff6b00]/10 border border-[#ff6b00]/20 px-3 py-1 rounded-full">
+                <span className="inline-block text-[10px] text-[#FC6129] uppercase font-extrabold tracking-widest bg-[#FC6129]/10 border border-[#FC6129]/20 px-3 py-1 rounded-full">
                   {selectedPost.category}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-tight">
@@ -181,7 +181,7 @@ export default function BlogPage() {
               <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${featuredPost.cover_image})` }}></div>
             </div>
             <div className="lg:col-span-6 space-y-6">
-              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#ff6b00]/10 border border-[#ff6b00]/20 text-xs text-[#ff6b00]">
+              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#FC6129]/10 border border-[#FC6129]/20 text-xs text-[#FC6129]">
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>Featured Article</span>
               </span>
@@ -200,7 +200,7 @@ export default function BlogPage() {
                 </div>
                 <button
                   onClick={() => setSelectedPost(featuredPost)}
-                  className="inline-flex items-center text-xs font-bold text-[#ff6b00] hover:text-[#e05e00] transition-colors cursor-pointer"
+                  className="inline-flex items-center text-xs font-bold text-[#FC6129] hover:text-[#d94d1e] transition-colors cursor-pointer"
                 >
                   Read Article
                   <ArrowRight className="w-4 h-4 ml-1" />
@@ -219,7 +219,7 @@ export default function BlogPage() {
               placeholder="Search articles..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-[#ff6b00] transition-colors"
+              className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-[#FC6129] transition-colors"
             />
             <Search className="absolute left-4.5 top-3.5 w-4 h-4 text-gray-500" />
           </div>
@@ -231,7 +231,7 @@ export default function BlogPage() {
                 key={cat.value}
                 onClick={() => setSelectedCategory(cat.value)}
                 className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-200 cursor-pointer ${selectedCategory === cat.value
-                  ? 'bg-[#ff6b00] text-white'
+                  ? 'bg-[#FC6129] text-white'
                   : 'bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 border border-black/5 dark:border-white/5'
                   }`}
               >
@@ -273,7 +273,7 @@ export default function BlogPage() {
                     <span>{new Date(post.created_at).toLocaleDateString()}</span>
                     <span
                       onClick={() => setSelectedPost(post)}
-                      className="inline-flex items-center font-bold text-[#ff6b00] hover:text-[#e05e00] transition-colors cursor-pointer"
+                      className="inline-flex items-center font-bold text-[#FC6129] hover:text-[#d94d1e] transition-colors cursor-pointer"
                     >
                       Read Article
                       <ArrowRight className="w-3.5 h-3.5 ml-1" />

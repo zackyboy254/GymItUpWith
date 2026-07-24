@@ -175,8 +175,8 @@ export default function GalleryPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-10">
                     <div className="flex items-center gap-2 mb-2">
-                      <Star className="w-4 h-4 text-[#ff6b00] fill-[#ff6b00]" />
-                      <span className="text-[10px] text-[#ff6b00] font-bold uppercase tracking-wider">Featured</span>
+                      <Star className="w-4 h-4 text-[#FC6129] fill-[#FC6129]" />
+                      <span className="text-[10px] text-[#FC6129] font-bold uppercase tracking-wider">Featured</span>
                     </div>
                     <h3 className="text-lg sm:text-2xl font-bold text-white">{item.title}</h3>
                     <span className="inline-block mt-1 text-[10px] bg-white/10 backdrop-blur-sm text-gray-300 font-bold px-2 py-1 rounded-lg uppercase tracking-wider">
@@ -191,7 +191,7 @@ export default function GalleryPage() {
                   <button
                     key={idx}
                     onClick={(e) => { e.stopPropagation(); setFeaturedIndex(idx); }}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === featuredIndex ? 'bg-[#ff6b00] w-4' : 'bg-white/40 hover:bg-white/70'
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === featuredIndex ? 'bg-[#FC6129] w-4' : 'bg-white/40 hover:bg-white/70'
                       }`}
                     aria-label={`Go to featured ${idx + 1}`}
                   />
@@ -252,7 +252,7 @@ export default function GalleryPage() {
               <h4 className="text-white font-bold text-base leading-snug">
                 {filteredItems[lightboxIndex].title}
               </h4>
-              <span className="inline-block text-xs text-[#ff6b00] uppercase font-extrabold tracking-widest bg-[#ff6b00]/10 border border-[#ff6b00]/20 px-3 py-1 rounded-full">
+              <span className="inline-block text-xs text-[#FC6129] uppercase font-extrabold tracking-widest bg-[#FC6129]/10 border border-[#FC6129]/20 px-3 py-1 rounded-full">
                 {filteredItems[lightboxIndex].category}
               </span>
             </div>
@@ -262,7 +262,7 @@ export default function GalleryPage() {
         {/* Category Filters */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between border-b border-black/10 dark:border-white/5 pb-6">
           <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
-            <Filter className="w-4 h-4 text-[#ff6b00]" />
+            <Filter className="w-4 h-4 text-[#FC6129]" />
             <span className="text-xs uppercase font-semibold tracking-wider">Filter Media</span>
           </div>
 
@@ -290,7 +290,7 @@ export default function GalleryPage() {
             {filteredItems.map((item, index) => (
               <ScrollReveal
                 key={item.id}
-                className="break-inside-avoid relative rounded-2xl overflow-hidden glass-panel border border-black/10 dark:border-white/10 bg-white/40 dark:bg-gradient-to-br dark:from-[#121214] dark:to-[#0a0a0c] group cursor-pointer shadow-lg hover:border-[#ff6b00]/30 transition-all duration-300 animate-on-scroll"
+                className="break-inside-avoid relative rounded-2xl overflow-hidden glass-panel border border-black/10 dark:border-white/10 bg-white/40 dark:bg-gradient-to-br dark:from-[#121214] dark:to-[#0a0a0c] group cursor-pointer shadow-lg hover:border-[#FC6129]/30 transition-all duration-300 animate-on-scroll"
               >
                 <div onClick={() => openLightbox(index)}>
                   {/* Image element */}
@@ -303,7 +303,7 @@ export default function GalleryPage() {
                     />
                     {/* Overlay on hover */}
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                      <span className="text-white font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] px-4 py-2 rounded-xl shadow-lg">
+                      <span className="text-white font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-[#FC6129] to-[#ff2a2a] px-4 py-2 rounded-xl shadow-lg">
                         Zoom Image
                       </span>
                     </div>

@@ -59,7 +59,7 @@ export default function ContactEditor() {
   const pending = requests.filter(r => r.status === 'pending').length;
   const responded = requests.filter(r => r.status === 'responded').length;
 
-  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" /></div>;
+  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" /></div>;
 
   return (
     <div className="space-y-6">
@@ -84,7 +84,7 @@ export default function ContactEditor() {
       <div className="flex rounded-xl overflow-hidden border border-white/10 w-fit">
         {(['all', 'pending', 'responded'] as FilterType[]).map(f => (
           <button key={f} onClick={() => setFilter(f)}
-            className={`px-4 py-2 text-xs font-bold capitalize transition-colors cursor-pointer ${filter === f ? 'bg-[#ff6b00] text-white' : 'bg-black/30 text-gray-400 hover:text-white'}`}>
+            className={`px-4 py-2 text-xs font-bold capitalize transition-colors cursor-pointer ${filter === f ? 'bg-[#FC6129] text-white' : 'bg-black/30 text-gray-400 hover:text-white'}`}>
             {f} {f === 'all' ? `(${requests.length})` : f === 'pending' ? `(${pending})` : `(${responded})`}
           </button>
         ))}
@@ -115,7 +115,7 @@ export default function ContactEditor() {
                   <div className="flex items-center flex-wrap gap-3">
                     <a href={`mailto:${req.email}?subject=Re: Your Inquiry&body=Hi ${req.name},%0A%0A`}
                       target="_blank" rel="noreferrer"
-                      className="flex items-center gap-1.5 text-[#ff6b00] hover:text-[#ff8c3a] transition-colors">
+                      className="flex items-center gap-1.5 text-[#FC6129] hover:text-[#ff8b63] transition-colors">
                       <Mail className="w-3.5 h-3.5" />
                       <span>{req.email}</span>
                       <ExternalLink className="w-2.5 h-2.5 opacity-60" />

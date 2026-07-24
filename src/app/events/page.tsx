@@ -133,7 +133,7 @@ export default function EventsPage() {
                       {/* Meta items */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="flex items-center space-x-3 text-gray-700 dark:text-gray-300">
-                          <Calendar className="w-5 h-5 text-[#ff6b00]" />
+                          <Calendar className="w-5 h-5 text-[#FC6129]" />
                           <div>
                             <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Date & Time</span>
                             <span className="text-xs font-semibold">
@@ -156,7 +156,7 @@ export default function EventsPage() {
                           href="https://wa.me/254793625426?text=Hello%20Coach%20Billy%2C%20I%20visited%20your%20website%20and%20want%20to%20learn%20more%20about%20your%20coaching%20programs%21"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center px-6 py-3 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] rounded-xl hover:from-[#ff2a2a] hover:to-[#ff6b00] transition-all duration-300 cursor-pointer shadow-lg shadow-orange-500/10 hover:scale-[1.02] active:scale-[0.98]"
+                          className="inline-flex items-center justify-center px-6 py-3 font-bold text-white bg-gradient-to-r from-[#FC6129] to-[#ff2a2a] rounded-xl hover:from-[#ff2a2a] hover:to-[#FC6129] transition-all duration-300 cursor-pointer shadow-lg shadow-orange-500/10 hover:scale-[1.02] active:scale-[0.98]"
                         >
                           WhatsApp Me for Registration 📱
                           <ExternalLink className="w-4 h-4 ml-1.5" />

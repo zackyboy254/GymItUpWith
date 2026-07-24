@@ -129,7 +129,7 @@ export default function AchievementsPage() {
                   </div>
 
                   <div className="flex items-center space-x-2 text-[10px] text-gray-500 pt-3 border-t border-black/10 dark:border-white/5">
-                    <Calendar className="w-3.5 h-3.5 text-[#ff6b00]" />
+                    <Calendar className="w-3.5 h-3.5 text-[#FC6129]" />
                     <span>Obtained: {new Date(item.achievement_date).toLocaleDateString([], { year: 'numeric', month: 'long' })}</span>
                   </div>
                 </div>

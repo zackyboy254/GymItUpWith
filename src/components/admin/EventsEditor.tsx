@@ -150,7 +150,7 @@ export default function EventsEditor() {
 
   const isPast = (iso: string) => new Date(iso) < new Date();
 
-  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" /></div>;
+  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" /></div>;
 
   return (
     <div className="space-y-8">
@@ -173,30 +173,30 @@ export default function EventsEditor() {
           <div className="space-y-1 md:col-span-2">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Event Title *</label>
             <input type="text" value={title} onChange={e => setTitle(e.target.value)} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="e.g. Saturday Morning Power Bootcamp" />
           </div>
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Date &amp; Time *</label>
             <input type="datetime-local" value={eventDate} onChange={e => setEventDate(e.target.value)} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] [color-scheme:dark]" />
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] [color-scheme:dark]" />
           </div>
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Location / Venue *</label>
             <input type="text" value={location} onChange={e => setLocation(e.target.value)} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="e.g. Central Park Outdoor Zone, Nairobi" />
           </div>
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Registration Link (optional)</label>
             <input type="url" value={registrationLink} onChange={e => setRegistrationLink(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="https://wa.me/..." />
           </div>
           <div className="space-y-1 md:col-span-2">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Description *</label>
             <textarea value={description} onChange={e => setDescription(e.target.value)} rows={3} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] resize-none"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] resize-none"
               placeholder="Event format, gear, what to expect..." />
           </div>
           <div className="md:col-span-2">
@@ -214,7 +214,7 @@ export default function EventsEditor() {
           </div>
         </div>
         <button type="submit" disabled={isSaving || isUploading}
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
           {isSaving ? 'Saving...' : 'Publish Event'}
         </button>
@@ -244,8 +244,8 @@ export default function EventsEditor() {
                       )}
                     </div>
                     <div className="flex items-center gap-3 text-[10px] text-gray-400">
-                      <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#ff6b00]" />{formatDate(ev.event_date)}</span>
-                      <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-[#ff6b00]" />{ev.location}</span>
+                      <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-[#FC6129]" />{formatDate(ev.event_date)}</span>
+                      <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-[#FC6129]" />{ev.location}</span>
                     </div>
                     {ev.registration_link && (
                       <a href={ev.registration_link} target="_blank" rel="noreferrer"
@@ -259,7 +259,7 @@ export default function EventsEditor() {
                       {ev.status}
                     </span>
                     <button onClick={() => openEdit(ev)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-white/5 hover:bg-[#ff6b00]/20 text-gray-300 hover:text-white rounded-lg border border-white/5 cursor-pointer text-[10px] transition-colors">
+                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-white/5 hover:bg-[#FC6129]/20 text-gray-300 hover:text-white rounded-lg border border-white/5 cursor-pointer text-[10px] transition-colors">
                       <Pencil className="w-3 h-3" /> Edit
                     </button>
                     <button onClick={() => toggleStatus(ev)}
@@ -290,39 +290,39 @@ export default function EventsEditor() {
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Title</label>
                 <input type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]" />
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Date &amp; Time</label>
                 <input type="datetime-local" value={editDate} onChange={e => setEditDate(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] [color-scheme:dark]" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] [color-scheme:dark]" />
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Location</label>
                 <input type="text" value={editLocation} onChange={e => setEditLocation(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]" />
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Registration Link</label>
                 <input type="url" value={editRegLink} onChange={e => setEditRegLink(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
                   placeholder="https://wa.me/..." />
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Description</label>
                 <textarea value={editDescription} onChange={e => setEditDescription(e.target.value)} rows={4}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] resize-none" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] resize-none" />
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Cover Image URL</label>
                 <input type="url" value={editCoverImage} onChange={e => setEditCoverImage(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
                   placeholder="https://..." />
               </div>
             </div>
             <div className="flex gap-3 pt-2">
               <button onClick={handleSaveEdit} disabled={isSaving}
-                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
+                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
                 {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                 Save Changes
               </button>

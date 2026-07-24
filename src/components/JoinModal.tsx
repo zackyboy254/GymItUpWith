@@ -101,7 +101,7 @@ export default function JoinModal() {
       >
         <div
           ref={modalRef}
-          className="pointer-events-auto w-full max-w-lg rounded-3xl overflow-hidden glass-panel border border-[#ff6b00]/30 bg-gradient-to-br from-[#121214] via-[#0d0d0f] to-[#0a0a0c] shadow-2xl p-6 lg:p-8 space-y-6 popup-card max-h-[90vh] overflow-y-auto"
+          className="pointer-events-auto w-full max-w-lg rounded-3xl overflow-hidden glass-panel border border-[#FC6129]/30 bg-gradient-to-br from-[#121214] via-[#0d0d0f] to-[#0a0a0c] shadow-2xl p-6 lg:p-8 space-y-6 popup-card max-h-[90vh] overflow-y-auto"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-white/5 pb-4">
@@ -157,7 +157,7 @@ export default function JoinModal() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="e.g. John Doe"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#ff6b00]"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#FC6129]"
                   required
                 />
               </div>
@@ -172,7 +172,7 @@ export default function JoinModal() {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="e.g. +254 793 62542"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#ff6b00]"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#FC6129]"
                 />
               </div>
             </div>
@@ -205,7 +205,7 @@ export default function JoinModal() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="e.g. johndoe@gmail.com"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#ff6b00]"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#FC6129]"
                 required
               />
             </div>
@@ -221,7 +221,7 @@ export default function JoinModal() {
                 onChange={handleChange}
                 rows={4}
                 placeholder="Tell Coach Billy about your targets (e.g., lose 5kg, build lean muscle, personal training details)..."
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#ff6b00] resize-none"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#FC6129] resize-none"
                 required
               ></textarea>
             </div>
@@ -229,7 +229,7 @@ export default function JoinModal() {
             <button
               type="submit"
               disabled={status === 'submitting' || status === 'success'}
-              className="w-full inline-flex items-center justify-center px-6 py-3.5 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#ff6b00] rounded-xl shadow-lg shadow-orange-500/15 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 cursor-pointer disabled:bg-white/5 disabled:text-gray-500"
+              className="w-full inline-flex items-center justify-center px-6 py-3.5 font-bold text-white bg-gradient-to-r from-[#FC6129] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#FC6129] rounded-xl shadow-lg shadow-orange-500/15 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 cursor-pointer disabled:bg-white/5 disabled:text-gray-500"
             >
               {status === 'submitting' ? (
                 'Submitting Request...'

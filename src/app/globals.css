@@ -45,7 +45,7 @@ body {
 }
 
 .eyebrow {
-  color: #d8f36b;
+  color: var(--primary);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.22em;
@@ -63,7 +63,7 @@ body {
 }
 
 .section-title span {
-  color: #d8f36b;
+  color: var(--primary);
 }
 
 /* Custom Scrollbar */

@@ -207,7 +207,7 @@ CREATE POLICY "Allow admin manage home_content" ON public.home_content
             {SQL_MIGRATION}
           </pre>
         </div>
-        <button onClick={handleReload} className="px-4 py-2 bg-[#ff6b00] text-white rounded-lg text-xs font-bold hover:bg-[#e55a00] cursor-pointer transition-colors">
+        <button onClick={handleReload} className="px-4 py-2 bg-[#FC6129] text-white rounded-lg text-xs font-bold hover:bg-[#d94d1e] cursor-pointer transition-colors">
           Reload Home Content Table
         </button>
       </div>
@@ -218,7 +218,7 @@ CREATE POLICY "Allow admin manage home_content" ON public.home_content
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" />
       </div>
     );
   }
@@ -254,7 +254,7 @@ CREATE POLICY "Allow admin manage home_content" ON public.home_content
             type="text"
             value={content.title}
             onChange={e => setContent(prev => ({ ...prev, title: e.target.value }))}
-            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#ff6b00] transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#FC6129] transition-colors"
             required
             placeholder="Push Your Limits Shape Your Destiny"
           />
@@ -268,7 +268,7 @@ CREATE POLICY "Allow admin manage home_content" ON public.home_content
             value={content.subtitle}
             onChange={e => setContent(prev => ({ ...prev, subtitle: e.target.value }))}
             rows={4}
-            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#ff6b00] transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#FC6129] transition-colors"
             required
             placeholder="Welcome to GymItUpWith Billy..."
           />
@@ -283,7 +283,7 @@ CREATE POLICY "Allow admin manage home_content" ON public.home_content
               type="text"
               value={content.cta_text}
               onChange={e => setContent(prev => ({ ...prev, cta_text: e.target.value }))}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#ff6b00] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#FC6129] transition-colors"
               required
               placeholder="Join Program"
             />
@@ -297,7 +297,7 @@ CREATE POLICY "Allow admin manage home_content" ON public.home_content
               type="text"
               value={content.cta_url}
               onChange={e => setContent(prev => ({ ...prev, cta_url: e.target.value }))}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#ff6b00] transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#FC6129] transition-colors"
               required
               placeholder="/contact"
             />
@@ -325,7 +325,7 @@ CREATE POLICY "Allow admin manage home_content" ON public.home_content
           <select
             value={content.status}
             onChange={e => setContent(prev => ({ ...prev, status: e.target.value as 'active' | 'disabled' }))}
-            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#ff6b00] transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-[#FC6129] transition-colors"
           >
             <option value="active">Visible on homepage</option>
             <option value="disabled">Hidden from homepage</option>
@@ -336,7 +336,7 @@ CREATE POLICY "Allow admin manage home_content" ON public.home_content
           <button
             type="submit"
             disabled={isSaving || isUploading}
-            className="inline-flex items-center space-x-2 px-6 py-3 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#ff6b00] rounded-xl shadow-lg shadow-orange-500/10 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer disabled:opacity-50"
+            className="inline-flex items-center space-x-2 px-6 py-3 font-bold text-white bg-gradient-to-r from-[#FC6129] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#FC6129] rounded-xl shadow-lg shadow-orange-500/10 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer disabled:opacity-50"
           >
             {isSaving ? (
               <>

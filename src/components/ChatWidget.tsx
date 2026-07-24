@@ -102,8 +102,8 @@ export default function ChatWidget() {
           {/* Header */}
           <div className="bg-gradient-to-r from-[#121214] to-[#1a1a1f] p-4 border-b border-white/5 flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-lg bg-[#ff6b00]/10 border border-[#ff6b00]/20 flex items-center justify-center">
-                <Dumbbell className="w-4.5 h-4.5 text-[#ff6b00]" />
+              <div className="w-8 h-8 rounded-lg bg-[#FC6129]/10 border border-[#FC6129]/20 flex items-center justify-center">
+                <Dumbbell className="w-4.5 h-4.5 text-[#FC6129]" />
               </div>
               <div>
                 <h4 className="font-bold text-white text-sm">Gym It Up Assistant</h4>
@@ -130,13 +130,13 @@ export default function ChatWidget() {
               >
                 {msg.sender === 'bot' && (
                   <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                    <Dumbbell className="w-3.5 h-3.5 text-[#ff6b00]" />
+                    <Dumbbell className="w-3.5 h-3.5 text-[#FC6129]" />
                   </div>
                 )}
                 <div
                   className={`max-w-[75%] rounded-2xl p-3 text-xs leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-gradient-to-br from-[#ff6b00] to-[#ff2a2a] text-white rounded-tr-none'
+                      ? 'bg-gradient-to-br from-[#FC6129] to-[#ff2a2a] text-white rounded-tr-none'
                       : 'bg-white/5 border border-white/10 text-gray-200 rounded-tl-none'
                   }`}
                 >
@@ -155,7 +155,7 @@ export default function ChatWidget() {
             {isLoading && (
               <div className="flex gap-2.5 justify-start">
                 <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                  <Dumbbell className="w-3.5 h-3.5 text-[#ff6b00] animate-bounce" />
+                  <Dumbbell className="w-3.5 h-3.5 text-[#FC6129] animate-bounce" />
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none p-3.5 flex items-center space-x-1">
                   <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -174,12 +174,12 @@ export default function ChatWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything..."
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#ff6b00] transition-colors"
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#FC6129] transition-colors"
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="w-8.5 h-8.5 rounded-xl bg-[#ff6b00] hover:bg-[#e05e00] disabled:bg-white/5 disabled:text-gray-600 flex items-center justify-center text-white transition-colors cursor-pointer"
+              className="w-8.5 h-8.5 rounded-xl bg-[#FC6129] hover:bg-[#d94d1e] disabled:bg-white/5 disabled:text-gray-600 flex items-center justify-center text-white transition-colors cursor-pointer"
             >
               <Send className="w-4 h-4" />
             </button>

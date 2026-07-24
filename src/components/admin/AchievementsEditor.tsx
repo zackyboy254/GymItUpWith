@@ -122,7 +122,7 @@ export default function AchievementsEditor() {
     } finally { setIsSaving(false); }
   };
 
-  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" /></div>;
+  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" /></div>;
 
   return (
     <div className="space-y-8">
@@ -145,18 +145,18 @@ export default function AchievementsEditor() {
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Credential / Title *</label>
             <input type="text" value={title} onChange={e => setTitle(e.target.value)} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="e.g. Certified Kettlebell Master" />
           </div>
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Awarding Date</label>
             <input type="date" value={achievementDate} onChange={e => setAchievementDate(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] [color-scheme:dark]" />
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] [color-scheme:dark]" />
           </div>
           <div className="space-y-1 md:col-span-2">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Description</label>
             <textarea value={description} onChange={e => setDescription(e.target.value)} rows={2}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] resize-none"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] resize-none"
               placeholder="Background and depth of this coaching certification." />
           </div>
           <div className="md:col-span-2">
@@ -173,7 +173,7 @@ export default function AchievementsEditor() {
           </div>
         </div>
         <button type="submit" disabled={isSaving || isUploading}
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
           {isSaving ? 'Saving...' : 'Save Achievement'}
         </button>
@@ -194,14 +194,14 @@ export default function AchievementsEditor() {
                 <div className="aspect-square bg-black/40 relative">
                   <img src={item.image_url} alt={item.title}
                     className="w-full h-full object-contain p-2"
-                    onError={e => { (e.target as any).src = '/images/logo.webp'; }} />
+                    onError={e => { (e.target as any).src = '/images/gymituplogo.png'; }} />
                   <div className={`absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[8px] font-extrabold uppercase ${
                     item.status === 'active' ? 'bg-emerald-500/90 text-white' : 'bg-gray-700/90 text-gray-300'
                   }`}>{item.status}</div>
                   {/* Hover overlay */}
                   <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <button onClick={() => openEdit(item)} title="Edit"
-                      className="p-2 bg-white/10 hover:bg-[#ff6b00] rounded-lg transition-colors cursor-pointer">
+                      className="p-2 bg-white/10 hover:bg-[#FC6129] rounded-lg transition-colors cursor-pointer">
                       <Pencil className="w-3.5 h-3.5 text-white" />
                     </button>
                     <button onClick={() => toggleStatus(item)} title={item.status === 'active' ? 'Disable' : 'Enable'}
@@ -236,17 +236,17 @@ export default function AchievementsEditor() {
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Title</label>
                 <input type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]" />
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Awarding Date</label>
                 <input type="date" value={editDate} onChange={e => setEditDate(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] [color-scheme:dark]" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] [color-scheme:dark]" />
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Description</label>
                 <textarea value={editDescription} onChange={e => setEditDescription(e.target.value)} rows={3}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] resize-none" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] resize-none" />
               </div>
               <ImageUploadField
                 label="Certificate / Badge Image"
@@ -261,7 +261,7 @@ export default function AchievementsEditor() {
             </div>
             <div className="flex gap-3 pt-2">
               <button onClick={handleSaveEdit} disabled={isSaving || isEditUploading}
-                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
+                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
                 {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                 Save Changes
               </button>

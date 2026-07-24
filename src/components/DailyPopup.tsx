@@ -103,7 +103,7 @@ export default function DailyPopup() {
   if (!isVisible || !popupData) return null;
 
   const typeColors: Record<string, { bg: string; border: string; icon: string; badge: string }> = {
-    motivation: { bg: 'from-[#ff6b00]/10', border: 'border-[#ff6b00]/30', icon: 'text-[#ff6b00]', badge: 'bg-[#ff6b00]/10 text-[#ff6b00] border-[#ff6b00]/20' },
+    motivation: { bg: 'from-[#FC6129]/10', border: 'border-[#FC6129]/30', icon: 'text-[#FC6129]', badge: 'bg-[#FC6129]/10 text-[#FC6129] border-[#FC6129]/20' },
     promo: { bg: 'from-[#0077ff]/10', border: 'border-[#0077ff]/30', icon: 'text-[#0077ff]', badge: 'bg-[#0077ff]/10 text-[#0077ff] border-[#0077ff]/20' },
     event: { bg: 'from-[#ff2a2a]/10', border: 'border-[#ff2a2a]/30', icon: 'text-[#ff2a2a]', badge: 'bg-[#ff2a2a]/10 text-[#ff2a2a] border-[#ff2a2a]/20' },
     tip: { bg: 'from-emerald-500/10', border: 'border-emerald-500/30', icon: 'text-emerald-400', badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
@@ -133,7 +133,7 @@ export default function DailyPopup() {
               {/* Logo overlay */}
               <div className="absolute bottom-4 left-4 flex flex-col items-start gap-1">
                 <Image
-                  src="/images/logo.webp"
+                  src="/images/GYM_IT_UP_LOGO-removed_bg"
                   alt="Gym It Up With"
                   width={40}
                   height={40}
@@ -188,7 +188,7 @@ export default function DailyPopup() {
               <Link
                 href={popupData.cta_link}
                 onClick={handleDismiss}
-                className="flex-1 inline-flex items-center justify-center px-5 py-3 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] rounded-xl hover:from-[#ff2a2a] hover:to-[#ff6b00] transition-all duration-300 shadow-lg shadow-orange-500/20 hover:scale-[1.02] active:scale-[0.98] pulse-ring"
+                className="flex-1 inline-flex items-center justify-center px-5 py-3 font-bold text-white bg-gradient-to-r from-[#FC6129] to-[#ff2a2a] rounded-xl hover:from-[#ff2a2a] hover:to-[#FC6129] transition-all duration-300 shadow-lg shadow-orange-500/20 hover:scale-[1.02] active:scale-[0.98] pulse-ring"
               >
                 {popupData.cta_text}
                 <ChevronRight className="w-4 h-4 ml-1" />

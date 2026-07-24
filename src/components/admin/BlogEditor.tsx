@@ -158,7 +158,7 @@ export default function BlogEditor() {
     } catch { showMsg('error', 'Failed to update status.'); }
   };
 
-  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" /></div>;
+  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" /></div>;
 
   return (
     <div className="space-y-8">
@@ -169,7 +169,7 @@ export default function BlogEditor() {
         </div>
         {blogs.length === 0 && (
           <button onClick={handleSeedSample} disabled={isSaving}
-            className="px-3 py-1.5 text-[10px] font-bold text-[#ff6b00] border border-[#ff6b00]/30 rounded-lg hover:bg-[#ff6b00]/10 transition-colors cursor-pointer">
+            className="px-3 py-1.5 text-[10px] font-bold text-[#FC6129] border border-[#FC6129]/30 rounded-lg hover:bg-[#FC6129]/10 transition-colors cursor-pointer">
             + Add Sample Post
           </button>
         )}
@@ -198,20 +198,20 @@ export default function BlogEditor() {
           <div className="space-y-1 md:col-span-2">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Article Title *</label>
             <input type="text" value={title} onChange={e => setTitle(e.target.value)} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="e.g. 5 Rules of Active Hydration" />
           </div>
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Category *</label>
             <select value={category} onChange={e => setCategory(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] cursor-pointer">
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] cursor-pointer">
               {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Excerpt / Summary</label>
             <input type="text" value={excerpt} onChange={e => setExcerpt(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="Short one-liner summary..." />
           </div>
           <div className="space-y-1 md:col-span-2">
@@ -219,7 +219,7 @@ export default function BlogEditor() {
               Full Content * <span className="text-gray-600 ml-1">({content.length} chars)</span>
             </label>
             <textarea value={content} onChange={e => setContent(e.target.value)} rows={10} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] font-mono resize-y"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] font-mono resize-y"
               placeholder="Write the full article content here. Markdown is supported." />
           </div>
           <div className="md:col-span-2">
@@ -236,7 +236,7 @@ export default function BlogEditor() {
           </div>
         </div>
         <button type="submit" disabled={isSaving || isUploading}
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : editMode === 'edit' ? <Save className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           {isSaving ? 'Saving...' : editMode === 'edit' ? 'Update Post' : 'Publish Post'}
         </button>
@@ -253,7 +253,7 @@ export default function BlogEditor() {
         ) : (
           <div className="grid grid-cols-1 gap-3">
             {blogs.map(blog => (
-              <div key={blog.id} className={`flex bg-white/5 border rounded-xl overflow-hidden transition-colors ${editId === blog.id ? 'border-[#ff6b00]/40 bg-[#ff6b00]/5' : 'border-white/5 hover:border-white/10'}`}>
+              <div key={blog.id} className={`flex bg-white/5 border rounded-xl overflow-hidden transition-colors ${editId === blog.id ? 'border-[#FC6129]/40 bg-[#FC6129]/5' : 'border-white/5 hover:border-white/10'}`}>
                 {blog.cover_image && (
                   <div className="w-24 shrink-0">
                     <img src={blog.cover_image} alt={blog.title} className="w-full h-full object-cover"
@@ -267,11 +267,11 @@ export default function BlogEditor() {
                       {blog.status}
                     </span>
                   </div>
-                  <p className="text-[10px] text-[#ff6b00]">/{blog.slug} · {blog.category}</p>
+                  <p className="text-[10px] text-[#FC6129]">/{blog.slug} · {blog.category}</p>
                   {blog.excerpt && <p className="text-[10px] text-gray-500 line-clamp-1">{blog.excerpt}</p>}
                   <div className="flex items-center gap-2 pt-1">
                     <button onClick={() => openEdit(blog)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-white/5 hover:bg-[#ff6b00]/20 text-gray-300 hover:text-white rounded-lg border border-white/5 cursor-pointer text-[10px] transition-colors">
+                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-white/5 hover:bg-[#FC6129]/20 text-gray-300 hover:text-white rounded-lg border border-white/5 cursor-pointer text-[10px] transition-colors">
                       <Pencil className="w-3 h-3" /> Edit
                     </button>
                     <button onClick={() => toggleStatus(blog)}

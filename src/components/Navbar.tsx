@@ -60,16 +60,16 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3 group">
+            <Link href="/" className="flex flex-col flexitems-center space-y-1 text-center group">
               <Image
-                src="/images/logo.webp"
-                alt="Grow Fit logo"
-                width={40}
-                height={40}
-                className="rounded-xl border border-white/10 object-cover shadow-lg shadow-orange-500/15 group-hover:scale-105 transition-transform duration-300"
+                src="/images/gymituplogo.webp"
+                alt="Gym it Up logo"
+                width={20}
+                height={20}
+                className="rounded-2xl border border-white/10 object-cover shadow-lg shadow-orange-500/15 group-hover:scale-105 transition-transform duration-300"
                 priority={true}
               />
-                <span className="text-[11px] text-[#d8f36b] font-medium mt-0.5">Grow strong. Live better.</span>
+                <span className="text-[11px] text-[#fc6129] font-medium mt-0.5">Sweat. Smile. Repeat.</span>
             </Link>
 
             {/* Desktop Links */}
@@ -129,7 +129,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex flex-col">
             <span className="font-extrabold text-lg tracking-wider text-black dark:text-white uppercase">
-              GROW <span className="text-[#d8f36b]">FIT</span>
+              GROW <span className="text-[#FC6129]">FIT</span>
             </span>
             <span className="text-[12px] text-gray-500 mt-1">Grow strong. Live better.</span>
           </div>

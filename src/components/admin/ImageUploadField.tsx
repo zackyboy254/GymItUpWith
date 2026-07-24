@@ -98,7 +98,7 @@ export function ImageUploadField({
             accept="image/*"
             onChange={handleFileChange}
             disabled={isUploading}
-            className="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-extrabold file:uppercase file:bg-[#ff6b00]/10 file:text-[#ff6b00] hover:file:bg-[#ff6b00]/20 file:cursor-pointer cursor-pointer disabled:opacity-50"
+            className="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-extrabold file:uppercase file:bg-[#FC6129]/10 file:text-[#FC6129] hover:file:bg-[#FC6129]/20 file:cursor-pointer cursor-pointer disabled:opacity-50"
           />
           {isUploading && (
             <p className="text-[10px] text-amber-400 animate-pulse">Uploading to Supabase storage...</p>
@@ -110,7 +110,7 @@ export function ImageUploadField({
             type="text"
             value={value}
             onChange={e => onChange(e.target.value)}
-            className="w-full bg-black/40 border border-white/10 rounded-xl py-1.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+            className="w-full bg-black/40 border border-white/10 rounded-xl py-1.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
             placeholder={placeholder}
           />
         </div>

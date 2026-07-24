@@ -282,7 +282,7 @@ export default function VideosEditor() {
     } catch { showMsg('error', 'Failed to save order.'); fetchVideos(); }
   };
 
-  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" /></div>;
+  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" /></div>;
 
   return (
     <div className="space-y-8">
@@ -324,11 +324,11 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
         {/* Mode toggle */}
         <div className="flex rounded-xl overflow-hidden border border-white/10 w-fit">
           <button type="button" onClick={() => setAddMode('youtube')}
-            className={`px-4 py-2 text-xs font-bold flex items-center gap-1.5 transition-colors ${addMode === 'youtube' ? 'bg-[#ff6b00] text-white' : 'bg-black/30 text-gray-400 hover:text-white'}`}>
+            className={`px-4 py-2 text-xs font-bold flex items-center gap-1.5 transition-colors ${addMode === 'youtube' ? 'bg-[#FC6129] text-white' : 'bg-black/30 text-gray-400 hover:text-white'}`}>
             <Link2 className="w-3.5 h-3.5" /> YouTube URL
           </button>
           <button type="button" onClick={() => setAddMode('file')}
-            className={`px-4 py-2 text-xs font-bold flex items-center gap-1.5 transition-colors ${addMode === 'file' ? 'bg-[#ff6b00] text-white' : 'bg-black/30 text-gray-400 hover:text-white'}`}>
+            className={`px-4 py-2 text-xs font-bold flex items-center gap-1.5 transition-colors ${addMode === 'file' ? 'bg-[#FC6129] text-white' : 'bg-black/30 text-gray-400 hover:text-white'}`}>
             <Upload className="w-3.5 h-3.5" /> Upload File
           </button>
         </div>
@@ -337,7 +337,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
           <div className="space-y-1 md:col-span-2">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Title *</label>
             <input type="text" value={title} onChange={e => setTitle(e.target.value)} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="e.g. Morning HIIT Workout" />
           </div>
 
@@ -345,7 +345,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
             <div className="space-y-1 md:col-span-2">
               <label className="block text-[9px] text-gray-400 font-bold uppercase">YouTube URL *</label>
               <input type="url" value={youtubeUrl} onChange={e => setYoutubeUrl(e.target.value)}
-                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
                 placeholder="https://www.youtube.com/watch?v=..." />
               {youtubeUrl && getYoutubeThumbnail(youtubeUrl) && (
                 <img src={getYoutubeThumbnail(youtubeUrl)!} alt="preview" className="h-24 rounded-lg object-cover mt-2 border border-white/10" />
@@ -355,7 +355,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
             <div className="space-y-1 md:col-span-2">
               <label className="block text-[9px] text-gray-400 font-bold uppercase">Video File *</label>
               <input ref={fileInputRef} type="file" accept="video/*" onChange={e => setVideoFile(e.target.files?.[0] || null)}
-                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#ff6b00] file:text-white cursor-pointer" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#FC6129] file:text-white cursor-pointer" />
               {videoFile && <p className="text-[10px] text-gray-400">Selected: {videoFile.name} ({(videoFile.size / 1024 / 1024).toFixed(1)} MB)</p>}
             </div>
           )}
@@ -363,7 +363,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Category</label>
             <select value={category} onChange={e => setCategory(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] cursor-pointer">
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] cursor-pointer">
               {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.display}</option>)}
             </select>
           </div>
@@ -371,14 +371,14 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Description</label>
             <input type="text" value={description} onChange={e => setDescription(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="Short description (optional)" />
           </div>
 
           <div className="space-y-1 md:col-span-2">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Custom Thumbnail (Optional)</label>
             <input ref={thumbnailInputRef} type="file" accept="image/*" onChange={e => setThumbnailFile(e.target.files?.[0] || null)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#ff6b00] file:text-white cursor-pointer" />
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#FC6129] file:text-white cursor-pointer" />
             {thumbnailFile ? (
               <div className="mt-2 space-y-1">
                 <p className="text-[10px] text-emerald-400">✓ Thumbnail selected: {thumbnailFile.name}</p>
@@ -391,13 +391,13 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
 
           <div className="flex items-center gap-2 md:col-span-2">
             <input type="checkbox" id="featured" checked={featured} onChange={e => setFeatured(e.target.checked)}
-              className="w-4 h-4 accent-[#ff6b00] cursor-pointer" />
+              className="w-4 h-4 accent-[#FC6129] cursor-pointer" />
             <label htmlFor="featured" className="text-xs text-gray-300 cursor-pointer">Mark as Featured</label>
           </div>
         </div>
 
         <button type="submit" disabled={isSaving || isUploading}
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
           {isSaving || isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
           {isUploading ? 'Uploading...' : isSaving ? 'Saving...' : 'Add Video'}
         </button>
@@ -425,7 +425,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
                   onDrop={e => handleDrop(e, v.id)}
                   onDragEnd={() => { setDragId(null); setDragOverId(null); }}
                   className={`group relative rounded-xl overflow-hidden border transition-all cursor-grab active:cursor-grabbing ${
-                    isDraggingOver ? 'border-[#ff6b00] scale-95' : 'border-white/10'
+                    isDraggingOver ? 'border-[#FC6129] scale-95' : 'border-white/10'
                   } ${dragId === v.id ? 'opacity-40' : 'opacity-100'}`}
                 >
                   {/* Thumbnail */}
@@ -476,7 +476,7 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                       <button onClick={() => openEdit(v)} title="Edit"
-                        className="p-2 bg-white/10 hover:bg-[#ff6b00] rounded-lg transition-colors cursor-pointer">
+                        className="p-2 bg-white/10 hover:bg-[#FC6129] rounded-lg transition-colors cursor-pointer">
                         <Pencil className="w-3.5 h-3.5 text-white" />
                       </button>
                       <button onClick={() => toggleFeatured(v)} title={v.is_featured ? 'Unfeature' : 'Feature'}
@@ -518,30 +518,30 @@ UPDATE videos SET sort_order = id WHERE sort_order = 0;`}</pre>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Title</label>
                 <input type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]" />
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Category</label>
                 <select value={editCategory} onChange={e => setEditCategory(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] cursor-pointer">
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] cursor-pointer">
                   {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.display}</option>)}
                 </select>
               </div>
               <div className="space-y-1">
                 <label className="block text-[9px] text-gray-400 font-bold uppercase">Description</label>
                 <textarea value={editDescription} onChange={e => setEditDescription(e.target.value)} rows={3}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] resize-none" />
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] resize-none" />
               </div>
               <div className="flex items-center gap-2">
                 <input type="checkbox" id="editFeatured" checked={editFeatured} onChange={e => setEditFeatured(e.target.checked)}
-                  className="w-4 h-4 accent-[#ff6b00] cursor-pointer" />
+                  className="w-4 h-4 accent-[#FC6129] cursor-pointer" />
                 <label htmlFor="editFeatured" className="text-xs text-gray-300 cursor-pointer">Featured Video</label>
               </div>
             </div>
 
             <div className="flex items-center gap-3 pt-2">
               <button onClick={handleSaveEdit} disabled={isSaving}
-                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
+                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] rounded-xl transition-colors disabled:opacity-50 cursor-pointer">
                 {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                 {isSaving ? 'Saving...' : 'Save Changes'}
               </button>

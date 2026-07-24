@@ -60,7 +60,7 @@ export default function ContactPage() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 space-y-16 pt-10">
         {/* Page Header */}
         <div className="text-center space-y-4">
-          <span className="text-[#ff6b00] text-sm font-bold uppercase tracking-wider">Get in Touch</span>
+          <span className="text-[#FC6129] text-sm font-bold uppercase tracking-wider">Get in Touch</span>
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white uppercase">Contact Coach Billy</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm">
             Have questions about pricing, bootcamps, or personal training? Drop a message below or initiate a chat instantly.
@@ -105,7 +105,7 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="e.g. John Doe"
-                    className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#ff6b00] transition-colors"
+                    className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#FC6129] transition-colors"
                     required
                   />
                 </div>
@@ -120,7 +120,7 @@ export default function ContactPage() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="e.g. +254 793 62542"
-                    className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#ff6b00] transition-colors"
+                    className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#FC6129] transition-colors"
                   />
                 </div>
               </div>
@@ -136,7 +136,7 @@ export default function ContactPage() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="e.g. johndoe@gmail.com"
-                  className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#ff6b00] transition-colors"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#FC6129] transition-colors"
                   required
                 />
               </div>
@@ -152,7 +152,7 @@ export default function ContactPage() {
                   onChange={handleChange}
                   rows={5}
                   placeholder="Describe your training goals or details..."
-                  className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#ff6b00] transition-colors resize-none"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#FC6129] transition-colors resize-none"
                   required
                 ></textarea>
               </div>
@@ -160,7 +160,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="w-full inline-flex items-center justify-center px-6 py-3.5 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#ff6b00] rounded-xl shadow-lg shadow-orange-500/15 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 cursor-pointer disabled:bg-white/5 disabled:text-gray-500"
+                className="w-full inline-flex items-center justify-center px-6 py-3.5 font-bold text-white bg-gradient-to-r from-[#FC6129] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#FC6129] rounded-xl shadow-lg shadow-orange-500/15 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 cursor-pointer disabled:bg-white/5 disabled:text-gray-500"
               >
                 {status === 'submitting' ? (
                   'Submitting Message...'
@@ -199,10 +199,10 @@ export default function ContactPage() {
                 {/* Call */}
                 <a
                   href="tel:+254793625426"
-                  className="flex items-center space-x-4 p-4 rounded-2xl bg-[#ff6b00]/5 border border-[#ff6b00]/10 hover:border-[#ff6b00]/30 text-[#ff6b00] hover:bg-[#ff6b00]/10 transition-all duration-300"
+                  className="flex items-center space-x-4 p-4 rounded-2xl bg-[#FC6129]/5 border border-[#FC6129]/10 hover:border-[#FC6129]/30 text-[#FC6129] hover:bg-[#FC6129]/10 transition-all duration-300"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-[#ff6b00]/10 flex items-center justify-center shrink-0">
-                    <Phone className="w-5.5 h-5.5 text-[#ff6b00]" />
+                  <div className="w-11 h-11 rounded-xl bg-[#FC6129]/10 flex items-center justify-center shrink-0">
+                    <Phone className="w-5.5 h-5.5 text-[#FC6129]" />
                   </div>
                   <div>
                     <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Phone Call</span>

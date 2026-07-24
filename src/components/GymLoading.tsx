@@ -23,9 +23,9 @@ export default function GymLoading({ size = 'medium' }: { size?: 'small' | 'medi
         <div className="absolute right-7 w-1.5 h-6 bg-zinc-700 rounded"></div>
         
         {/* The lift-bar moving up and down */}
-        <div className="absolute inset-x-9 h-1.5 bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] rounded shadow-lg shadow-orange-500/25 animate-benchpress"></div>
+        <div className="absolute inset-x-9 h-1.5 bg-gradient-to-r from-[#FC6129] to-[#ff2a2a] rounded shadow-lg shadow-orange-500/25 animate-benchpress"></div>
       </div>
-      <p className="text-[10px] uppercase font-black tracking-widest text-[#ff6b00] animate-pulse">
+      <p className="text-[10px] uppercase font-black tracking-widest text-[#FC6129] animate-pulse">
         💪 Loading Gains...
       </p>
     </div>

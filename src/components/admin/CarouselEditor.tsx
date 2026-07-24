@@ -228,7 +228,7 @@ export default function CarouselEditor() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" />
       </div>
     );
   }
@@ -268,7 +268,7 @@ export default function CarouselEditor() {
                   type="file"
                   accept="image/*"
                   onChange={e => handleFileUpload(e, 'carousel', setNewImageId)}
-                  className="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-extrabold file:uppercase file:bg-[#ff6b00]/10 file:text-[#ff6b00] hover:file:bg-[#ff6b00]/20 file:cursor-pointer cursor-pointer"
+                  className="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-extrabold file:uppercase file:bg-[#FC6129]/10 file:text-[#FC6129] hover:file:bg-[#FC6129]/20 file:cursor-pointer cursor-pointer"
                   disabled={isUploading}
                 />
                 {isUploading && <p className="text-[10px] text-amber-400 animate-pulse mt-1">Uploading slide to Supabase...</p>}
@@ -279,7 +279,7 @@ export default function CarouselEditor() {
                   type="text"
                   value={newImageId}
                   onChange={e => setNewImageId(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl py-1.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl py-1.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
                   placeholder="https://..."
                 />
               </div>
@@ -291,7 +291,7 @@ export default function CarouselEditor() {
               type="text"
               value={newCaption}
               onChange={e => setNewCaption(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="e.g. Active training session"
             />
           </div>
@@ -299,7 +299,7 @@ export default function CarouselEditor() {
         <button
           type="submit"
           disabled={isSaving}
-          className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer disabled:opacity-50"
         >
           <Plus className="w-4 h-4" />
           <span>Add Slide</span>

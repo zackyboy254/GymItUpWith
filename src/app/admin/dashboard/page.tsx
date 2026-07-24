@@ -19,6 +19,7 @@ import {
   Activity as ActivityIcon,
   Trophy,
   ClipboardList,
+  Star as StarIcon,
 } from 'lucide-react';
 
 
@@ -35,11 +36,15 @@ import InstructorStatsEditor from '@/components/admin/InstructorStatsEditor';
 import DashboardOverview from '@/components/admin/DashboardOverview';
 import ProgramsEditor from '@/components/admin/ProgramsEditor';
 import RegistrationsEditor from '@/components/admin/RegistrationsEditor';
+import TestimonialsEditor from '@/components/admin/TestimonialsEditor';
+import FaqsEditor from '@/components/admin/FaqsEditor';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: ActivityIcon, component: DashboardOverview },
   { id: 'programs', label: 'Programs & Challenges', icon: Trophy, component: ProgramsEditor },
   { id: 'registrations', label: 'Registrations', icon: ClipboardList, component: RegistrationsEditor },
+  { id: 'testimonials', label: 'Testimonials', icon: StarIcon, component: TestimonialsEditor },
+  { id: 'faqs', label: 'FAQs', icon: StarIcon, component: FaqsEditor },
   { id: 'home', label: 'Home Content', icon: HomeIcon, component: HomeEditor },
   { id: 'videos', label: 'Videos', icon: VideoIcon, component: VideosEditor },
   { id: 'gallery', label: 'Gallery', icon: CameraIcon, component: GalleryEditor },
@@ -100,7 +105,7 @@ export default function AdminDashboard() {
     return (
       <div className="min-h-screen bg-[#0a0a0c] text-white flex items-center justify-center">
         <div className="text-center space-y-3">
-          <div className="w-10 h-10 rounded-full border-2 border-[#ff6b00]/30 border-t-[#ff6b00] animate-spin mx-auto" />
+          <div className="w-10 h-10 rounded-full border-2 border-[#FC6129]/30 border-t-[#FC6129] animate-spin mx-auto" />
           <p className="text-sm text-gray-400">Checking admin access...</p>
         </div>
       </div>
@@ -114,11 +119,11 @@ export default function AdminDashboard() {
         {/* Logo header */}
         <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center shadow-lg shadow-orange-500/10">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FC6129] to-[#ff2a2a] flex items-center justify-center shadow-lg shadow-orange-500/10">
               <Dumbbell className="w-5 h-5 text-white transform -rotate-45" />
             </div>
             <span className="font-extrabold text-sm tracking-wider uppercase">
-              GymItUpWith <span className="text-[#ff6b00]">Admin</span>
+              GymItUpWith <span className="text-[#FC6129]">Admin</span>
             </span>
           </div>
         </div>
@@ -134,7 +139,7 @@ export default function AdminDashboard() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold uppercase tracking-wider transition-all duration-200 cursor-pointer text-left ${
                   isActive
-                    ? 'bg-[#ff6b00] text-white shadow-lg shadow-orange-500/10'
+                    ? 'bg-[#FC6129] text-white shadow-lg shadow-orange-500/10'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >

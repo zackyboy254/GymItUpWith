@@ -151,7 +151,7 @@ export default function InstructorStatsEditor() {
   if (isLoading && !missingTable) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" />
       </div>
     );
   }
@@ -181,7 +181,7 @@ export default function InstructorStatsEditor() {
               {SQL_MIGRATION}
             </pre>
           </div>
-          <button onClick={fetchSettings} className="px-4 py-2 bg-[#ff6b00] text-white rounded-lg text-xs font-bold hover:bg-[#e55a00] cursor-pointer transition-colors">
+          <button onClick={fetchSettings} className="px-4 py-2 bg-[#FC6129] text-white rounded-lg text-xs font-bold hover:bg-[#d94d1e] cursor-pointer transition-colors">
             Reload Settings Table
           </button>
         </div>
@@ -202,7 +202,7 @@ export default function InstructorStatsEditor() {
             type="button"
             disabled={isSaving || missingTable}
             onClick={() => handleSave(METRIC_KEYS.map(m => m.key))}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] disabled:opacity-50 rounded-xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] disabled:opacity-50 rounded-xl transition-colors cursor-pointer"
           >
             {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
             Save Metrics
@@ -218,7 +218,7 @@ export default function InstructorStatsEditor() {
                 placeholder={m.placeholder}
                 disabled={missingTable}
                 onChange={(e) => setSettings((prev) => ({ ...prev, [m.key]: e.target.value }))}
-                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] disabled:opacity-40"
+                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] disabled:opacity-40"
               />
             </div>
           ))}
@@ -233,7 +233,7 @@ export default function InstructorStatsEditor() {
             type="button"
             disabled={isSaving || isUploading || missingTable}
             onClick={() => handleSave([...INSTRUCTOR_KEYS.map(k => k.key), 'instructor_image', 'instructor_bio_p1', 'instructor_bio_p2'])}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] disabled:opacity-50 rounded-xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] disabled:opacity-50 rounded-xl transition-colors cursor-pointer"
           >
             {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
             Save Instructor Info
@@ -249,7 +249,7 @@ export default function InstructorStatsEditor() {
                 placeholder={item.placeholder}
                 disabled={missingTable}
                 onChange={(e) => setSettings((prev) => ({ ...prev, [item.key]: e.target.value }))}
-                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] disabled:opacity-40"
+                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] disabled:opacity-40"
               />
             </div>
           ))}
@@ -260,7 +260,7 @@ export default function InstructorStatsEditor() {
               disabled={missingTable}
               rows={3}
               onChange={(e) => setSettings((prev) => ({ ...prev, instructor_bio_p1: e.target.value }))}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] resize-none disabled:opacity-40"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] resize-none disabled:opacity-40"
             />
           </div>
           <div className="space-y-1 md:col-span-2">
@@ -270,7 +270,7 @@ export default function InstructorStatsEditor() {
               disabled={missingTable}
               rows={3}
               onChange={(e) => setSettings((prev) => ({ ...prev, instructor_bio_p2: e.target.value }))}
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00] resize-none disabled:opacity-40"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129] resize-none disabled:opacity-40"
             />
           </div>
           <div className="md:col-span-2">

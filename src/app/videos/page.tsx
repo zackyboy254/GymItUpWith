@@ -219,7 +219,7 @@ export default function VideosPage() {
       <div className="relative z-10 space-y-16 pt-10">
         {/* Page Header */}
         <div className="text-center space-y-4">
-          <span className="text-[#ff6b00] text-sm font-bold uppercase tracking-wider">Video Hub</span>
+          <span className="text-[#FC6129] text-sm font-bold uppercase tracking-wider">Video Hub</span>
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white uppercase">Workout Videos & Tutorials</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-sm">
             Browse through workout playlists, structural anatomy lessons, client highlights, and tips directly from Coach Billy.
@@ -278,7 +278,7 @@ export default function VideosPage() {
                 className="absolute inset-0 z-20 cursor-pointer bg-black/20 hover:bg-black/40 transition-colors flex items-center justify-center"
               >
                 <button
-                  className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white shadow-xl shadow-orange-500/30 hover:scale-110 active:scale-95 transition-all duration-300"
+                  className="w-16 h-16 rounded-full bg-gradient-to-tr from-[#FC6129] to-[#ff2a2a] flex items-center justify-center text-white shadow-xl shadow-orange-500/30 hover:scale-110 active:scale-95 transition-all duration-300"
                   aria-label={`Play featured video: ${featuredVideo.title}`}
                 >
                   <Play className="w-8 h-8 fill-white ml-1" />
@@ -286,7 +286,7 @@ export default function VideosPage() {
               </div>
             </div>
             <div className="space-y-6">
-              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#ff6b00]/10 border border-[#ff6b00]/20 text-xs text-[#ff6b00]">
+              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#FC6129]/10 border border-[#FC6129]/20 text-xs text-[#FC6129]">
                 <Dumbbell className="w-3.5 h-3.5" />
                 <span>Featured Workout</span>
               </span>
@@ -318,7 +318,7 @@ export default function VideosPage() {
               placeholder="Search workouts..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-[#ff6b00] transition-colors"
+              className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-[#FC6129] transition-colors"
             />
             <Search className="absolute left-4.5 top-3.5 w-4 h-4 text-gray-500" />
           </div>
@@ -330,7 +330,7 @@ export default function VideosPage() {
                 key={cat.value}
                 onClick={() => setSelectedCategory(cat.value)}
                 className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-200 cursor-pointer ${selectedCategory === cat.value
-                  ? 'bg-[#ff6b00] text-white'
+                  ? 'bg-[#FC6129] text-white'
                   : 'bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 border border-black/5 dark:border-white/5'
                   }`}
               >
@@ -358,7 +358,7 @@ export default function VideosPage() {
                     className="absolute inset-0 z-20 cursor-pointer bg-black/10 hover:bg-black/30 transition-colors flex items-center justify-center"
                   >
                       <button
-                      className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center text-white opacity-100 md:opacity-0 md:group-hover:opacity-100 scale-100 md:scale-90 md:group-hover:scale-100 transition-all duration-300 shadow-lg shadow-orange-500/30"
+                      className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#FC6129] to-[#ff2a2a] flex items-center justify-center text-white opacity-100 md:opacity-0 md:group-hover:opacity-100 scale-100 md:scale-90 md:group-hover:scale-100 transition-all duration-300 shadow-lg shadow-orange-500/30"
                       aria-label={`Play video: ${video.title}`}
                     >
                       <Play className="w-6 h-6 fill-white ml-0.5" />
@@ -368,10 +368,10 @@ export default function VideosPage() {
                 {/* Info */}
                 <div className="p-6 flex-grow flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
-                    <span className="inline-block text-[10px] bg-[#ff6b00]/10 border border-[#ff6b00]/20 text-[#ff6b00] font-bold px-2 py-0.5 rounded-lg uppercase tracking-wider">
+                    <span className="inline-block text-[10px] bg-[#FC6129]/10 border border-[#FC6129]/20 text-[#FC6129] font-bold px-2 py-0.5 rounded-lg uppercase tracking-wider">
                       {video.category}
                     </span>
-                    <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-snug hover:text-[#ff6b00] transition-colors duration-200">
+                    <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-snug hover:text-[#FC6129] transition-colors duration-200">
                       {video.title}
                     </h3>
                   </div>

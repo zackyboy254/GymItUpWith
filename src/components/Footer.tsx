@@ -11,11 +11,11 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="md:col-span-2 space-y-6">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#FC6129] to-[#ff2a2a] flex items-center justify-center">
                 <Dumbbell className="w-5 h-5 text-white transform -rotate-45" />
               </div>
               <span className="font-extrabold text-lg tracking-wider text-white uppercase">
-                GROW <span className="text-[#d8f36b]">FIT</span>
+                GROW <span className="text-[#FC6129]">FIT</span>
               </span>
             </Link>
             <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
@@ -26,7 +26,7 @@ export default function Footer() {
                 href="https://www.instagram.com/gymitupwith"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#ff6b00] hover:border-[#ff6b00]/30 hover:scale-105 active:scale-95 transition-all duration-300"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#FC6129] hover:border-[#FC6129]/30 hover:scale-105 active:scale-95 transition-all duration-300"
                 aria-label="Follow us on Instagram"
               >
                 <InstagramIcon className="w-5 h-5" />
@@ -98,7 +98,7 @@ export default function Footer() {
             <h3 className="font-bold text-white text-sm uppercase tracking-wider">Get in Touch</h3>
             <ul className="space-y-3">
               <li className="flex items-center space-x-3 text-sm text-gray-400">
-                <Phone className="w-4 h-4 text-[#ff6b00] shrink-0" />
+                <Phone className="w-4 h-4 text-[#FC6129] shrink-0" />
                 <span>+254 793 62542</span>
               </li>
               <li className="flex items-center space-x-3 text-sm text-gray-400">

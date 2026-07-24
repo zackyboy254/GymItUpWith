@@ -130,7 +130,7 @@ export default function PopupsEditor() {
     catch (err) { console.error(err); }
   };
 
-  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" /></div>;
+  if (isLoading) return <div className="flex items-center justify-center py-12"><Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" /></div>;
 
   return (
     <div className="space-y-8">
@@ -163,7 +163,7 @@ export default function PopupsEditor() {
           <div className="space-y-1">
             <label className="block text-[9px] text-gray-400 font-bold uppercase">Popup Headline</label>
             <input type="text" value={title} onChange={e => setTitle(e.target.value)} required
-              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+              className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               placeholder="e.g. 🔥 First Session FREE!" />
           </div>
           <div className="space-y-1">
@@ -225,7 +225,7 @@ export default function PopupsEditor() {
             />
           </div>
         </div>
-        <button type="submit" disabled={isSaving || isUploading} className="inline-flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#e55a00] rounded-xl transition-colors cursor-pointer disabled:opacity-50">
+        <button type="submit" disabled={isSaving || isUploading} className="inline-flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#d94d1e] rounded-xl transition-colors cursor-pointer disabled:opacity-50">
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : editMode === 'edit' ? <Save className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           <span>{isSaving ? 'Saving...' : editMode === 'edit' ? 'Update Popup' : 'Save Popup'}</span>
         </button>

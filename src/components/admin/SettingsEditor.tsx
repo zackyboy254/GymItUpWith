@@ -140,7 +140,7 @@ export default function SettingsEditor() {
             {SQL_MIGRATION}
           </pre>
         </div>
-        <button onClick={fetchSettings} className="px-4 py-2 bg-[#ff6b00] text-white rounded-lg text-xs font-bold hover:bg-[#e55a00] cursor-pointer transition-colors">
+        <button onClick={fetchSettings} className="px-4 py-2 bg-[#FC6129] text-white rounded-lg text-xs font-bold hover:bg-[#d94d1e] cursor-pointer transition-colors">
           Reload Settings Table
         </button>
       </div>
@@ -150,7 +150,7 @@ export default function SettingsEditor() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 text-[#ff6b00] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#FC6129] animate-spin" />
       </div>
     );
   }
@@ -183,7 +183,7 @@ export default function SettingsEditor() {
                 value={settingsValues[item.key] || ''}
                 placeholder={item.placeholder}
                 onChange={(e) => setSettingsValues((prev) => ({ ...prev, [item.key]: e.target.value }))}
-                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#ff6b00]"
+                className="w-full bg-black/40 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white focus:outline-none focus:border-[#FC6129]"
               />
             </div>
           ))}
@@ -192,7 +192,7 @@ export default function SettingsEditor() {
           type="button"
           onClick={() => handleSaveSettings(GENERAL_SETTINGS_KEYS)}
           disabled={isSaving}
-          className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#ff6b00] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 text-xs font-bold text-white bg-[#FC6129] hover:bg-[#ff2a2a] rounded-lg transition-colors cursor-pointer"
         >
           <Save className="w-4 h-4" />
           <span>Save Contact &amp; Social Info</span>

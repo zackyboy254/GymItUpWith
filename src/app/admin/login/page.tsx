@@ -3,12 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { LogIn, Lock, Mail, Dumbbell, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { LogIn, Lock, Mail, Dumbbell, AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [resetSent, setResetSent] = useState(false);
   const router = useRouter();
@@ -37,8 +38,12 @@ export default function AdminLoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError('Please provide both email and password.');
+    if (!email.trim()) {
+      setError('Please enter your admin email address.');
+      return;
+    }
+    if (!password) {
+      setError('Please enter your password.');
       return;
     }
 
@@ -97,13 +102,13 @@ export default function AdminLoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       {/* Background gradients */}
       <div className="absolute inset-0 z-0 bg-[#0a0a0c] overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#ff6b00]/5 rounded-full blur-[100px]"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#FC6129]/5 rounded-full blur-[100px]"></div>
       </div>
 
       <div className="relative z-10 w-full max-w-md glass-panel rounded-3xl p-8 border border-white/10 bg-gradient-to-br from-[#121214] to-[#0a0a0c] space-y-8 shadow-2xl">
         {/* Logo & title */}
         <div className="text-center space-y-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ff6b00] to-[#ff2a2a] flex items-center justify-center mx-auto shadow-lg shadow-orange-500/20">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FC6129] to-[#ff2a2a] flex items-center justify-center mx-auto shadow-lg shadow-orange-500/20">
             <Dumbbell className="w-6 h-6 text-white transform -rotate-45" />
           </div>
           <h1 className="text-2xl font-black text-white uppercase tracking-tight">Admin CMS Login</h1>
@@ -140,7 +145,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@gymitupwith.co.ke"
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#ff6b00] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#FC6129] transition-colors"
                 required
               />
               <Mail className="absolute left-4 top-3.5 w-4 h-4 text-gray-500" />
@@ -162,22 +167,30 @@ export default function AdminLoginPage() {
             </div>
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#ff6b00] transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-11 pr-11 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#FC6129] transition-colors"
                 required
               />
               <Lock className="absolute left-4 top-3.5 w-4 h-4 text-gray-500" />
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                className="absolute right-3 top-3.5 text-gray-400 hover:text-white"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full inline-flex items-center justify-center px-5 py-3.5 font-bold text-white bg-gradient-to-r from-[#ff6b00] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#ff6b00] rounded-xl shadow-lg shadow-orange-500/10 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 cursor-pointer disabled:bg-white/5 disabled:text-gray-500"
+            className="w-full inline-flex items-center justify-center px-5 py-3.5 font-bold text-white bg-gradient-to-r from-[#FC6129] to-[#ff2a2a] hover:from-[#ff2a2a] hover:to-[#FC6129] rounded-xl shadow-lg shadow-orange-500/10 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 cursor-pointer disabled:bg-white/5 disabled:text-gray-500"
           >
             {isLoading ? (
               'Authenticating...'
